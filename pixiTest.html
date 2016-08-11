@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>pixiTest</title>
+
+    <script src="assets/js/pixi/pixi.js"></script>
+    <script src="assets/js/gsap/TweenLite.min.js"></script>
+
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+<div id="screen"></div>
+
+<script>
+    var _screen = document.getElementById('screen');
+    var screenWidth = function () {
+        return window.innerWidth
+    };
+    var screenHeight = function () {
+        return window.innerHeight
+    }
+
+    var rendererOptions = {
+        antialiasing: false,
+        transparent: false,
+        backgroundColor: 0x040404,
+        autoResize: true
+    };
+
+    var pixiRenderer = new PIXI.autoDetectRenderer(screenWidth(), screenHeight(), rendererOptions);//autoDetectRenderer(400, 300);
+    _screen.appendChild(pixiRenderer.view);
+    console.log(pixiRenderer)
+
+    // create the root of the scene graph
+    var stage = new PIXI.Container();
+
+    var fsImage_tex = PIXI.Texture.fromImage('assets/img/fsImage_1920x1372.jpg');
+    var fsImage = new PIXI.Sprite(fsImage_tex);
+    fsImage.anchor.x = 0.0;
+    fsImage.anchor.y = 0.0;
+    fsImage.x = 0;
+    fsImage.y = 0;
+
+    var fsImageRatio
+    TweenLite.delayedCall(.2, check);
+    function check() {
+        fsImageRatio = fsImage.texture.width / fsImage.texture.height;
+        console.log(fsImageRatio);
+        fsImage.texture.width = 500;
+    }
+
+    stage.addChild(fsImage);
+
+    pixiRenderer.render(stage);
+
+    animate();
+    function animate() {
+        requestAnimationFrame(animate);
+
+        // render the container
+        pixiRenderer.render(stage);
+    }
+
+    window.addEventListener('resize', onResize);
+
+    function onResize(e) {
+        var $screenWidth = screenWidth();
+        var $screenHeight = screenHeight();
+
+        //this part resizes the canvas but keeps ratio the same
+        pixiRenderer.view.style.width = $screenWidth + "px";
+        pixiRenderer.view.style.height = $screenHeight + "px";
+        // this part adjusts the ratio:
+        pixiRenderer.resize($screenWidth, $screenHeight);
+
+        var r = $screenWidth / 1920;
+        console.log(r);
+
+        fsImage.scale = new PIXI.Point(r, r);
+    }
+
+
+</script>
+
+</body>
+</html>

@@ -49,6 +49,18 @@
             position: absolute;
             background-color: #d9181b;
         }
+
+        .iconContainer {
+            position: relative;
+        }
+
+        .dotContainer {
+            cursor: crosshair;
+            width: inherit;
+            height: 50px;
+            background-color: aquamarine;
+            position: relative;
+        }
     </style>
 
 
@@ -62,11 +74,8 @@
 
 <div class="dot"></div>
 <div class="dotGroup">
-    <div class="dotContainer" filter="url(#goo)">
-    </div>
-
+    <div class="dotContainer" filter="url(#goo)"></div>
     <div class="iconContainer"></div>
-    <div class="bubbleContainer"></div>
 </div>
 
 
@@ -83,7 +92,6 @@
     //container = select('.container'),
             dotContainer = select('.dotContainer'),
             iconContainer = select('.iconContainer'),
-            bubbleContainer = select('.bubbleContainer'),
             hitArea = select('.hitArea'),
             dotGroup = select('.dotGroup'),
             spacer = 100,
@@ -206,10 +214,6 @@
         //mainTl.time(((posX/minDragX) * (mainTl.duration()-2))+1)
         TweenMax.set(iconContainer, {
             x: posX
-        })
-        TweenMax.to(bubbleContainer, 1, {
-            x: posX,
-            ease: Elastic.easeOut.config(1, 0.5)
         })
     }
 
