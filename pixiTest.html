@@ -14,6 +14,10 @@
             padding: 0;
             overflow: hidden;
         }
+
+        #screen {
+            position: absolute;
+        }
     </style>
 </head>
 
@@ -32,7 +36,7 @@
     var rendererOptions = {
         antialiasing: false,
         transparent: false,
-        backgroundColor: 0x040404,
+        backgroundColor: 0x0a5a15,
         autoResize: true
     };
 
@@ -43,8 +47,10 @@
     // create the root of the scene graph
     var stage = new PIXI.Container();
 
-    var fsImage_tex = PIXI.Texture.fromImage('assets/img/fsImage_1920x1372.jpg');
+    var fsImage_tex = PIXI.Texture.fromImage('assets/img/fsImage_1200x675_c.jpg');
     var fsImage = new PIXI.Sprite(fsImage_tex);
+    fsImage.anchor.x = 0.5;
+    fsImage.anchor.y = 0.6;
     fsImage.anchor.x = 0.0;
     fsImage.anchor.y = 0.0;
     fsImage.x = 0;
@@ -54,8 +60,8 @@
     TweenLite.delayedCall(.2, check);
     function check() {
         fsImageRatio = fsImage.texture.width / fsImage.texture.height;
-        console.log(fsImageRatio);
-        fsImage.texture.width = 500;
+//        console.log(fsImageRatio);
+        onResize();
     }
 
     stage.addChild(fsImage);
@@ -73,6 +79,8 @@
     window.addEventListener('resize', onResize);
 
     function onResize(e) {
+        var $imageWidth = 1200;
+        var $imageHeight = 675;
         var $screenWidth = screenWidth();
         var $screenHeight = screenHeight();
 
@@ -82,10 +90,28 @@
         // this part adjusts the ratio:
         pixiRenderer.resize($screenWidth, $screenHeight);
 
-        var r = $screenWidth / 1920;
-        console.log(r);
+        var r = $screenWidth / $imageWidth;
+//        console.log(r);
 
         fsImage.scale = new PIXI.Point(r, r);
+//        fsImage.x = fsImage.width * .5;
+//        fsImage.y = fsImage.height * .6;
+
+        if (fsImage.height > $screenHeight) {
+            r = $screenWidth / $imageWidth;
+            fsImage.scale = new PIXI.Point(r, r);
+            fsImage.x = 0;
+            fsImage.y = -(fsImage.height- $screenHeight) * .5;
+            console.log(fsImage.y)
+        } else if(fsImage.height < $screenHeight) {
+            r = $screenHeight / $imageHeight;
+            console.log(r)
+            fsImage.y = 0;
+            fsImage.scale = new PIXI.Point(r, r);
+            fsImage.x = ($screenWidth - fsImage.width) * .5;
+        }
+
+        console.log(fsImage.height);
     }
 
 
