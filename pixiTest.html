@@ -5,9 +5,10 @@
     <title>pixiTest</title>
 
     <script src="https://rawgithub.com/mrdoob/stats.js/master/build/stats.min.js"></script>
+    <script src="assets/js/preloadjs-0.6.2.min.js"></script>
 
-    <!--<script src="assets/js/pixi/pixi.js"></script>-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.0-rc3/pixi.js"></script>
+    <script src="assets/js/pixi/pixi.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.0-rc3/pixi.js"></script>-->
     <script src="assets/js/pixi/filters.min.js"></script>
     <script src="assets/js/gsap/TweenLite.min.js"></script>
 
@@ -51,29 +52,79 @@
     }
 
     /*--------------------------------------------
-     ~ LOADER
+     ~ LOADER (PIXI)
      --------------------------------------------*/
-    PIXI.loader.add('img_1', 'assets/img/fsImage_1200x750_c.jpg');
-    PIXI.loader.add('img_2', 'assets/img/fsImage_1920x1372.jpg');
+    //    PIXI.loader.add('img_1', 'assets/img/fsImage_1200x750_c.jpg');
+    //    PIXI.loader.add('img_2', 'assets/img/fsImage_1920x1372.jpg');
     // listen for progress
-    PIXI.loader.on('progress', onProgressCallback);
-    function onProgressCallback(e) {
-        console.log(e.progress);
-    }
+    //    PIXI.loader.on('progress', onProgressCallback);
+    //    function onProgressCallback(e) {
+    //        console.log(e.progress);
+    //    }
     // load resources
-    PIXI.loader.load(function (loader, resources) {
-        // resources is an object containing the loaded resources, keyed by the names you used above.
-        var sprite = new PIXI.Sprite(resources.img_1.texture);
-        console.log(resources.img_1.texture)
-    });
+    //    PIXI.loader.load(function (loader, resources) {
+    //        // resources is an object containing the loaded resources, keyed by the names you used above.
+    //        var sprite = new PIXI.Sprite(resources.img_1.texture);
+    //        console.log(resources.img_1.texture)
+    //    });
+
+    /*--------------------------------------------
+     ~ LOADER (EASEL)
+     --------------------------------------------*/
+    var _loader;
+    var manifest = [
+        {
+            src: "assets/img/fsImage_1200x750_c.jpg",
+            id: "img_0"
+        }, {
+            src: "assets/img/fsImage_1920x1372.jpg",
+            id: "img_1"
+        },
+        {
+            src: "assets/img/text.png",
+            id: "txt"
+        },
+        {
+            src: "assets/img/text_mask.png",
+            id: "txt_mask"
+        },
+        {
+            src: "assets/img/swoosh.png",
+            id: "swoosh"
+        },
+        {
+            src: "assets/img/displacementMap.jpg",
+            id: "displace"
+        }
+    ];
+
+    _loader = new createjs.LoadQueue(false);
+    _loader.addEventListener("progress", onLoadProgress);
+    _loader.addEventListener("complete", onAssetsLoaded);
+    _loader.loadManifest(manifest);
+
+
+    function onLoadProgress(e) {
+        console.log(e.loaded);
+    }
+
+    function onAssetsLoaded() {
+        console.log('loaded!', _loader.getResult("img_0"))
+        var sprite = new PIXI.Sprite(PIXI.Texture.fromImage(_loader.getResult("img_0").src));
+
+        initPixi();
+        initFilterTest();
+        animate();
+    }
+
 
     /*--------------------------------------------
      ~ SETUP
      --------------------------------------------*/
+
     var $imageWidth = 1200;
     var $imageHeight = 750;
 
-    var _screen = document.getElementById('screen');
     var screenWidth = function () {
         return window.innerWidth
     };
@@ -81,47 +132,84 @@
         return window.innerHeight
     };
 
-    var rendererOptions = {
-        antialiasing: false,
-        transparent: false,
-        backgroundColor: 0x0a5a15,
-        autoResize: false
-    };
+    var pixiRenderer;
+    var stage;
+    var fsImage;
+    var fsImageContainer;
 
-    var pixiRenderer = new PIXI.autoDetectRenderer(screenWidth(), screenHeight(), rendererOptions);
-    _screen.appendChild(pixiRenderer.view);
-    console.log(pixiRenderer)
+    function initPixi() {
 
-    // create the root of the scene graph
-    var stage = new PIXI.Container();
-    var fsImage_tex = PIXI.Texture.fromImage('assets/img/fsImage_1200x750_c.jpg');
-    var fsImage = new PIXI.Sprite(fsImage_tex);
-    fsImage.anchor.x = 0.5;
-    fsImage.anchor.y = 0.6;
-    fsImage.anchor.x = 0.0;
-    fsImage.anchor.y = 0.0;
-    fsImage.x = 0;
-    fsImage.y = 0;
-    stage.addChild(fsImage);
+        var _screen = document.getElementById('screen');
 
-    //  FILTER TEST!
-    //    var filter = new PIXI.filters.AsciiFilter();
-    //    var filter = new PIXI.filters.BloomFilter()
-    // colorMatrix
-    //    var filter = new PIXI.filters.ColorMatrixFilter()
-    //    filter.saturate(-.5);
-    //    fsImage.filters = [filter];
+        var rendererOptions = {
+            antialiasing: false,
+            transparent: false,
+            backgroundColor: 0x0a5a15,
+            autoResize: false
+        };
 
+        pixiRenderer = new PIXI.autoDetectRenderer(screenWidth(), screenHeight(), rendererOptions);
+        _screen.appendChild(pixiRenderer.view);
 
-    var fsImageRatio;
-    TweenLite.delayedCall(.5, check);
-    function check() {
+        // create the root of the scene graph
+        stage = new PIXI.Container();
+        stage.interactive = true;
+//        var fsImage_tex = PIXI.Texture.fromImage('assets/img/fsImage_1200x750_c.jpg');
+//        fsImage = new PIXI.Sprite(fsImage_tex);
+        fsImage = new PIXI.Sprite(PIXI.Texture.fromImage(_loader.getResult("img_0").src));
+        fsImageContainer = new PIXI.Container();
+        fsImageContainer.addChild(fsImage);
+//        fsImageContainer.alpha = .5;
+
+//        fsImage.anchor.x = 0.0;
+//        fsImage.anchor.y = 0.0;
+//        fsImage.x = 0;
+//        fsImage.y = 0;
+        stage.addChild(fsImageContainer);
+
+        //  FILTER TEST!
+        //    var filter = new PIXI.filters.AsciiFilter();
+        var filter = new PIXI.filters.BloomFilter()
+        // colorMatrix
+        //    var filter = new PIXI.filters.ColorMatrixFilter()
+        //    filter.saturate(-.5);
+        fsImageContainer.filters = [filter];
+
+        var fsImageRatio;
         fsImageRatio = fsImage.texture.width / fsImage.texture.height;
-//        console.log(fsImageRatio);
-        onResize();
+        console.log('ratio', fsImageRatio);
+
+        TweenLite.delayedCall(.1, onResize);
     }
 
-    animate();
+    var tSprite, tSpriteMask, tContainer;
+    var displacementSprite, displacementFilter;
+    var sFilter;
+    var swoosh;
+    function initFilterTest() {
+        tContainer = new PIXI.Container();
+
+        tSprite = new PIXI.Sprite(PIXI.Texture.fromImage(_loader.getResult("txt").src));
+        tSpriteMask = new PIXI.Sprite(PIXI.Texture.fromImage(_loader.getResult("txt_mask").src));
+        swoosh = new PIXI.Sprite(PIXI.Texture.fromImage(_loader.getResult("swoosh").src));
+        swoosh.x = 100;
+        swoosh.mask = tSpriteMask;
+
+
+        tContainer.addChild(tSprite);
+        tContainer.addChild(tSpriteMask);
+        tContainer.addChild(swoosh);
+
+        stage.addChild(tContainer)
+
+        displacementSprite = new PIXI.Sprite(PIXI.Texture.fromImage(_loader.getResult("displace").src));
+        displacementFilter = new PIXI.filters.DisplacementFilter(displacementSprite);
+        tContainer.filters = [displacementFilter];
+
+        //        TweenLite.to(sFilter, 5, {delay: 1, time: 1})
+    }
+
+
     function animate() {
         requestAnimationFrame(animate);
 
@@ -129,43 +217,39 @@
         pixiRenderer.render(stage);
 
         stats.update();
+
+        sFilter.time = (sFilter.time >= 1 ) ? 0 : sFilter.time + 0.01;
     }
 
     window.addEventListener('resize', onResize);
 
+    var _screenWidth, _screenHeight;
+    var _scalePoint = new PIXI.Point(0, 0);
+
     function onResize(e) {
 
-        var $screenWidth = screenWidth();
-        var $screenHeight = screenHeight();
+        _screenWidth = screenWidth();
+        _screenHeight = screenHeight();
 
-        //this part resizes the canvas but keeps ratio the same
-        pixiRenderer.view.style.width = $screenWidth + "px";
-        pixiRenderer.view.style.height = $screenHeight + "px";
-        // this part adjusts the ratio:
-        pixiRenderer.resize($screenWidth, $screenHeight);
+        pixiRenderer.view.style.width = _screenWidth + "px";
+        pixiRenderer.view.style.height = _screenHeight + "px";
+        pixiRenderer.resize(_screenWidth, _screenHeight);
 
-        var r = $screenWidth / $imageWidth;
-//        console.log(r);
+        _scalePoint.set(_screenWidth / $imageWidth);
+        fsImageContainer.children[0].scale = _scalePoint;
 
-        fsImage.scale = new PIXI.Point(r, r);
-//        fsImage.x = fsImage.width * .5;
-//        fsImage.y = fsImage.height * .6;
-
-        if (fsImage.height > $screenHeight) {
-            r = $screenWidth / $imageWidth;
-            fsImage.scale = new PIXI.Point(r, r);
-            fsImage.x = 0;
-            fsImage.y = -(fsImage.height - $screenHeight) * .5;
-            console.log(fsImage.y)
-        } else if (fsImage.height < $screenHeight) {
-            r = $screenHeight / $imageHeight;
-            console.log(r)
-            fsImage.y = 0;
-            fsImage.scale = new PIXI.Point(r, r);
-            fsImage.x = ($screenWidth - fsImage.width) * .5;
+        if (fsImageContainer.children[0].height >= _screenHeight) {
+            _scalePoint.set(_screenWidth / $imageWidth);
+            fsImageContainer.children[0].scale = _scalePoint;
+            fsImageContainer.children[0].x = 0;
+            fsImageContainer.children[0].y = -(fsImageContainer.children[0].height - _screenHeight) * .5;
+        } else if (fsImage.height <= _screenHeight) {
+            _scalePoint.set(_screenHeight / $imageHeight);
+            fsImageContainer.children[0].scale = _scalePoint;
+            fsImageContainer.children[0].y = 0;
+            fsImageContainer.children[0].x = (_screenWidth - fsImageContainer.children[0].width) * .5;
         }
 
-        console.log(fsImage.height);
     }
 
 
