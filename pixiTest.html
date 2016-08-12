@@ -11,6 +11,7 @@
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.0-rc3/pixi.js"></script>-->
     <script src="assets/js/pixi/filters.min.js"></script>
     <script src="assets/js/gsap/TweenLite.min.js"></script>
+    <script src="assets/js/gsap/easing/EasePack.min.js"></script>
 
 
     <style>
@@ -95,6 +96,10 @@
         {
             src: "assets/img/displacementMap.jpg",
             id: "displace"
+        },
+        {
+            src: "assets/img/displacementMap_sw.jpg",
+            id: "displace_sw"
         }
     ];
 
@@ -187,12 +192,13 @@
     var sFilter;
     var swoosh;
     function initFilterTest() {
+
         tContainer = new PIXI.Container();
 
         tSprite = new PIXI.Sprite(PIXI.Texture.fromImage(_loader.getResult("txt").src));
         tSpriteMask = new PIXI.Sprite(PIXI.Texture.fromImage(_loader.getResult("txt_mask").src));
         swoosh = new PIXI.Sprite(PIXI.Texture.fromImage(_loader.getResult("swoosh").src));
-        swoosh.x = 100;
+        swoosh.x = -50;
         swoosh.mask = tSpriteMask;
 
 
@@ -202,11 +208,19 @@
 
         stage.addChild(tContainer)
 
-        displacementSprite = new PIXI.Sprite(PIXI.Texture.fromImage(_loader.getResult("displace").src));
+        displacementSprite = new PIXI.Sprite(PIXI.Texture.fromImage(_loader.getResult("displace_sw").src));
+        displacementSprite.x = -512;
         displacementFilter = new PIXI.filters.DisplacementFilter(displacementSprite);
         tContainer.filters = [displacementFilter];
+        stage.addChild(displacementSprite);
 
-        //        TweenLite.to(sFilter, 5, {delay: 1, time: 1})
+        TweenLite.delayedCall(1, wobble);
+
+    }
+
+    function wobble() {
+        TweenLite.to(displacementSprite, 6, {x: 512, ease: Sine.easeInOut});
+        TweenLite.to(swoosh, 2, {delay: 2, x: 512, ease: Sine.easeInOut});
     }
 
 
