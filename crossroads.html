@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jk</title>
+
+    <script src="assets/js/signals.js"></script>
+    <script src="assets/js/crossroads.js"></script>
+    <script src="assets/js/hasher.js"></script>
+</head>
+<body>
+
+<div style="width: 300px; height: 300px; background-color: aqua"></div>
+
+<script>
+
+    // http://www.codesandnotes.be/2014/09/07/low-footprint-client-side-routing-using-crossroads-js/
+
+    // Define the routes
+    crossroads.addRoute('/', function () {
+        console.log('index')
+    });
+    crossroads.addRoute('/user/{userId}', function (userId) {
+        console.log('user', userId);
+    });
+    crossroads.addRoute('/page/imprint', function (userId) {
+        console.log('imprint');
+    });
+    crossroads.bypassed.add(function (request) {
+        console.error(request + ' seems to be a dead end...');
+    });
+
+    //Listen to hash changes
+    window.addEventListener("hashchange", function () {
+        var route = '/';
+        var hash = window.location.hash;
+        if (hash.length > 0) {
+            route = hash.split('#').pop();
+        }
+        crossroads.parse(route);
+    });
+
+    // trigger hashchange on first page load
+    // window.dispatchEvent(new CustomEvent("hashchange"));
+
+
+    //#hasher
+    //setup hasher
+    function parseHash(newHash, oldHash) {
+        crossroads.parse(newHash);
+    }
+    hasher.initialized.add(parseHash); //parse initial hash
+    //    hasher.changed.add(parseHash); //parse hash changes
+    hasher.init(); //start listening for history change
+
+
+    document.body.addEventListener('click', function () {
+        //update URL fragment generating new history record
+        hasher.setHash('user/23');
+    })
+
+</script>
+</body>
+</html>

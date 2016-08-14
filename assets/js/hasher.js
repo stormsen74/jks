@@ -103,7 +103,7 @@ var hasher = (function(window){
         if(_frame && _hash !== _getFrameHash()){
             var frameDoc = _frame.contentWindow.document;
             frameDoc.open();
-            //update iframe content to force new history record.
+            //update iframe content.json to force new history record.
             //based on Really Simple History, SWFAddress and YUI.history.
             frameDoc.write('<html><head><title>' + document.title + '</title><script type="text/javascript">var frameHash="' + _hash + '";</script></head><body>&nbsp;</body></html>');
             frameDoc.close();
@@ -135,7 +135,7 @@ var hasher = (function(window){
             if(frameHash !== _hash && frameHash !== windowHash){
                 //detect changes made pressing browser history buttons.
                 //Workaround since history.back() and history.forward() doesn't
-                //update hash value on IE6/7 but updates content of the iframe.
+                //update hash value on IE6/7 but updates content.json of the iframe.
                 //needs to trim hash since value stored already have
                 //prependHash + appendHash for fast check.
                 hasher.setHash(_trimHash(frameHash));
