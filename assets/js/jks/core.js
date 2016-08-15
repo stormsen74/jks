@@ -15,6 +15,9 @@ this.jks = this.jks || {};
     var _config;
     var _dataHandler;
     var _router;
+    var _navigation;
+    var _controller;
+    var _view;
 
 
     function Core() {
@@ -66,9 +69,15 @@ this.jks = this.jks || {};
 
                 _dataHandler = new jks.DataHandler(_config);
                 _router = new jks.Router();
-                //_view
-                //_navi
-                //_controller
+                // _navigation = new jks.Navigation();
+                _view = new jks.View();
+                _controller = new jks.Controller(_view);
+
+
+                _dataHandler.s.onResponse.add(onResponse);
+                function onResponse() {
+                    console.log('signal!')
+                }
 
 
             }

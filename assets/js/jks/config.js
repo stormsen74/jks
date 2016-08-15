@@ -16,6 +16,7 @@ this.jks = this.jks || {};
 
     var _json;
 
+
     function Config(json) {
 
         this.version = 0.1;
@@ -23,11 +24,31 @@ this.jks = this.jks || {};
 
         _json = json;
 
+        this.numPages = _json.pages.length;
+        this.pages = _json.pages;
+        this.pageData = [];
+
+        for (var i = 0; i < this.numPages; i++) {
+            var data = {};
+            data.category = _json.pages[i].category;
+            data.numImages = _json.pages[i].items.length;
+            data.images = [];
+            data.thumbs = [];
+            // console.log('config',data);
+
+
+            this.pageData.push(data);
+
+        }
+            // console.log('config',this.pageData);
+
+
         //console.log('config :: version: ', this.version);
         //console.log('config :: debug: ', this.debug);
         //console.log('config :: json: ', _json);
 
-        console.log(_json.pages[0].items.length)
+        // console.log(_json.pages[0].items.length);
+        // console.log(_json.pages);
 
 
         this.setParam = function () {

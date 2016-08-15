@@ -6,25 +6,37 @@
         "itemsLoaded": false,
         "items": [
           {
-            "src": {
+            "img": {
               "src": "assets/img/fsImage_1200x750_c.jpg",
-              "id:": "zeitlos_0"
+              "id": "img_zeitlos_0"
+            },
+            "thumb": {
+              "src": "assets/img/fsImage_1200x750_c.jpg",
+              "id": "thumb_zeitlos_0"
             },
             "type": "Orhänger",
             "description": "desription as html"
           },
           {
-            "src": {
+            "img": {
               "src": "assets/img/fsImage_1200x750_c.jpg",
-              "id:": "zeitlos_0"
+              "id": "img_zeitlos_1"
+            },
+            "thumb": {
+              "src": "assets/img/fsImage_1200x750_c.jpg",
+              "id": "thumb_zeitlos_1"
             },
             "type": "Orhänger",
             "description": "desription as html"
           },
           {
-            "src": {
+            "img": {
               "src": "assets/img/fsImage_1200x750_c.jpg",
-              "id:": "zeitlos_0"
+              "id": "img_zeitlos_2"
+            },
+            "thumb": {
+              "src": "assets/img/fsImage_1200x750_c.jpg",
+              "id": "thumb_zeitlos_2"
             },
             "type": "Orhänger",
             "description": "desription as html"
@@ -33,14 +45,31 @@
       },
       {
         "category": "trauringe",
+        "itemsLoaded": false,
         "items": [
           {
-            "type": "home",
-            "number": "111 111-1111"
+            "img": {
+              "src": "assets/img/fsImage_1200x750_c.jpg",
+              "id": "img_trauringe_0"
+            },
+            "thumb": {
+              "src": "assets/img/fsImage_1200x750_c.jpg",
+              "id": "thumb_trauringe_0"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
           },
           {
-            "type": "fax",
-            "number": "222 222-2222"
+            "img": {
+              "src": "assets/img/fsImage_1200x750_c.jpg",
+              "id": "img_trauringe_1"
+            },
+            "thumb": {
+              "src": "assets/img/fsImage_1200x750_c.jpg",
+              "id": "thumb_trauringe_1"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
           }
         ]
       }
