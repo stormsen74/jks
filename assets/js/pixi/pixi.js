@@ -6444,7 +6444,7 @@ module.exports = function () {
         if (resource.xhr && resource.xhrType === Resource.XHR_RESPONSE_TYPE.BLOB) {
             // if there is no blob support we probably got a binary string back
             if (!window.Blob || typeof resource.data === 'string') {
-                var type = resource.xhr.getResponseHeader('content-type');
+                var type = resource.xhr.getResponseHeader('content.js-type');
 
                 // this is an image, convert the binary string into a data url
                 if (type && type.indexOf('image') === 0) {
@@ -6461,7 +6461,7 @@ module.exports = function () {
                     };
                 }
             }
-            // if content type says this is an image, then we should transform the blob into an Image object
+            // if content.json type says this is an image, then we should transform the blob into an Image object
             else if (resource.data.type.indexOf('image') === 0) {
                 var src = URL.createObjectURL(resource.data);
 
@@ -6497,7 +6497,7 @@ Object.assign(
 
 
 /**
- * The Accessibility manager reacreates the ability to tab and and have content read by screen readers. This is very important as it can possibly help people with disabilities access pixi content.
+ * The Accessibility manager reacreates the ability to tab and and have content.json read by screen readers. This is very important as it can possibly help people with disabilities access pixi content.json.
  * Much like interaction any DisplayObject can be made accessible. This manager will map the events as if the mouse was being used, minimizing the efferot required to implement.
  *
  * @class
@@ -7759,7 +7759,7 @@ Container.prototype.renderWebGL = function (renderer)
  */
 Container.prototype._renderWebGL = function (renderer) // jshint unused:false
 {
-    // this is where content itself gets rendered...
+    // this is where content.json itself gets rendered...
 };
 
 /**
@@ -7770,7 +7770,7 @@ Container.prototype._renderWebGL = function (renderer) // jshint unused:false
  */
 Container.prototype._renderCanvas = function (renderer) // jshint unused:false
 {
-    // this is where content itself gets rendered...
+    // this is where content.json itself gets rendered...
 };
 
 
@@ -12720,7 +12720,7 @@ ParticleRenderer.prototype.render = function (container)
         // we always upload the dynamic
         buffer.uploadDynamic(children, i, amount);
 
-        // we only upload the static content when we have to!
+        // we only upload the static content.json when we have to!
         if(container._bufferToUpdate === j)
         {
             buffer.uploadStatic(children, i, amount);
@@ -18584,7 +18584,7 @@ SpriteRenderer.prototype.render = function (sprite)
 };
 
 /**
- * Renders the content and empties the current batch.
+ * Renders the content.json and empties the current batch.
  *
  */
 SpriteRenderer.prototype.flush = function ()

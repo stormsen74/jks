@@ -7,8 +7,8 @@
     <script src="https://rawgithub.com/mrdoob/stats.js/master/build/stats.min.js"></script>
     <script src="assets/js/preloadjs-0.6.2.min.js"></script>
 
-    <script src="assets/js/pixi/pixi.js"></script>
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.0-rc3/pixi.js"></script>-->
+    <!--<script src="assets/js/pixi/pixi.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.0-rc3/pixi.js"></script>
     <script src="assets/js/pixi/filters.min.js"></script>
     <script src="assets/js/gsap/TweenLite.min.js"></script>
     <script src="assets/js/gsap/easing/EasePack.min.js"></script>
@@ -76,7 +76,7 @@
     var manifest = [
         {
             src: "assets/img/fsImage_1200x750_c.jpg",
-            id: "img_0"
+            id: "img_0",
         }, {
             src: "assets/img/fsImage_1920x1372.jpg",
             id: "img_1"
@@ -102,6 +102,8 @@
             id: "displace_sw"
         }
     ];
+
+    console.log(manifest);
 
     _loader = new createjs.LoadQueue(false);
     _loader.addEventListener("progress", onLoadProgress);
@@ -173,12 +175,12 @@
         stage.addChild(fsImageContainer);
 
         //  FILTER TEST!
-        //    var filter = new PIXI.filters.AsciiFilter();
-        var filter = new PIXI.filters.BloomFilter()
+            var filter = new PIXI.filters.AsciiFilter();
+//        var filter = new PIXI.filters.BloomFilter()
         // colorMatrix
         //    var filter = new PIXI.filters.ColorMatrixFilter()
         //    filter.saturate(-.5);
-        fsImageContainer.filters = [filter];
+//        fsImageContainer.filters = [filter];
 
         var fsImageRatio;
         fsImageRatio = fsImage.texture.width / fsImage.texture.height;
@@ -232,7 +234,7 @@
 
         stats.update();
 
-        sFilter.time = (sFilter.time >= 1 ) ? 0 : sFilter.time + 0.01;
+//        sFilter.time = (sFilter.time >= 1 ) ? 0 : sFilter.time + 0.01;
     }
 
     window.addEventListener('resize', onResize);

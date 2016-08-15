@@ -1,0 +1,49 @@
+[
+  {
+    "pages": [
+      {
+        "category": "zeitlos",
+        "itemsLoaded": false,
+        "items": [
+          {
+            "src": {
+              "src": "assets/img/fsImage_1200x750_c.jpg",
+              "id:": "zeitlos_0"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "src": {
+              "src": "assets/img/fsImage_1200x750_c.jpg",
+              "id:": "zeitlos_0"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "src": {
+              "src": "assets/img/fsImage_1200x750_c.jpg",
+              "id:": "zeitlos_0"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          }
+        ]
+      },
+      {
+        "category": "trauringe",
+        "items": [
+          {
+            "type": "home",
+            "number": "111 111-1111"
+          },
+          {
+            "type": "fax",
+            "number": "222 222-2222"
+          }
+        ]
+      }
+    ]
+  }
+]
