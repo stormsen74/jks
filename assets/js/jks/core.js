@@ -71,12 +71,16 @@ this.jks = this.jks || {};
                 _router = new jks.Router();
                 // _navigation = new jks.Navigation();
                 _view = new jks.View();
+
                 _controller = new jks.Controller(_view);
 
 
                 _dataHandler.s.onResponse.add(onResponse);
+
                 function onResponse() {
-                    console.log('signal!')
+                    console.log('signal!');
+                    console.log(_config.pageData[0].images[0].src);
+                    _view.add(_config.pageData[0].images[1].src)
                 }
 
 

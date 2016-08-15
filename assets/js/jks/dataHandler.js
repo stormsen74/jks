@@ -61,11 +61,20 @@ this.jks = this.jks || {};
             console.log(config.pageData[id]);
 
             function onLoadProgress(e) {
-                //console.log(e.loaded);
+                console.log(e.loaded);
             }
 
             function onAssetsLoaded() {
                 console.log('loaded!', _loader.getResult("img_zeitlos_0"));
+                console.log(config.pageData[0].numImages);
+
+
+                for (var i = 0; i < config.pageData[id].numImages; i++) {
+                    console.log(_loader.getResult("img_zeitlos_" + i));
+                    var data = config.pageData[id];
+                    data.images.push(_loader.getResult("img_zeitlos_" + i));
+                }
+
                 // console.log('loaded!', _loader.getResult());
                 _scope.s.onResponse.dispatch();
                 //var sprite = new PIXI.Sprite(PIXI.Texture.fromImage(_loader.getResult("img_0").src));

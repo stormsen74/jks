@@ -7,11 +7,11 @@
         "items": [
           {
             "img": {
-              "src": "assets/img/fsImage_1200x750_c.jpg",
+              "src": "assets/img/fsImage_1200x750_c_01.jpg",
               "id": "img_zeitlos_0"
             },
             "thumb": {
-              "src": "assets/img/fsImage_1200x750_c.jpg",
+              "src": "assets/img/fsImage_1200x750_c_01.jpg",
               "id": "thumb_zeitlos_0"
             },
             "type": "Orhänger",
@@ -19,11 +19,11 @@
           },
           {
             "img": {
-              "src": "assets/img/fsImage_1200x750_c.jpg",
+              "src": "assets/img/fsImage_1200x750_c_02.jpg",
               "id": "img_zeitlos_1"
             },
             "thumb": {
-              "src": "assets/img/fsImage_1200x750_c.jpg",
+              "src": "assets/img/fsImage_1200x750_c_02.jpg",
               "id": "thumb_zeitlos_1"
             },
             "type": "Orhänger",
@@ -31,11 +31,11 @@
           },
           {
             "img": {
-              "src": "assets/img/fsImage_1200x750_c.jpg",
+              "src": "assets/img/fsImage_1200x750_c_03.jpg",
               "id": "img_zeitlos_2"
             },
             "thumb": {
-              "src": "assets/img/fsImage_1200x750_c.jpg",
+              "src": "assets/img/fsImage_1200x750_c_03.jpg",
               "id": "thumb_zeitlos_2"
             },
             "type": "Orhänger",

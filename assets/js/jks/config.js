@@ -30,6 +30,8 @@ this.jks = this.jks || {};
 
         for (var i = 0; i < this.numPages; i++) {
             var data = {};
+            data.id = i;
+            data.contentLoaded = false;
             data.category = _json.pages[i].category;
             data.numImages = _json.pages[i].items.length;
             data.images = [];
@@ -40,6 +42,8 @@ this.jks = this.jks || {};
             this.pageData.push(data);
 
         }
+
+        console.log('Config :: pageData created!');
             // console.log('config',this.pageData);
 
 

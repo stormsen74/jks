@@ -68,6 +68,12 @@ this.jks = this.jks || {};
         renderLoop();
 
 
+        this.add = function (_img) {
+            var spr = new PIXI.Sprite(PIXI.Texture.fromImage(_img));
+            _stage.addChild(spr);
+        }
+
+
     }
 
     jks.View = View;
