@@ -20,6 +20,7 @@ this.jks = this.jks || {};
     var _stats;
 
     var _fsImageContainerBack, _fsImageContainerFront;
+    var _renderTexture;
 
     var $imageWidth = 1200;
     var $imageHeight = 750;
@@ -61,7 +62,10 @@ this.jks = this.jks || {};
 
         function initListener() {
             window.addEventListener('resize', onResize);
-        }
+        };
+
+        TweenLite.delayedCall(.333, onResize);
+
 
         /*--------------------------------------------
          ~ RENDERER
@@ -90,6 +94,9 @@ this.jks = this.jks || {};
             _fsImageContainerFront = new PIXI.Container();
             _stage.addChild(_fsImageContainerBack);
             _stage.addChild(_fsImageContainerFront);
+
+            _renderTexture = new PIXI.RenderTexture(_renderer, 800, 600);
+
         }
 
         /*--------------------------------------------
@@ -144,6 +151,7 @@ this.jks = this.jks || {};
 
         }
 
+
         initDevStuff();
         initRenderer();
         initFSImages();
@@ -172,7 +180,11 @@ this.jks = this.jks || {};
             var filter = new TresholdFilter();
             filter.offset.x = 0;
             _fsImageContainerFront.filters = [filter];
-            console.log(filter)
+            //console.log(filter)
+
+
+
+
 
             TweenLite.to(filter.offset, 2, {delay: 2, x: 1})
         }

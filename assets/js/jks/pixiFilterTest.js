@@ -97,6 +97,7 @@ Object.defineProperties(OffsetFilter.prototype, {
 function TresholdFilter() {
     var vertexShader = null;
 
+    //vec3(b)
     var fragmentShader = [
         'precision mediump float;',
         '',
