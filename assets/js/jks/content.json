@@ -49,11 +49,11 @@
         "items": [
           {
             "img": {
-              "src": "assets/img/fsImage_1200x750_c.jpg",
+              "src": "assets/img/fsImage_1200x750_c_01.jpg",
               "id": "img_trauringe_0"
             },
             "thumb": {
-              "src": "assets/img/fsImage_1200x750_c.jpg",
+              "src": "assets/img/fsImage_1200x750_c_01.jpg",
               "id": "thumb_trauringe_0"
             },
             "type": "Orhänger",
@@ -61,11 +61,11 @@
           },
           {
             "img": {
-              "src": "assets/img/fsImage_1200x750_c.jpg",
+              "src": "assets/img/fsImage_1200x750_c_02.jpg",
               "id": "img_trauringe_1"
             },
             "thumb": {
-              "src": "assets/img/fsImage_1200x750_c.jpg",
+              "src": "assets/img/fsImage_1200x750_c_02.jpg",
               "id": "thumb_trauringe_1"
             },
             "type": "Orhänger",

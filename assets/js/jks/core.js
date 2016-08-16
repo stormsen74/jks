@@ -33,24 +33,6 @@ this.jks = this.jks || {};
         }
 
 
-        function setMode(debug) {
-
-
-            /*--------------------------------------------
-             ~ DEV-STUFF
-             --------------------------------------------*/
-            var stats = new Stats();
-            stats.setMode(0); // 0: fps, 1: ms
-
-            // Align top-left
-            stats.domElement.style.position = 'absolute';
-            stats.domElement.style.left = '0px';
-            stats.domElement.style.top = '0px';
-
-            document.body.appendChild(stats.domElement);
-
-
-        }
 
 
         function init() {
@@ -69,19 +51,13 @@ this.jks = this.jks || {};
 
                 _dataHandler = new jks.DataHandler(_config);
                 _router = new jks.Router();
-                // _navigation = new jks.Navigation();
+                _navigation = new jks.Navigation();
                 _view = new jks.View();
 
-                _controller = new jks.Controller(_view);
+                _controller = new jks.Controller(_config, _dataHandler, _router, _navigation, _view);
 
 
-                _dataHandler.s.onResponse.add(onResponse);
-
-                function onResponse() {
-                    console.log('signal!');
-                    console.log(_config.pageData[0].images[0].src);
-                    _view.add(_config.pageData[0].images[1].src)
-                }
+               
 
 
             }

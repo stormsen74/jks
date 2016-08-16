@@ -16,13 +16,16 @@ this.jks = this.jks || {};
 
     var _loader;
 
-    function Controller() {
+    function Controller(config, dataHandler, router, navigation, view) {
 
         console.log('init - Controller');
 
-        //this.do = function () {
-        //    console.log(config.getParam())
-        //}
+        dataHandler.s.onContentLoaded.add(onContentLoaded);
+
+        function onContentLoaded(_id) {
+            console.log('onContentLoaded! ::', _id);
+            view.addFSImage(config, _id);
+        }
 
 
     }

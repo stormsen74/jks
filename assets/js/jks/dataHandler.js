@@ -24,12 +24,17 @@ this.jks = this.jks || {};
         _scope = this;
 
         this.s = {
-            onResponse: new signals.Signal()
+            onContentLoaded: new signals.Signal()
             // onResponse_getAllFromToday: new signals.Signal(),
         };
 
 
-        console.log('init - DataHandler', config);
+        function init() {
+
+            console.log('init - DataHandler', config);
+
+            generateLoadingContent();
+        }
 
         function generateLoadingContent() {
             for (var i = 0; i < config.numPages; i++) {
@@ -65,18 +70,23 @@ this.jks = this.jks || {};
             }
 
             function onAssetsLoaded() {
-                console.log('loaded!', _loader.getResult("img_zeitlos_0"));
-                console.log(config.pageData[0].numImages);
+
+                console.log(config.pageData[id].category)
 
 
                 for (var i = 0; i < config.pageData[id].numImages; i++) {
-                    console.log(_loader.getResult("img_zeitlos_" + i));
+                    // console.log(_loader.getResult("img_" + config.pageData[id].category + "_" + i));
                     var data = config.pageData[id];
-                    data.images.push(_loader.getResult("img_zeitlos_" + i));
+                    data.images.push(_loader.getResult("img_" + config.pageData[id].category + "_" + i));
+                    data.thumbs.push(_loader.getResult("thumb_" + config.pageData[id].category + "_" + i));
                 }
 
+                console.log('assetsLoaded!', id);
+                config.pageData[id].contentLoaded = true;
+                console.log(config.pageData[id]);
+
                 // console.log('loaded!', _loader.getResult());
-                _scope.s.onResponse.dispatch();
+                _scope.s.onContentLoaded.dispatch(id);
                 //var sprite = new PIXI.Sprite(PIXI.Texture.fromImage(_loader.getResult("img_0").src));
 
             }
@@ -84,42 +94,7 @@ this.jks = this.jks || {};
         }
 
 
-        // console.log('data', config.pages[0])
-
-
-        // var manifest = [
-        //     {
-        //         src: "assets/img/fsImage_1200x750_c.jpg",
-        //         id: "img_0"
-        //     }
-        // ];
-        //
-        // _loader = new createjs.LoadQueue(false);
-        // _loader.addEventListener("progress", onLoadProgress);
-        // _loader.addEventListener("complete", onAssetsLoaded);
-        // _loader.loadManifest(manifest);
-        //
-        // function onLoadProgress(e) {
-        //     //console.log(e.loaded);
-        // }
-        //
-        // function onAssetsLoaded() {
-        //     console.log('loaded!', _loader.getResult("img_0"));
-        //     _scope.s.onResponse.dispatch();
-        //     //var sprite = new PIXI.Sprite(PIXI.Texture.fromImage(_loader.getResult("img_0").src));
-        //
-        // }
-
-
-        // _loader.loadManifest(manifest);
-
-
-        this.do = function () {
-            console.log(config.getParam())
-        }
-
-
-        generateLoadingContent();
+        init();
 
 
     }
