@@ -95,7 +95,7 @@ this.jks = this.jks || {};
             _stage.addChild(_fsImageContainerBack);
             _stage.addChild(_fsImageContainerFront);
 
-            _renderTexture = new PIXI.RenderTexture(_renderer, 800, 600);
+            // _renderTexture = new PIXI.RenderTexture(_renderer, 800, 600);
 
         }
 
@@ -178,15 +178,20 @@ this.jks = this.jks || {};
             // TweenLite.to(filter.offset, 1, {x: 200})
 
             var filter = new TresholdFilter();
-            filter.offset.x = 0;
-            _fsImageContainerFront.filters = [filter];
+            filter.offset.x = 1;
+
+            var filter2 = new PIXI.filters.ColorMatrixFilter()
+            var _o = {saturation: -1}
+            filter2.saturate(-1);
+
+            _fsImageContainerFront.filters = [filter, filter2];
             //console.log(filter)
 
 
-
-
-
-            TweenLite.to(filter.offset, 2, {delay: 2, x: 1})
+            TweenLite.to(filter.offset, 1.5, {delay: 2, x: 0, ease: Sine.easeInOut});
+            TweenLite.to(_o, 1, {delay: 2.5, saturation: 0, ease: Sine.easeOut, onUpdate:function () {
+                filter2.saturate(_o.saturation);
+            }});
         }
 
 
