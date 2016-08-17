@@ -163,8 +163,8 @@ this.jks = this.jks || {};
         this.addFSImage = function (_config, _id) {
             var sprite_1 = new PIXI.Sprite(PIXI.Texture.fromImage(_config.pageData[_id].images[0].src));
             var sprite_2 = new PIXI.Sprite(PIXI.Texture.fromImage(_config.pageData[_id].images[1].src));
-            _fsImageContainerBack.addChild(sprite_1);
-            _fsImageContainerFront.addChild(sprite_2);
+            _fsImageContainerBack.addChild(sprite_2);
+            _fsImageContainerFront.addChild(sprite_1);
             // _fsImageContainerFront.alpha = .5;
 
             // var filter = new OffsetFilter();
@@ -188,8 +188,8 @@ this.jks = this.jks || {};
             //console.log(filter)
 
 
-            TweenLite.to(filter.offset, 1.5, {delay: 2, x: 0, ease: Sine.easeInOut});
-            TweenLite.to(_o, 1, {delay: 2.5, saturation: 0, ease: Sine.easeOut, onUpdate:function () {
+            TweenLite.to(filter.offset, 1.5, {delay: 2, x: 0, ease: Sine.easeOut});
+            TweenLite.to(_o, .5, {delay: 3, saturation: 0, ease: Cubic.easeOut, onUpdate:function () {
                 filter2.saturate(_o.saturation);
             }});
         }
