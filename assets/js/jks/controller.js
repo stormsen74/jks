@@ -20,12 +20,17 @@ this.jks = this.jks || {};
 
         console.log('init - Controller');
 
+        dataHandler.loadPage(0);
         dataHandler.s.onContentLoaded.add(onContentLoaded);
+
 
         function onContentLoaded(_id) {
             console.log('onContentLoaded! ::', _id);
-            view.addFSImage(config, _id);
+            //view.addFSImage(config, _id);
+            view.setSlideStart(config, _id);
         }
+
+
 
 
     }

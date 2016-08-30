@@ -20,7 +20,12 @@ this.jks = this.jks || {};
     var _stats;
 
     var _fsImageContainerBack, _fsImageContainerFront;
-    var _renderTexture;
+    var _img_sprite_1, _img_sprite_0;
+
+    var _slideObject = {
+        slideNumImages: 0,
+        currentImage: 0
+    }
 
     var $imageWidth = 1200;
     var $imageHeight = 750;
@@ -88,15 +93,59 @@ this.jks = this.jks || {};
             _stage.interactive = true;
         }
 
-
         function initFSImages() {
+
             _fsImageContainerBack = new PIXI.Container();
             _fsImageContainerFront = new PIXI.Container();
+
             _stage.addChild(_fsImageContainerBack);
             _stage.addChild(_fsImageContainerFront);
 
-            // _renderTexture = new PIXI.RenderTexture(_renderer, 800, 600);
 
+            _img_sprite_0 = new PIXI.Sprite();
+            _img_sprite_1 = new PIXI.Sprite();
+
+
+            _fsImageContainerBack.addChild(_img_sprite_0);
+            _fsImageContainerFront.addChild(_img_sprite_1);
+
+
+        }
+
+        var tresholdFilter, colorMatrixFilter;
+
+        function initTransition() {
+
+            tresholdFilter = new TresholdFilter();
+            tresholdFilter.offset.x = 1;
+
+            colorMatrixFilter = new PIXI.filters.ColorMatrixFilter()
+
+            _fsImageContainerFront.filters = [tresholdFilter, colorMatrixFilter];
+
+        }
+
+
+        function transition() {
+            var _o = {saturation: -1}
+            colorMatrixFilter.saturate(-1);
+
+            TweenLite.to(tresholdFilter.offset, 1.5, {delay: 2, x: 0, ease: Sine.easeOut});
+            TweenLite.to(_o, 1.5, {
+                delay: 1,
+                saturation: 0,
+                ease: Sine.easeOut,
+                onUpdate: filterUpdate,
+                onComplete: onTransitionEnd
+            });
+
+            function filterUpdate() {
+                colorMatrixFilter.saturate(_o.saturation);
+            }
+
+            function onTransitionEnd() {
+
+            }
         }
 
         /*--------------------------------------------
@@ -155,44 +204,74 @@ this.jks = this.jks || {};
         initDevStuff();
         initRenderer();
         initFSImages();
+        initTransition();
 
         initListener();
         renderLoop();
 
 
-        this.addFSImage = function (_config, _id) {
-            var sprite_1 = new PIXI.Sprite(PIXI.Texture.fromImage(_config.pageData[_id].images[0].src));
-            var sprite_2 = new PIXI.Sprite(PIXI.Texture.fromImage(_config.pageData[_id].images[1].src));
-            _fsImageContainerBack.addChild(sprite_2);
-            _fsImageContainerFront.addChild(sprite_1);
-            // _fsImageContainerFront.alpha = .5;
+        this.setSlideStart = function (_config, _id) {
 
-            // var filter = new OffsetFilter();
-            // filter.offset = {
-            //     x: 50,
-            //     y: 100
-            // };
-            // _fsImageContainerFront.filters = [filter];
-            // console.log(filter)
-            //
-            // TweenLite.to(filter.offset, 1, {x: 200})
+            console.log('setSlideStart:', _config.pageData[_id].images.length);
 
-            var filter = new TresholdFilter();
-            filter.offset.x = 1;
+            _slideObject.slideNumImages = _config.pageData[_id].images.length;
+            _slideObject.id = _id;
+            _slideObject.configData = _config;
 
-            var filter2 = new PIXI.filters.ColorMatrixFilter()
-            var _o = {saturation: -1}
-            filter2.saturate(-1);
-
-            _fsImageContainerFront.filters = [filter, filter2];
-            //console.log(filter)
+            _img_sprite_0.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_id].images[0].src);
+            _img_sprite_1.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_id].images[1].src);
 
 
-            TweenLite.to(filter.offset, 1.5, {delay: 2, x: 0, ease: Sine.easeOut});
-            TweenLite.to(_o, .5, {delay: 3, saturation: 0, ease: Cubic.easeOut, onUpdate:function () {
-                filter2.saturate(_o.saturation);
-            }});
+            //TweenLite.delayedCall(1.5, transition);
+
+            this.slideNext();
+
         }
+
+
+        this.slideNext = function () {
+            if (_slideObject.currentImage < _slideObject.slideNumImages - 1) {
+                _slideObject.currentImage++;
+            } else {
+                _slideObject.currentImage = 0;
+            }
+
+            _img_sprite_0.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[0].images[_slideObject.currentImage].src);
+
+
+            console.log('slide_next', _slideObject.currentImage);
+
+            TweenLite.delayedCall(1, _scope.slideNext);
+        }
+
+
+        //this.addFSImage = function (_config, _id) {
+        //
+        //    console.log('config:', _config.pageData[_id].images.length)
+        //
+        //
+        //    var filter = new TresholdFilter();
+        //    filter.offset.x = 1;
+        //
+        //    var filter2 = new PIXI.filters.ColorMatrixFilter()
+        //    var _o = {saturation: -1}
+        //    filter2.saturate(-1);
+        //
+        //    _fsImageContainerFront.filters = [filter, filter2];
+        //
+        //
+        //    TweenLite.to(filter.offset, 1.5, {delay: 2, x: 0, ease: Sine.easeOut});
+        //    TweenLite.to(_o, 1.5, {
+        //        delay: 2, saturation: 0, ease: Sine.easeOut, onUpdate: function () {
+        //            filter2.saturate(_o.saturation);
+        //        }
+        //    });
+        //}
+
+
+        //function setSpriteTextures(_id_f, _id_b) {
+        //    sprite_1.setTexture(PIXI.Texture.fromImage(_config.pageData[_id].images[1].src));
+        //}
 
 
     }

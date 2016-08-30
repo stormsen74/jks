@@ -24,7 +24,8 @@ this.jks = this.jks || {};
         _scope = this;
 
         this.s = {
-            onContentLoaded: new signals.Signal()
+            onContentLoaded: new signals.Signal(),
+            onDataHandlerReady: new signals.Signal()
             // onResponse_getAllFromToday: new signals.Signal(),
         };
 
@@ -47,12 +48,17 @@ this.jks = this.jks || {};
                 }
                 _loadingContent.push(maifest);
 
-                // console.log(_loadingContent)
 
             }
 
+            console.log(_loadingContent, '°°°°°°°°°°°°°°°°');
+            TweenLite.delayedCall(.03, function () {
+                console.log('f');
+                _scope.s.onDataHandlerReady.dispatch();
+            });
 
-            _scope.loadPage(0);
+
+            //_scope.loadPage(0);
         }
 
 

@@ -33,8 +33,6 @@ this.jks = this.jks || {};
         }
 
 
-
-
         function init() {
 
             console.log('init => core');
@@ -50,14 +48,17 @@ this.jks = this.jks || {};
                 _jsonLoader.destroy();
 
                 _dataHandler = new jks.DataHandler(_config);
-                _router = new jks.Router();
-                _navigation = new jks.Navigation();
-                _view = new jks.View();
+                _dataHandler.s.onDataHandlerReady.add(_onDataHandlerReady);
 
-                _controller = new jks.Controller(_config, _dataHandler, _router, _navigation, _view);
+                function _onDataHandlerReady() {
+                    console.log('R!');
 
+                    _router = new jks.Router();
+                    _navigation = new jks.Navigation();
+                    _view = new jks.View();
 
-               
+                    _controller = new jks.Controller(_config, _dataHandler, _router, _navigation, _view);
+                }
 
 
             }
