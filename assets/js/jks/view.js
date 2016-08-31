@@ -66,7 +66,6 @@ this.jks = this.jks || {};
             window.addEventListener('resize', onResize);
         };
 
-        TweenLite.delayedCall(.333, onResize);
 
 
         /*--------------------------------------------
@@ -178,6 +177,10 @@ this.jks = this.jks || {};
         var _scalePoint = new PIXI.Point(0, 0);
 
         function onResize(e) {
+            _scope.resizeScreen();
+        }
+
+        this.resizeScreen = function () {
 
             _screenWidth = screenWidth();
             _screenHeight = screenHeight();
@@ -205,7 +208,7 @@ this.jks = this.jks || {};
             _fsImageContainerFront.children[0].y = _fsImageContainerBack.children[0].y;
             _fsImageContainerFront.children[0].scale = _fsImageContainerBack.children[0].scale;
 
-        }
+        };
 
 
         initDevStuff();
@@ -236,7 +239,7 @@ this.jks = this.jks || {};
 
             // TweenLite.delayedCall(1.5, transition);
 
-            this.slideNext();
+            //this.slideNext();
 
         }
 
