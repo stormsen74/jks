@@ -51,9 +51,7 @@ this.jks = this.jks || {};
 
             }
 
-            console.log(_loadingContent, '°°°°°°°°°°°°°°°°');
-            TweenLite.delayedCall(.03, function () {
-                console.log('f');
+            TweenLite.delayedCall(.01, function () {
                 _scope.s.onDataHandlerReady.dispatch();
             });
 
@@ -62,14 +60,14 @@ this.jks = this.jks || {};
         }
 
 
-        this.loadPage = function (id) {
+        this.loadPage = function (pageID) {
 
             _loader = new createjs.LoadQueue(false);
             _loader.addEventListener("progress", onLoadProgress);
             _loader.addEventListener("complete", onAssetsLoaded);
-            _loader.loadManifest(_loadingContent[id]);
+            _loader.loadManifest(_loadingContent[pageID]);
 
-            console.log(config.pageData[id]);
+            console.log(config.pageData[pageID]);
 
             function onLoadProgress(e) {
                 console.log(e.loaded);
@@ -77,22 +75,22 @@ this.jks = this.jks || {};
 
             function onAssetsLoaded() {
 
-                console.log(config.pageData[id].category)
+                console.log(config.pageData[pageID].category)
 
 
-                for (var i = 0; i < config.pageData[id].numImages; i++) {
+                for (var i = 0; i < config.pageData[pageID].numImages; i++) {
                     // console.log(_loader.getResult("img_" + config.pageData[id].category + "_" + i));
-                    var data = config.pageData[id];
-                    data.images.push(_loader.getResult("img_" + config.pageData[id].category + "_" + i));
-                    data.thumbs.push(_loader.getResult("thumb_" + config.pageData[id].category + "_" + i));
+                    var data = config.pageData[pageID];
+                    data.images.push(_loader.getResult("img_" + config.pageData[pageID].category + "_" + i));
+                    data.thumbs.push(_loader.getResult("thumb_" + config.pageData[pageID].category + "_" + i));
                 }
 
-                console.log('assetsLoaded!', id);
-                config.pageData[id].contentLoaded = true;
-                console.log(config.pageData[id]);
+                console.log('assetsLoaded!', pageID);
+                config.pageData[pageID].contentLoaded = true;
+                console.log(config.pageData[pageID]);
 
                 // console.log('loaded!', _loader.getResult());
-                _scope.s.onContentLoaded.dispatch(id);
+                _scope.s.onContentLoaded.dispatch(pageID);
                 //var sprite = new PIXI.Sprite(PIXI.Texture.fromImage(_loader.getResult("img_0").src));
 
             }

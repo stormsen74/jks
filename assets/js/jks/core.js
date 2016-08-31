@@ -48,10 +48,9 @@ this.jks = this.jks || {};
                 _jsonLoader.destroy();
 
                 _dataHandler = new jks.DataHandler(_config);
-                _dataHandler.s.onDataHandlerReady.add(_onDataHandlerReady);
+                _dataHandler.s.onDataHandlerReady.add(onDataHandlerReady);
 
-                function _onDataHandlerReady() {
-                    console.log('R!');
+                function onDataHandlerReady() {
 
                     _router = new jks.Router();
                     _navigation = new jks.Navigation();

@@ -30,7 +30,7 @@ this.jks = this.jks || {};
 
         for (var i = 0; i < this.numPages; i++) {
             var data = {};
-            data.id = i;
+            data.pageID = i;
             data.contentLoaded = false;
             data.category = _json.pages[i].category;
             data.numImages = _json.pages[i].items.length;

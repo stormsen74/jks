@@ -24,10 +24,10 @@ this.jks = this.jks || {};
         dataHandler.s.onContentLoaded.add(onContentLoaded);
 
 
-        function onContentLoaded(_id) {
-            console.log('onContentLoaded! ::', _id);
+        function onContentLoaded(pageID) {
+            console.log('onContentLoaded! ::', pageID);
             //view.addFSImage(config, _id);
-            view.setSlideStart(config, _id);
+            view.initSlide(config, pageID);
         }
 
 
