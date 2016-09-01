@@ -75,14 +75,17 @@ this.jks = this.jks || {};
 
             function onAssetsLoaded() {
 
-                console.log(config.pageData[pageID].category)
+                console.log('onAssetsLoaded: ', config.pageData[pageID])
 
 
                 for (var i = 0; i < config.pageData[pageID].numImages; i++) {
                     // console.log(_loader.getResult("img_" + config.pageData[id].category + "_" + i));
+                    var add = i + 1;
+                    var str = add < 10 ? '0' : '';
                     var data = config.pageData[pageID];
-                    data.images.push(_loader.getResult("img_" + config.pageData[pageID].category + "_" + i));
-                    data.thumbs.push(_loader.getResult("thumb_" + config.pageData[pageID].category + "_" + i));
+                    console.log(("img_" + config.pageData[pageID].category + "_" + str + add))
+                    data.images.push(_loader.getResult("img_" + config.pageData[pageID].category + "_" + str + add));
+                    //data.thumbs.push(_loader.getResult("thumb_" + config.pageData[pageID].category + "_" + i));
                 }
 
                 console.log('assetsLoaded!', pageID);
@@ -94,6 +97,12 @@ this.jks = this.jks || {};
                 //var sprite = new PIXI.Sprite(PIXI.Texture.fromImage(_loader.getResult("img_0").src));
 
             }
+
+            //for (var i = 0; i < 11; i++) {
+            //    var str = i < 10 ? '0' : '';
+            //    console.log(str)
+            //    console.log("img_" + config.pageData[pageID].category + "_" + i);
+            //}
 
         }
 

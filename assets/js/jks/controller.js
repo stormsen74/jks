@@ -27,7 +27,7 @@ this.jks = this.jks || {};
         function onContentLoaded(pageID) {
             console.log('onContentLoaded! ::', pageID);
             //view.addFSImage(config, _id);
-            TweenLite.delayedCall(.1, view.resizeScreen);
+            TweenLite.delayedCall(.5, view.resizeScreen);
             view.initSlide(config, pageID);
         }
 

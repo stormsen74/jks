@@ -257,7 +257,7 @@ this.jks = this.jks || {};
 
             console.log('slide_next', _slideObject.currentImage);
 
-            TweenLite.delayedCall(2, transition);
+            TweenLite.delayedCall(2.6, transition);
 
 
             // TweenLite.delayedCall(2, _scope.slideNext);
