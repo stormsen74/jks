@@ -32,7 +32,7 @@ this.jks = this.jks || {};
 
         function init() {
 
-            console.log('init - DataHandler', config);
+            console.log('init - DataHandler');
 
             generateLoadingContent();
         }
@@ -67,7 +67,7 @@ this.jks = this.jks || {};
             _loader.addEventListener("complete", onAssetsLoaded);
             _loader.loadManifest(_loadingContent[pageID]);
 
-            console.log(config.pageData[pageID]);
+            //console.log('loadPage',config.pageData[pageID]);
 
             function onLoadProgress(e) {
                 console.log(e.loaded);

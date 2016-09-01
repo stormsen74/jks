@@ -18,7 +18,7 @@ this.jks = this.jks || {};
 
     function Controller(config, dataHandler, router, navigation, view) {
 
-        console.log('init - Controller');
+        console.log('init - Controller || version: ', config.version);
 
         dataHandler.loadPage(0);
         dataHandler.s.onContentLoaded.add(onContentLoaded);

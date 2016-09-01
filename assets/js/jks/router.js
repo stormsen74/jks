@@ -25,7 +25,7 @@ this.jks = this.jks || {};
 
         // Define the routes
         crossroads.addRoute('/', function () {
-            console.log('index')
+            //console.log('index')
         });
         crossroads.addRoute('/user/{userId}', function (userId) {
             console.log('user', userId);
