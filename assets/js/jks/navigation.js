@@ -21,11 +21,7 @@ this.jks = this.jks || {};
         _scope = this;
 
 
-
         console.log('init - Navigation');
-
-
-
         //init();
 
 

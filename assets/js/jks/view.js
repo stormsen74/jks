@@ -2,12 +2,6 @@
  * Created by STORMSEN on 12.08.2016.
  */
 
-/**
- * Created by STORMSEN on 12.08.2016.
- */
-
-
-
 
 this.jks = this.jks || {};
 
@@ -22,10 +16,13 @@ this.jks = this.jks || {};
     var _fsImageContainerBack, _fsImageContainerFront;
     var _imgSpriteBack, _imgSpriteFront;
 
+    var _thumbNavigation;
+
     var _slideObject = {};
 
     var $imageWidth = 1200;
-    var $imageHeight = 750;
+    var $imageHeight = 800;
+    var $imageRatio = $imageWidth / $imageHeight;
 
     var screenWidth = function () {
         return window.innerWidth
@@ -65,7 +62,6 @@ this.jks = this.jks || {};
         function initListener() {
             window.addEventListener('resize', onResize);
         };
-
 
 
         /*--------------------------------------------
@@ -122,9 +118,6 @@ this.jks = this.jks || {};
 
         function transition() {
 
-            // _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.previousImage].src);
-            // _imgSpriteFront.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.currentImage].src);
-
             _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.previousImage].src);
             _imgSpriteFront.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.currentImage].src);
 
@@ -133,9 +126,9 @@ this.jks = this.jks || {};
 
             TweenLite.to(tresholdFilter.offset, 1.5, {x: 0, ease: Sine.easeOut});
             TweenLite.to(_o, 1, {
-                delay: 1,
+                delay: .5,
                 saturation: 0,
-                ease: Cubic.easeOut,
+                ease: Circ.easeOut,
                 onUpdate: filterUpdate,
                 onComplete: onTransitionEnd
             });
@@ -150,7 +143,7 @@ this.jks = this.jks || {};
                 colorMatrixFilter.saturate(-1);
                 _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.currentImage].src);
 
-                _scope.slideNext();
+                //_scope.slideNext();
             }
         }
 
@@ -176,7 +169,15 @@ this.jks = this.jks || {};
         var _screenWidth, _screenHeight;
         var _scalePoint = new PIXI.Point(0, 0);
 
+
+        function updateContent() {
+            _thumbNavigation.container.x = screenWidth() * .5 - _thumbNavigation.container.getWidth() * .5;
+            _thumbNavigation.container.y = screenHeight() - _thumbNavigation.container.getHeight() - 30;
+            console.log('-', _thumbNavigation.container.getHeight())
+        }
+
         function onResize(e) {
+            updateContent();
             _scope.resizeScreen();
         }
 
@@ -211,7 +212,7 @@ this.jks = this.jks || {};
         };
 
 
-        initDevStuff();
+        //initDevStuff();
         initRenderer();
         initFSImages();
         initTransition();
@@ -227,19 +228,35 @@ this.jks = this.jks || {};
 
         this.initSlide = function (_config, _pageID) {
 
+            console.log('initSlide:', _slideObject);
+
             _slideObject.previousImage = 0;
             _slideObject.currentImage = 0;
             _slideObject.slideNumImages = _config.pageData[_pageID].images.length;
             _slideObject.pageID = _pageID;
             _slideObject.configData = _config;
-            console.log('initSlide:', _slideObject);
 
             _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_pageID].images[_slideObject.currentImage].src);
 
 
-            // TweenLite.delayedCall(1.5, transition);
+            //TweenLite.delayedCall(2.6, _scope.slideNext);
 
-            //this.slideNext();
+
+            /*--------------------------------------------
+             ~ THUMB NAVIGATION
+             --------------------------------------------*/
+
+            _thumbNavigation = new jks.ThumbNavigation($imageRatio);
+            _thumbNavigation.s.onClickThumb.add(onThumbClick)
+            _stage.addChild(_thumbNavigation.container);
+            _thumbNavigation.init(_slideObject);
+
+            function onThumbClick(id) {
+                if (id != _slideObject.currentImage) {
+                    _scope.slideTo(id);
+                }
+            }
+
 
         }
 
@@ -254,14 +271,29 @@ this.jks = this.jks || {};
                 _slideObject.currentImage = 0;
             }
 
+            transition();
 
-            console.log('slide_next', _slideObject.currentImage);
 
-            TweenLite.delayedCall(2.6, transition);
+            console.log('slideNext ', _slideObject.currentImage);
 
 
             // TweenLite.delayedCall(2, _scope.slideNext);
-        }
+        };
+
+        this.slideTo = function (id) {
+
+            _slideObject.previousImage = _slideObject.currentImage;
+            _slideObject.currentImage = id;
+
+
+            console.log('slideTo ', _slideObject.currentImage);
+            transition();
+
+            //TweenLite.delayedCall(3.5, transition);
+
+
+            // TweenLite.delayedCall(2, _scope.slideNext);
+        };
 
 
         //function setSpriteTextures(_id_f, _id_b) {
