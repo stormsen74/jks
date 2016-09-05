@@ -35,6 +35,7 @@ this.jks = this.jks || {};
 
         this.o = {saturation: -.5};
         this.container = new PIXI.Container();
+        this.color = 0x408080; //0x506995
 
         _thumb = new PIXI.Sprite();
         _thumb.texture = _texture;
@@ -61,14 +62,23 @@ this.jks = this.jks || {};
         this.mask.drawRect(0, 0, this.thumbSize.width, this.thumbSize.height);
         this.mask.endFill();
 
+        this.overlay = new PIXI.Graphics();
+        this.overlay.beginFill(this.color);
+        this.overlay.drawRect(this.mask.x, this.mask.y, this.mask.width, this.mask.height);
+        this.overlay.endFill;
+        this.overlay.scale.x = 0.0;
+        this.overlay.alpha = .0;
+
         this.outline = new PIXI.Graphics();
-        this.outline.lineStyle(4, 0x506995, 1);
+        this.outline.lineStyle(4, this.color, 1);
         this.outline.drawRect(this.mask.x, this.mask.y, this.mask.width, this.mask.height);
         this.outline.alpha = 0;
+
 
         this.container.addChild(this.mask);
         this.container.addChild(_thumb);
         this.container.addChild(this.front);
+        this.container.addChild(this.overlay);
         this.container.addChild(this.outline);
         this.container.mask = this.mask;
 
@@ -91,9 +101,18 @@ this.jks = this.jks || {};
             });
         };
 
+        this.showProgress = function (t) {
+            this.overlay.alpha = .2;
+            this.overlay.scale.x = 0;
+            TweenLite.to(this.overlay, t, {alpha: .5, ease: Sine.easeInOut})
+            TweenLite.to(this.overlay.scale, t, {x: 1, ease: Circ.easeOut})
+
+        }
+
         this.select = function () {
             this.selected = true;
             this.outline.alpha = 1;
+            TweenLite.to(this.overlay, .3, {alpha: .2, ease: Circ.easeOut})
             this.onHover();
         };
 
@@ -101,6 +120,7 @@ this.jks = this.jks || {};
             this.selected = false;
             this.outline.alpha = 0;
             this.onHoverOut();
+            TweenLite.to(this.overlay, .2, {alpha: 0, ease: Sine.easeIn})
         }
 
 

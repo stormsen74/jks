@@ -68,6 +68,11 @@ this.jks = this.jks || {};
             _scope.thumbs[id].unselect();
         }
 
+        this.showProgress = function (id, t) {
+            console.log('dp:', +id + '-' + t)
+            _scope.thumbs[id].showProgress(t);
+        }
+
 
         this.init = function (slideObject) {
             console.log('init - ThumbNavigation');

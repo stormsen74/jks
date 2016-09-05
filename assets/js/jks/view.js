@@ -26,6 +26,8 @@ this.jks = this.jks || {};
     var $imageHeight = 800;
     var $imageRatio = $imageWidth / $imageHeight;
 
+    var $transitionTime = 1.5;
+
     var screenWidth = function () {
         return window.innerWidth
     };
@@ -126,13 +128,20 @@ this.jks = this.jks || {};
 
         function transition() {
 
+
             _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.previousImage].src);
             _imgSpriteFront.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.currentImage].src);
 
             _o.saturation = -1
 
 
-            TweenLite.to(_tresholdFilter.offset, 1.5, {x: 0, ease: Sine.easeOut});
+            TweenLite.to(_tresholdFilter.offset, $transitionTime, {
+                x: 0,
+                ease: Sine.easeOut,
+                onStart: _thumbNavigation.showProgress,
+                onStartParams: [_slideObject.currentImage, $transitionTime]
+            });
+
             TweenLite.to(_o, 1, {
                 delay: .5,
                 saturation: 0,
@@ -285,7 +294,6 @@ this.jks = this.jks || {};
 
             _slideObject.previousImage = _slideObject.currentImage;
             _slideObject.currentImage = id;
-
 
 
             transition();
