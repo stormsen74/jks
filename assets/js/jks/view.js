@@ -15,6 +15,8 @@ this.jks = this.jks || {};
 
     var _fsImageContainerBack, _fsImageContainerFront;
     var _imgSpriteBack, _imgSpriteFront;
+    var _tresholdFilter, _colorMatrixFilter;
+    var _o = {saturation: -1};
 
     var _thumbNavigation;
 
@@ -85,6 +87,10 @@ this.jks = this.jks || {};
             _stage.interactive = true;
         }
 
+        /*--------------------------------------------
+         ~ FS-IMAGE
+         --------------------------------------------*/
+
         function initFSImages() {
 
             _fsImageContainerBack = new PIXI.Container();
@@ -101,17 +107,19 @@ this.jks = this.jks || {};
 
         }
 
-        var tresholdFilter, colorMatrixFilter;
+        /*--------------------------------------------
+         ~ TRANSITION / FILTERS
+         --------------------------------------------*/
 
         function initTransition() {
 
-            tresholdFilter = new TresholdFilter();
-            tresholdFilter.offset.x = 1;
+            _tresholdFilter = new TresholdFilter();
+            _tresholdFilter.offset.x = 1;
 
-            colorMatrixFilter = new PIXI.filters.ColorMatrixFilter()
-            colorMatrixFilter.saturate(-1);
+            _colorMatrixFilter = new PIXI.filters.ColorMatrixFilter()
+            _colorMatrixFilter.saturate(-1);
 
-            _fsImageContainerFront.filters = [tresholdFilter, colorMatrixFilter];
+            _fsImageContainerFront.filters = [_tresholdFilter, _colorMatrixFilter];
 
         }
 
@@ -121,10 +129,10 @@ this.jks = this.jks || {};
             _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.previousImage].src);
             _imgSpriteFront.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.currentImage].src);
 
-            var _o = {saturation: -1};
+            _o.saturation = -1
 
 
-            TweenLite.to(tresholdFilter.offset, 1.5, {x: 0, ease: Sine.easeOut});
+            TweenLite.to(_tresholdFilter.offset, 1.5, {x: 0, ease: Sine.easeOut});
             TweenLite.to(_o, 1, {
                 delay: .5,
                 saturation: 0,
@@ -134,16 +142,17 @@ this.jks = this.jks || {};
             });
 
             function filterUpdate() {
-                colorMatrixFilter.saturate(_o.saturation);
+                _colorMatrixFilter.saturate(_o.saturation);
             }
 
             function onTransitionEnd() {
-                console.log('onTransitionEnd');
-                tresholdFilter.offset.x = 1;
-                colorMatrixFilter.saturate(-1);
+                _tresholdFilter.offset.x = 1;
+                _colorMatrixFilter.saturate(-1);
                 _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.currentImage].src);
 
-                //_scope.slideNext();
+                _thumbNavigation.unselectThumb(_slideObject.previousImage)
+                _thumbNavigation.selectThumb(_slideObject.currentImage)
+
             }
         }
 
@@ -170,15 +179,15 @@ this.jks = this.jks || {};
         var _scalePoint = new PIXI.Point(0, 0);
 
 
-        function updateContent() {
-            _thumbNavigation.container.x = screenWidth() * .5 - _thumbNavigation.container.getWidth() * .5;
-            _thumbNavigation.container.y = screenHeight() - _thumbNavigation.container.getHeight() - 30;
-            console.log('-', _thumbNavigation.container.getHeight())
-        }
-
         function onResize(e) {
             updateContent();
             _scope.resizeScreen();
+        }
+
+
+        function updateContent() {
+            _thumbNavigation.container.x = screenWidth() * .5 - _thumbNavigation.container.getWidth() * .5;
+            _thumbNavigation.container.y = screenHeight() - _thumbNavigation.container.getHeight() - 30;
         }
 
         this.resizeScreen = function () {
@@ -212,7 +221,7 @@ this.jks = this.jks || {};
         };
 
 
-        //initDevStuff();
+        initDevStuff();
         initRenderer();
         initFSImages();
         initTransition();
@@ -254,6 +263,7 @@ this.jks = this.jks || {};
             function onThumbClick(id) {
                 if (id != _slideObject.currentImage) {
                     _scope.slideTo(id);
+
                 }
             }
 
@@ -275,6 +285,8 @@ this.jks = this.jks || {};
 
             _slideObject.previousImage = _slideObject.currentImage;
             _slideObject.currentImage = id;
+
+
 
             transition();
 

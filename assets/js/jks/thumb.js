@@ -15,17 +15,16 @@ this.jks = this.jks || {};
     var _imgHeight = 23;
     var _o;
 
+    var _thumb;
     var _colorMatrixFilter;
-    var _front;
 
 
     function Thumb(_id, r, _texture) {
 
         _scope = this;
+        this.selected = false;
 
         _imgRatio = r;
-
-        console.log('>', _imgHeight);
 
         var thumbImageWidth = 300;
         this.thumbSize = {
@@ -37,12 +36,12 @@ this.jks = this.jks || {};
         this.o = {saturation: -.5};
         this.container = new PIXI.Container();
 
-        var thumb = new PIXI.Sprite();
-        thumb.texture = _texture;
-        thumb.width = thumbImageWidth;
-        thumb.height = thumb.width / _imgRatio;
-        thumb.x = (this.thumbSize.width - thumb.width) * .5;
-        thumb.y = (this.thumbSize.height - thumb.height) * .5;
+        _thumb = new PIXI.Sprite();
+        _thumb.texture = _texture;
+        _thumb.width = thumbImageWidth;
+        _thumb.height = _thumb.width / _imgRatio;
+        _thumb.x = (this.thumbSize.width - _thumb.width) * .5;
+        _thumb.y = (this.thumbSize.height - _thumb.height) * .5;
 
         this.front = new PIXI.Sprite();
         this.front.texture = _texture;
@@ -62,15 +61,15 @@ this.jks = this.jks || {};
         this.mask.drawRect(0, 0, this.thumbSize.width, this.thumbSize.height);
         this.mask.endFill();
 
-        var outline = new PIXI.Graphics();
-        outline.lineStyle(4, 0x506995, 1);
-        outline.drawRect(this.mask.x, this.mask.y, this.mask.width, this.mask.height);
-
+        this.outline = new PIXI.Graphics();
+        this.outline.lineStyle(4, 0x506995, 1);
+        this.outline.drawRect(this.mask.x, this.mask.y, this.mask.width, this.mask.height);
+        this.outline.alpha = 0;
 
         this.container.addChild(this.mask);
-        this.container.addChild(thumb);
+        this.container.addChild(_thumb);
         this.container.addChild(this.front);
-        this.container.addChild(outline);
+        this.container.addChild(this.outline);
         this.container.mask = this.mask;
 
         this.mask.interactive = true;
@@ -79,22 +78,29 @@ this.jks = this.jks || {};
 
 
         this.onHover = function () {
-
             TweenLite.to(this.front, .3, {
                 alpha: 0,
                 ease: Cubic.easeOut
-                //onComplete: onTransitionEnd
             });
-        }
-
+        };
 
         this.onHoverOut = function () {
-
             TweenLite.to(this.front, .4, {
                 alpha: 1,
                 ease: Cubic.easeIn
-                //onComplete: onTransitionEnd
             });
+        };
+
+        this.select = function () {
+            this.selected = true;
+            this.outline.alpha = 1;
+            this.onHover();
+        };
+
+        this.unselect = function () {
+            this.selected = false;
+            this.outline.alpha = 0;
+            this.onHoverOut();
         }
 
 
