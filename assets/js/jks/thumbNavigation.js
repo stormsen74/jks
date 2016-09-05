@@ -51,11 +51,11 @@ this.jks = this.jks || {};
             }
         }
 
-        this.onHover = function (e) {
+        this.onHoverThumb = function (e) {
             _scope.thumbs[e.target.ID].onHover();
         }
 
-        this.onHoverOut = function (e) {
+        this.onHoverOutThumb = function (e) {
             _scope.thumbs[e.target.ID].onHoverOut();
         }
 
@@ -70,8 +70,8 @@ this.jks = this.jks || {};
                 _imgHeight = thumb.thumbSize.height;
                 _compWidth += thumb.thumbSize.width + 10;
                 thumb.mask.on('click', this.onClickThumb);
-                thumb.mask.on('mouseover', this.onHover);
-                thumb.mask.on('mouseout', this.onHoverOut);
+                thumb.mask.on('mouseover', this.onHoverThumb);
+                thumb.mask.on('mouseout', this.onHoverOutThumb);
                 thumb.container.x = i * (thumb.thumbSize.width + 10);
                 this.container.addChild(thumb.container);
                 this.thumbs.push(thumb);

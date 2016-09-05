@@ -264,20 +264,11 @@ this.jks = this.jks || {};
         this.slideNext = function () {
 
             _slideObject.previousImage = _slideObject.currentImage;
-
-            if (_slideObject.currentImage < _slideObject.slideNumImages - 1) {
-                _slideObject.currentImage++;
-            } else {
-                _slideObject.currentImage = 0;
-            }
+            _slideObject.currentImage < _slideObject.slideNumImages - 1 ? _slideObject.currentImage++ : _slideObject.currentImage = 0;
 
             transition();
 
-
             console.log('slideNext ', _slideObject.currentImage);
-
-
-            // TweenLite.delayedCall(2, _scope.slideNext);
         };
 
         this.slideTo = function (id) {
@@ -285,14 +276,9 @@ this.jks = this.jks || {};
             _slideObject.previousImage = _slideObject.currentImage;
             _slideObject.currentImage = id;
 
-
-            console.log('slideTo ', _slideObject.currentImage);
             transition();
 
-            //TweenLite.delayedCall(3.5, transition);
-
-
-            // TweenLite.delayedCall(2, _scope.slideNext);
+            console.log('slideTo ', _slideObject.currentImage);
         };
 
 
