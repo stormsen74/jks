@@ -95,10 +95,12 @@ this.jks = this.jks || {};
 
             function initDragShape() {
                 _dragShape = new PIXI.Graphics();
-                _dragShape.beginFill(0xff0000);
+
+                _dragShape.beginFill(0x00ff66);
                 _dragShape.drawRect(0, 0, screenWidth(), screenHeight());
                 _dragShape.endFill;
-                _dragShape.alpha = .1;
+
+                _dragShape.alpha = .01;
                 _dragShape.interactive = true;
                 _dragShape.buttonMode = true;
                 _dragShape.defaultCursor = 'auto';
@@ -123,11 +125,14 @@ this.jks = this.jks || {};
             function onDragStart(event) {
                 dragData.startX = event.data.global.x;
                 dragData.isDragging = true;
-                dragData.range = screenWidth() * .5;
+                dragData.range = screenWidth() * .7;
 
                 _dragShape.defaultCursor = "ew-resize";
 
                 console.log(dragData.startX)
+
+                console.log('_slideObject.currentImage: ', _slideObject.currentImage)
+                _thumbNavigation.setSelectedThumb(_slideObject.currentImage);
 
 
             }
@@ -135,7 +140,6 @@ this.jks = this.jks || {};
 
             function onDragMove(event) {
                 if (dragData.isDragging) {
-
 
                     dragData.offsetX = event.data.global.x - dragData.startX;
                     dragData.offsetX >= 0 ? dragData.direction = 'next' : dragData.direction = 'prev';
@@ -149,7 +153,8 @@ this.jks = this.jks || {};
                     // console.log(dragData.offsetX, dragData.normalizedDrag, dragData.direction);
 
                     if (_setTextures) {
-                        updateTransition(dragData.normalizedDrag)
+                        updateTransition(dragData.normalizedDrag);
+                        //_thumbNavigation.updateDragProgress(dragData.normalizedDrag);
                     }
 
                 }
@@ -159,23 +164,24 @@ this.jks = this.jks || {};
                 dragData.isDragging = false;
                 _dragShape.defaultCursor = 'auto';
 
-                console.log(dragData.normalizedDrag);
+                //console.log(dragData.normalizedDrag);
 
                 var t = {p: dragData.normalizedDrag}
                 if (dragData.normalizedDrag <= .5) {
-                    TweenLite.to(t, .5, {
+                    TweenLite.to(t, 1, {
                         p: 0,
+                        ease: Sine.easeOut,
                         onUpdate: function () {
                             updateTransition(t.p)
                         },
                         onComplete: function () {
-                            // _setTextures = false;
                             // TODO RESET
                         }
                     })
                 } else {
                     TweenLite.to(t, .5, {
                         p: 1,
+                        ease: Circ.easeIn,
                         onUpdate: function () {
                             updateTransition(t.p)
                         },
@@ -239,6 +245,7 @@ this.jks = this.jks || {};
             }
 
             function updateTransition(p) {
+                _thumbNavigation.updateDragProgress(p);
                 // console.log('updateTransition', p)
                 tl_1.progress(p);
                 tl_2.progress(p);
@@ -294,6 +301,7 @@ this.jks = this.jks || {};
                 _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.currentImage].src);
 
                 _thumbNavigation.unselectThumb(_slideObject.previousImage)
+                // TODO - unselect all ...
                 _thumbNavigation.selectThumb(_slideObject.currentImage)
 
                 tl_1.progress(0);
@@ -325,7 +333,6 @@ this.jks = this.jks || {};
 
 
             function onResize(e) {
-                updateContent();
                 _scope.resizeScreen();
             }
 
@@ -339,6 +346,8 @@ this.jks = this.jks || {};
             }
 
             this.resizeScreen = function () {
+
+                updateContent();
 
                 _screenWidth = screenWidth();
                 _screenHeight = screenHeight();

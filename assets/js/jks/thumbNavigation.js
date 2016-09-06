@@ -25,6 +25,7 @@ this.jks = this.jks || {};
 
         this.isLocked = false;
         this.thumbs = [];
+        this.selectedThumb = null;
 
 
         _imgRatio = imageRatio;
@@ -71,6 +72,16 @@ this.jks = this.jks || {};
         this.showProgress = function (id, t) {
             console.log('dp:', +id + '-' + t)
             _scope.thumbs[id].showProgress(t);
+        }
+
+
+        this.setSelectedThumb = function (id) {
+            this.selectedThumb = _scope.thumbs[id];
+        }
+
+        this.updateDragProgress = function (p) {
+            this.selectedThumb.updateDragProgress(p);
+            //_scope.thumbs[id].updateDragProgress(p);
         }
 
 

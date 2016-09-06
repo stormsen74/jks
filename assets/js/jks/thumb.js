@@ -109,9 +109,16 @@ this.jks = this.jks || {};
 
         }
 
+        this.updateDragProgress = function (p) {
+            console.log('th_updateDragProgress ', p)
+
+            this.overlay.x = this.thumbSize.width * p;
+        }
+
         this.select = function () {
             this.selected = true;
             this.outline.alpha = 1;
+            this.overlay.x = 0;
             TweenLite.to(this.overlay, .3, {alpha: .2, ease: Circ.easeOut})
             this.onHover();
         };

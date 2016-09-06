@@ -55,8 +55,8 @@
     /*--------------------------------------------
      ~ LOADER (PIXI)
      --------------------------------------------*/
-    //    PIXI.loader.add('img_1', 'assets/img/fsImage_1200x750_c.jpg');
-    //    PIXI.loader.add('img_2', 'assets/img/fsImage_1920x1372.jpg');
+    //    PIXI.loader.add('img_1', 'assets/img/tst/fsImage_1200x750_c.jpg');
+    //    PIXI.loader.add('img_2', 'assets/img/tst/fsImage_1920x1372.jpg');
     // listen for progress
     //    PIXI.loader.on('progress', onProgressCallback);
     //    function onProgressCallback(e) {
@@ -75,30 +75,30 @@
     var _loader;
     var manifest = [
         {
-            src: "assets/img/fsImage_1200x750_c.jpg",
+            src: "assets/img/tst/fsImage_1200x750_c.jpg",
             id: "img_0",
         }, {
-            src: "assets/img/fsImage_1920x1372.jpg",
+            src: "assets/img/tst/fsImage_1920x1372.jpg",
             id: "img_1"
         },
         {
-            src: "assets/img/text.png",
+            src: "assets/img/tst/text.png",
             id: "txt"
         },
         {
-            src: "assets/img/text_mask.png",
+            src: "assets/img/tst/text_mask.png",
             id: "txt_mask"
         },
         {
-            src: "assets/img/swoosh.png",
+            src: "assets/img/tst/swoosh.png",
             id: "swoosh"
         },
         {
-            src: "assets/img/displacementMap.jpg",
+            src: "assets/img/tst/displacementMap.jpg",
             id: "displace"
         },
         {
-            src: "assets/img/displacementMap_sw.jpg",
+            src: "assets/img/tst/displacementMap_sw.jpg",
             id: "displace_sw"
         }
     ];
@@ -161,7 +161,7 @@
         // create the root of the scene graph
         stage = new PIXI.Container();
         stage.interactive = true;
-//        var fsImage_tex = PIXI.Texture.fromImage('assets/img/fsImage_1200x750_c.jpg');
+//        var fsImage_tex = PIXI.Texture.fromImage('assets/img/tst/fsImage_1200x750_c.jpg');
 //        fsImage = new PIXI.Sprite(fsImage_tex);
         fsImage = new PIXI.Sprite(PIXI.Texture.fromImage(_loader.getResult("img_0").src));
         fsImageContainer = new PIXI.Container();
