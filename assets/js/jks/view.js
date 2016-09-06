@@ -16,9 +16,11 @@ this.jks = this.jks || {};
     var _fsImageContainerBack, _fsImageContainerFront;
     var _imgSpriteBack, _imgSpriteFront;
     var _tresholdFilter, _colorMatrixFilter;
-    var _o = {saturation: -1};
+    var _o = {saturation: -1, none: 0};
+    var tl_1, tl_2;
 
     var _thumbNavigation;
+    var _dragShape;
 
     var _slideObject = {};
 
@@ -89,6 +91,74 @@ this.jks = this.jks || {};
             _stage.interactive = true;
         }
 
+
+        function initDragShape() {
+            _dragShape = new PIXI.Graphics();
+            _dragShape.beginFill(0xff0000);
+            _dragShape.drawRect(0, 0, screenWidth(), screenHeight());
+            _dragShape.endFill;
+            _dragShape.alpha = .1;
+            _dragShape.interactive = true;
+            _dragShape.buttonMode = true;
+            _dragShape.defaultCursor = 'auto';
+            _stage.addChild(_dragShape);
+
+
+            _dragShape
+                .on('mousedown', onDragStart).on('touchstart', onDragStart)
+                .on('mousemove', onDragMove).on('touchmove', onDragMove)
+                .on('mouseup', onDragEnd).on('mouseupoutside', onDragEnd)
+                .on('touchend', onDragEnd).on('touchendoutside', onDragEnd)
+        }
+
+        var dragData = {
+            startX: 0,
+            offsetX: 0,
+            direction: '',
+            isDragging: false,
+            normalizedDrag: 0
+        };
+
+        function onDragStart(event) {
+            dragData.startX = event.data.global.x;
+            dragData.isDragging = true;
+            dragData.range = screenWidth() * .5;
+
+            _dragShape.defaultCursor = "grabbing";
+
+            console.log(dragData.startX)
+
+            setTransitionTextures();
+        }
+
+
+        function onDragMove(event) {
+            if (dragData.isDragging) {
+
+
+                dragData.offsetX = event.data.global.x - dragData.startX;
+                dragData.offsetX >= 0 ? dragData.direction = 'next' : dragData.direction = 'prev';
+                dragData.offsetX = Math.abs(dragData.offsetX)
+
+                // if()
+
+                dragData.normalizedDrag = mathUtils.convertToRange(dragData.offsetX, [0, dragData.range], [0, 1]);
+                console.log(dragData.offsetX, dragData.normalizedDrag, dragData.direction);
+
+
+                // updateTransition(dragData.normalizedDrag)
+
+            }
+        }
+
+        function onDragEnd(event) {
+            dragData.isDragging = false;
+            _dragShape.defaultCursor = 'auto';
+
+            // console.log(dragData)
+
+        }
+
         /*--------------------------------------------
          ~ FS-IMAGE
          --------------------------------------------*/
@@ -123,46 +193,75 @@ this.jks = this.jks || {};
 
             _fsImageContainerFront.filters = [_tresholdFilter, _colorMatrixFilter];
 
+            tl_1 = new TimelineLite({paused: true});
+            tl_1.add(TweenLite.to(_tresholdFilter.offset, $transitionTime, {
+                x: 0,
+                ease: Linear.easeNone,
+                onStart: onTransitionStart
+            }))
+
+            tl_2 = new TimelineLite({paused: true, align: 'sequence'});
+            tl_2.add(TweenLite.to(_o, .5, {
+                delay: 1.0,
+                saturation: 0,
+                ease: Linear.easeNone,
+                onUpdate: filterUpdate,
+                onComplete: onTransitionEnd
+            }))
+
         }
 
+        function updateTransition(p) {
+            tl_1.progress(p);
+            tl_2.progress(p);
+        }
+
+        function setTransitionTextures() {
+            //TODO!
+            _slideObject.previousImage = _slideObject.currentImage;
+            _slideObject.currentImage < _slideObject.slideNumImages - 1 ? _slideObject.currentImage++ : _slideObject.currentImage = 0;
+
+            _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.previousImage].src);
+            _imgSpriteFront.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.currentImage].src);
+        }
 
         function transition() {
-
 
             _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.previousImage].src);
             _imgSpriteFront.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.currentImage].src);
 
-            _o.saturation = -1
+            TweenLite.to(tl_1, $transitionTime, {progress: 1, ease: Sine.easeOut});
+            TweenLite.to(tl_2, $transitionTime, {progress: 1, ease: Circ.easeOut});
 
+        }
 
-            TweenLite.to(_tresholdFilter.offset, $transitionTime, {
-                x: 0,
-                ease: Sine.easeOut,
-                onStart: _thumbNavigation.showProgress,
-                onStartParams: [_slideObject.currentImage, $transitionTime]
-            });
+        function filterUpdate() {
+            _colorMatrixFilter.saturate(_o.saturation);
+        }
 
-            TweenLite.to(_o, 1, {
-                delay: .5,
-                saturation: 0,
-                ease: Circ.easeOut,
-                onUpdate: filterUpdate,
-                onComplete: onTransitionEnd
-            });
+        function onTransitionStart() {
+            console.log('onTransitionStart');
 
-            function filterUpdate() {
-                _colorMatrixFilter.saturate(_o.saturation);
+            if (!dragData.isDragging) {
+                _thumbNavigation.showProgress(_slideObject.currentImage, $transitionTime);
             }
+        }
 
-            function onTransitionEnd() {
-                _tresholdFilter.offset.x = 1;
-                _colorMatrixFilter.saturate(-1);
-                _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.currentImage].src);
+        function onTransitionEnd() {
+            console.log('onTransitionEnd');
 
-                _thumbNavigation.unselectThumb(_slideObject.previousImage)
-                _thumbNavigation.selectThumb(_slideObject.currentImage)
+            _o.saturation = -1;
+            _tresholdFilter.offset.x = 1;
+            _colorMatrixFilter.saturate(-1);
 
-            }
+            _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.currentImage].src);
+
+            _thumbNavigation.unselectThumb(_slideObject.previousImage)
+            _thumbNavigation.selectThumb(_slideObject.currentImage)
+
+            tl_1.progress(0);
+            tl_2.progress(0);
+
         }
 
         /*--------------------------------------------
@@ -197,6 +296,9 @@ this.jks = this.jks || {};
         function updateContent() {
             _thumbNavigation.container.x = screenWidth() * .5 - _thumbNavigation.container.getWidth() * .5;
             _thumbNavigation.container.y = screenHeight() - _thumbNavigation.container.getHeight() - 30;
+
+            _dragShape.width = screenWidth()
+            _dragShape.height = screenHeight() - _thumbNavigation.container.getHeight() - 60;
         }
 
         this.resizeScreen = function () {
@@ -233,6 +335,7 @@ this.jks = this.jks || {};
         initDevStuff();
         initRenderer();
         initFSImages();
+        initDragShape();
         initTransition();
 
         initListener();
