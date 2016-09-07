@@ -19,7 +19,7 @@ this.jks = this.jks || {};
 
     function Config(json) {
 
-        this.version = '0.3.1';
+        this.version = '0.3.2';
         this.debug = true;
 
         _json = json;
@@ -53,6 +53,11 @@ this.jks = this.jks || {};
 
         // console.log(_json.pages[0].items.length);
         // console.log(_json.pages);
+
+
+        if(this.debug) {
+            document.getElementById('version').innerHTML = 'version ' + this.version
+        }
 
 
         this.setParam = function () {
