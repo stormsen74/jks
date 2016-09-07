@@ -100,7 +100,7 @@ this.jks = this.jks || {};
                 _dragShape.drawRect(0, 0, screenWidth(), screenHeight());
                 _dragShape.endFill;
 
-                _dragShape.alpha = .01;
+                _dragShape.alpha = .2;
                 _dragShape.interactive = true;
                 _dragShape.buttonMode = true;
                 _dragShape.defaultCursor = 'auto';
@@ -123,15 +123,16 @@ this.jks = this.jks || {};
             };
 
             function onDragStart(event) {
+                // _thumbNavigation.isLocked = true;
                 dragData.startX = event.data.global.x;
                 dragData.isDragging = true;
+                dragData.startTransition = false;
                 dragData.range = screenWidth() * .7;
 
                 _dragShape.defaultCursor = "ew-resize";
 
-                console.log(dragData.startX)
+                console.log('_slideObject.currentImage: ', _slideObject.currentImage, dragData.startX);
 
-                console.log('_slideObject.currentImage: ', _slideObject.currentImage)
                 _thumbNavigation.setSelectedThumb(_slideObject.currentImage);
 
 
@@ -145,16 +146,25 @@ this.jks = this.jks || {};
                     dragData.offsetX >= 0 ? dragData.direction = 'next' : dragData.direction = 'prev';
                     dragData.offsetX = Math.abs(dragData.offsetX)
 
-                    if (dragData.offsetX > 0 && !_setTextures) {
-                        setTransitionTextures();
+                    if (dragData.offsetX > 0) {
+                        if (!_setTextures) setTransitionTextures();
+                        dragData.startTransition = true;
+                        _thumbNavigation.isLocked = true;
                     }
 
                     dragData.normalizedDrag = mathUtils.convertToRange(dragData.offsetX, [0, dragData.range], [0, 1]);
                     // console.log(dragData.offsetX, dragData.normalizedDrag, dragData.direction);
 
-                    if (_setTextures) {
-                        updateTransition(dragData.normalizedDrag);
-                        //_thumbNavigation.updateDragProgress(dragData.normalizedDrag);
+                    if (_setTextures && dragData.startTransition) {
+                        if (dragData.normalizedDrag < 1) {
+                            updateTransition(dragData.normalizedDrag);
+                        } else {
+                            onTransitionEnd()
+                            dragData.isDragging = false;
+                            dragData.startTransition = false;
+                            _setTextures = false;
+                            _thumbNavigation.isLocked = false;
+                        }
                     }
 
                 }
@@ -166,30 +176,40 @@ this.jks = this.jks || {};
 
                 //console.log(dragData.normalizedDrag);
 
-                var t = {p: dragData.normalizedDrag}
-                if (dragData.normalizedDrag <= .5) {
-                    TweenLite.to(t, 1, {
-                        p: 0,
-                        ease: Sine.easeOut,
-                        onUpdate: function () {
-                            updateTransition(t.p)
-                        },
-                        onComplete: function () {
-                            // TODO RESET
-                        }
-                    })
-                } else {
-                    TweenLite.to(t, .5, {
-                        p: 1,
-                        ease: Circ.easeIn,
-                        onUpdate: function () {
-                            updateTransition(t.p)
-                        },
-                        onComplete: function () {
-                            _setTextures = false;
-                        }
-                    })
+                var t = {p: dragData.normalizedDrag};
+
+                if (dragData.startTransition) {
+
+                    if (dragData.normalizedDrag <= .5) {
+                        _slideObject.currentImage = _slideObject.previousImage;
+                        TweenLite.to(t, 1, {
+                            p: 0,
+                            ease: Sine.easeOut,
+                            onUpdate: function () {
+                                updateTransition(t.p)
+                            },
+                            onComplete: function () {
+                                _setTextures = false;
+                                _thumbNavigation.isLocked = false;
+                                dragData.startTransition = false;
+                            }
+                        })
+                    } else {
+                        TweenLite.to(t, .5, {
+                            p: 1,
+                            ease: Circ.easeIn,
+                            onUpdate: function () {
+                                updateTransition(t.p)
+                            },
+                            onComplete: function () {
+                                _setTextures = false;
+                                _thumbNavigation.isLocked = false;
+                                dragData.startTransition = false;
+                            }
+                        })
+                    }
                 }
+
             }
 
             /*--------------------------------------------
@@ -261,7 +281,7 @@ this.jks = this.jks || {};
                     _slideObject.currentImage > 0 ? _slideObject.currentImage-- : _slideObject.currentImage = _slideObject.slideNumImages - 1;
                 }
 
-                console.log('setTransitionTextures', _slideObject.currentImage, _slideObject.previousImage)
+                console.log('setTransitionTextures', dragData.direction, _slideObject.currentImage, _slideObject.previousImage)
 
                 _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.previousImage].src);
                 _imgSpriteFront.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.currentImage].src);
@@ -300,8 +320,9 @@ this.jks = this.jks || {};
 
                 _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.currentImage].src);
 
-                _thumbNavigation.unselectThumb(_slideObject.previousImage)
+                // _thumbNavigation.unselectThumb(_slideObject.previousImage)
                 // TODO - unselect all ...
+                _thumbNavigation.unselectThumbs()
                 _thumbNavigation.selectThumb(_slideObject.currentImage)
 
                 tl_1.progress(0);

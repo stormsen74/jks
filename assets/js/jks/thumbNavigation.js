@@ -53,6 +53,8 @@ this.jks = this.jks || {};
             }
         }
 
+
+
         this.onHoverThumb = function (e) {
             if (!_scope.thumbs[e.target.ID].selected) _scope.thumbs[e.target.ID].onHover();
         }
@@ -67,6 +69,12 @@ this.jks = this.jks || {};
 
         this.unselectThumb = function (id) {
             _scope.thumbs[id].unselect();
+        }
+
+        this.unselectThumbs = function (id) {
+            for (var i = 0; i < _scope.thumbs.length; i++) {
+                _scope.thumbs[i].unselect();
+            }
         }
 
         this.showProgress = function (id, t) {

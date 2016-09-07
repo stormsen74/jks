@@ -67,7 +67,7 @@ this.jks = this.jks || {};
         this.overlay.drawRect(this.mask.x, this.mask.y, this.mask.width, this.mask.height);
         this.overlay.endFill;
         this.overlay.scale.x = 0.0;
-        this.overlay.alpha = .0;
+        this.overlay.alpha = 0.0;
 
         this.outline = new PIXI.Graphics();
         this.outline.lineStyle(4, this.color, 1);
@@ -110,17 +110,19 @@ this.jks = this.jks || {};
         }
 
         this.updateDragProgress = function (p) {
-            console.log('th_updateDragProgress ', p)
+            // console.log('th_updateDragProgress ', p)
 
             this.overlay.x = this.thumbSize.width * p;
         }
 
         this.select = function () {
+            // console.log('select', this.mask.ID, this.overlay)
             this.selected = true;
             this.outline.alpha = 1;
             this.overlay.x = 0;
-            TweenLite.to(this.overlay, .3, {alpha: .2, ease: Circ.easeOut})
+            this.overlay.scale.x = 1;
             this.onHover();
+            TweenLite.to(this.overlay, .3, {delay: .2, alpha: .2, ease: Circ.easeOut})
         };
 
         this.unselect = function () {
