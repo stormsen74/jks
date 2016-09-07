@@ -1,19 +1,17 @@
 
 
-**jks** <small>©2016</small>
----
-
-----------
+**jks** ©2016
 
 
-**TO/DO'S**
 
+*TO/DO'S*
+- <strike>drag-slide-transition</strike>
 
 
 
 
 
-> [https://stackedit.io/editor#](https://stackedit.io/editor#)
+
 
 
 
