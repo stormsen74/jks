@@ -2,11 +2,6 @@
  * Created by STORMSEN on 12.08.2016.
  */
 
-/**
- * Created by STORMSEN on 12.08.2016.
- */
-
-
 
 
 this.jks = this.jks || {};
@@ -36,36 +31,23 @@ this.jks = this.jks || {};
             data.numImages = _json.pages[i].items.length;
             data.images = [];
             data.thumbs = [];
-            // console.log('config',data);
-
-
             this.pageData.push(data);
-
         }
 
         console.log('Config :: pageData created!');
-            // console.log('config',this.pageData);
 
+        // console.log('config',this.pageData);
 
-        //console.log('config :: version: ', this.version);
-        //console.log('config :: debug: ', this.debug);
-        //console.log('config :: json: ', _json);
+        // console.log('config :: version: ', this.version);
+        // console.log('config :: debug: ', this.debug);
+        // console.log('config :: json: ', _json);
 
         // console.log(_json.pages[0].items.length);
         // console.log(_json.pages);
 
 
-        if(this.debug) {
+        if (this.debug) {
             document.getElementById('version').innerHTML = 'version ' + this.version
-        }
-
-
-        this.setParam = function () {
-            _param = true;
-        }
-
-        this.getParam = function () {
-            return _param;
         }
 
 
@@ -73,4 +55,4 @@ this.jks = this.jks || {};
 
     jks.Config = Config;
 
-}());
+}())
