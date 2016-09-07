@@ -18,7 +18,6 @@ this.jks = this.jks || {};
 
     var _loader;
     var _loadingContent = []
-    var _config;
 
     function DataHandler(config) {
         _scope = this;
@@ -26,7 +25,6 @@ this.jks = this.jks || {};
         this.s = {
             onContentLoaded: new signals.Signal(),
             onDataHandlerReady: new signals.Signal()
-            // onResponse_getAllFromToday: new signals.Signal(),
         };
 
 
@@ -39,7 +37,6 @@ this.jks = this.jks || {};
 
         function generateLoadingContent() {
             for (var i = 0; i < config.numPages; i++) {
-                // console.log('page: ', i);
                 var maifest = [];
                 for (var j = 0; j < config.pages[i].items.length; j++) {
                     // console.log(config.pages[i].items[j]);
@@ -56,7 +53,6 @@ this.jks = this.jks || {};
             });
 
 
-            //_scope.loadPage(0);
         }
 
 
@@ -79,36 +75,24 @@ this.jks = this.jks || {};
 
 
                 for (var i = 0; i < config.pageData[pageID].numImages; i++) {
-                    // console.log(_loader.getResult("img_" + config.pageData[id].category + "_" + i));
                     var add = i + 1;
                     var str = add < 10 ? '0' : '';
                     var data = config.pageData[pageID];
-                    console.log(("img_" + config.pageData[pageID].category + "_" + str + add))
                     data.images.push(_loader.getResult("img_" + config.pageData[pageID].category + "_" + str + add));
                     //data.thumbs.push(_loader.getResult("thumb_" + config.pageData[pageID].category + "_" + i));
                 }
 
                 console.log('assetsLoaded!', pageID);
                 config.pageData[pageID].contentLoaded = true;
-                console.log(config.pageData[pageID]);
 
-                // console.log('loaded!', _loader.getResult());
                 _scope.s.onContentLoaded.dispatch(pageID);
-                //var sprite = new PIXI.Sprite(PIXI.Texture.fromImage(_loader.getResult("img_0").src));
 
             }
-
-            //for (var i = 0; i < 11; i++) {
-            //    var str = i < 10 ? '0' : '';
-            //    console.log(str)
-            //    console.log("img_" + config.pageData[pageID].category + "_" + i);
-            //}
 
         }
 
 
         init();
-
 
     }
 

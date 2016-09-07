@@ -92,6 +92,9 @@ this.jks = this.jks || {};
                 _stage.interactive = true;
             }
 
+            /*--------------------------------------------
+             ~ DRAG / TRANSITION
+             --------------------------------------------*/
 
             function initDragShape() {
                 _dragShape = new PIXI.Graphics();
@@ -100,7 +103,7 @@ this.jks = this.jks || {};
                 _dragShape.drawRect(0, 0, screenWidth(), screenHeight());
                 _dragShape.endFill;
 
-                _dragShape.alpha = .2;
+                _dragShape.alpha = .02;
                 _dragShape.interactive = true;
                 _dragShape.buttonMode = true;
                 _dragShape.defaultCursor = 'auto';
@@ -123,13 +126,11 @@ this.jks = this.jks || {};
             };
 
             function onDragStart(event) {
-                // _thumbNavigation.isLocked = true;
                 dragData.startX = event.data.global.x;
                 dragData.isDragging = true;
                 dragData.startTransition = false;
                 dragData.range = screenWidth() * .7;
-
-                _dragShape.defaultCursor = "ew-resize";
+                _dragShape.defaultCursor = "none";
 
                 console.log('_slideObject.currentImage: ', _slideObject.currentImage, dragData.startX);
 
