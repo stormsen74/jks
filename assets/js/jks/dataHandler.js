@@ -44,8 +44,6 @@ this.jks = this.jks || {};
                     maifest.push(config.pages[i].items[j]['thumb']);
                 }
                 _loadingContent.push(maifest);
-
-
             }
 
             TweenLite.delayedCall(.01, function () {
@@ -60,7 +58,7 @@ this.jks = this.jks || {};
 
             _loader = new createjs.LoadQueue(false);
             _loader.addEventListener("progress", onLoadProgress);
-            _loader.addEventListener("complete", onAssetsLoaded);
+            _loader.addEventListener("complete", onPageLoad);
             _loader.loadManifest(_loadingContent[pageID]);
 
             //console.log('loadPage',config.pageData[pageID]);
@@ -69,7 +67,7 @@ this.jks = this.jks || {};
                 console.log(e.loaded);
             }
 
-            function onAssetsLoaded() {
+            function onPageLoad() {
 
                 console.log('onAssetsLoaded: ', config.pageData[pageID])
 
@@ -82,7 +80,7 @@ this.jks = this.jks || {};
                     //data.thumbs.push(_loader.getResult("thumb_" + config.pageData[pageID].category + "_" + i));
                 }
 
-                console.log('assetsLoaded!', pageID);
+                console.log('pageLoaded!', pageID);
                 config.pageData[pageID].contentLoaded = true;
 
                 _scope.s.onContentLoaded.dispatch(pageID);
