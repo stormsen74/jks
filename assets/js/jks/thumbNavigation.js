@@ -45,15 +45,8 @@ this.jks = this.jks || {};
         this.onClickThumb = function (e) {
             if (!_scope.isLocked) {
                 _scope.s.onClickThumb.dispatch(e.target.ID);
-                _scope.isLocked = true;
-                TweenLite.delayedCall(1.5, function (e) {
-                        _scope.isLocked = false;
-                    }
-                )
             }
         }
-
-
 
         this.onHoverThumb = function (e) {
             if (!_scope.thumbs[e.target.ID].selected) _scope.thumbs[e.target.ID].onHover();

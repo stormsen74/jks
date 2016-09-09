@@ -10,10 +10,6 @@
               "src": "assets/img/01_meeresrauschen/01.jpg",
               "id": "img_meeresrauschen_01"
             },
-            "thumb": {
-              "src": "assets/img/01_meeresrauschen/01.jpg",
-              "id": "thumb_meeresrauschen_01"
-            },
             "type": "Orhänger",
             "description": "desription as html"
           },
@@ -21,10 +17,6 @@
             "img": {
               "src": "assets/img/01_meeresrauschen/02.jpg",
               "id": "img_meeresrauschen_02"
-            },
-            "thumb": {
-              "src": "assets/img/01_meeresrauschen/02.jpg",
-              "id": "thumb_meeresrauschen_02"
             },
             "type": "Orhänger",
             "description": "desription as html"
@@ -34,10 +26,6 @@
               "src": "assets/img/01_meeresrauschen/03.jpg",
               "id": "img_meeresrauschen_03"
             },
-            "thumb": {
-              "src": "assets/img/01_meeresrauschen/03.jpg",
-              "id": "thumb_meeresrauschen_03"
-            },
             "type": "Orhänger",
             "description": "desription as html"
           },
@@ -45,10 +33,6 @@
             "img": {
               "src": "assets/img/01_meeresrauschen/04.jpg",
               "id": "img_meeresrauschen_04"
-            },
-            "thumb": {
-              "src": "assets/img/01_meeresrauschen/04.jpg",
-              "id": "thumb_meeresrauschen_04"
             },
             "type": "Orhänger",
             "description": "desription as html"
@@ -58,10 +42,6 @@
               "src": "assets/img/01_meeresrauschen/05.jpg",
               "id": "img_meeresrauschen_05"
             },
-            "thumb": {
-              "src": "assets/img/01_meeresrauschen/05.jpg",
-              "id": "thumb_meeresrauschen_05"
-            },
             "type": "Orhänger",
             "description": "desription as html"
           },
@@ -69,10 +49,6 @@
             "img": {
               "src": "assets/img/01_meeresrauschen/06.jpg",
               "id": "img_meeresrauschen_06"
-            },
-            "thumb": {
-              "src": "assets/img/01_meeresrauschen/06.jpg",
-              "id": "thumb_meeresrauschen_06"
             },
             "type": "Orhänger",
             "description": "desription as html"
@@ -82,10 +58,6 @@
               "src": "assets/img/01_meeresrauschen/07.jpg",
               "id": "img_meeresrauschen_07"
             },
-            "thumb": {
-              "src": "assets/img/01_meeresrauschen/07.jpg",
-              "id": "thumb_meeresrauschen_07"
-            },
             "type": "Orhänger",
             "description": "desription as html"
           },
@@ -94,10 +66,6 @@
               "src": "assets/img/01_meeresrauschen/08.jpg",
               "id": "img_meeresrauschen_08"
             },
-            "thumb": {
-              "src": "assets/img/01_meeresrauschen/08.jpg",
-              "id": "thumb_meeresrauschen_08"
-            },
             "type": "Orhänger",
             "description": "desription as html"
           },
@@ -105,10 +73,6 @@
             "img": {
               "src": "assets/img/01_meeresrauschen/09.jpg",
               "id": "img_meeresrauschen_09"
-            },
-            "thumb": {
-              "src": "assets/img/01_meeresrauschen/09.jpg",
-              "id": "thumb_meeresrauschen_09"
             },
             "type": "Orhänger",
             "description": "desription as html"
@@ -124,10 +88,6 @@
               "src": "assets/img/02_fragmente/01.jpg",
               "id": "img_fragmente_01"
             },
-            "thumb": {
-              "src": "assets/img/02_fragmente/01.jpg",
-              "id": "thumb_fragmente_01"
-            },
             "type": "Orhänger",
             "description": "desription as html"
           },
@@ -135,10 +95,6 @@
             "img": {
               "src": "assets/img/02_fragmente/02.jpg",
               "id": "img_fragmente_02"
-            },
-            "thumb": {
-              "src": "assets/img/02_fragmente/02.jpg",
-              "id": "thumb_fragmente_02"
             },
             "type": "Orhänger",
             "description": "desription as html"
@@ -148,10 +104,6 @@
               "src": "assets/img/02_fragmente/03.jpg",
               "id": "img_fragmente_03"
             },
-            "thumb": {
-              "src": "assets/img/02_fragmente/03.jpg",
-              "id": "thumb_fragmente_03"
-            },
             "type": "Orhänger",
             "description": "desription as html"
           },
@@ -160,14 +112,9 @@
               "src": "assets/img/02_fragmente/04.jpg",
               "id": "img_fragmente_04"
             },
-            "thumb": {
-              "src": "assets/img/02_fragmente/04.jpg",
-              "id": "thumb_fragmente_04"
-            },
             "type": "Orhänger",
             "description": "desription as html"
           }
-
         ]
       }
     ]

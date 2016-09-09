@@ -17,6 +17,7 @@ this.jks = this.jks || {};
     var _scope;
 
     var _loader;
+    var _loadingAssets = []
     var _loadingContent = []
 
     function DataHandler(config) {
@@ -24,6 +25,7 @@ this.jks = this.jks || {};
 
         this.s = {
             onContentLoaded: new signals.Signal(),
+            onAssetsLoaded: new signals.Signal(),
             onDataHandlerReady: new signals.Signal()
         };
 
@@ -37,22 +39,43 @@ this.jks = this.jks || {};
 
         function generateLoadingContent() {
             for (var i = 0; i < config.numPages; i++) {
-                var maifest = [];
+                var mainfest = [];
                 for (var j = 0; j < config.pages[i].items.length; j++) {
-                    // console.log(config.pages[i].items[j]);
-                    maifest.push(config.pages[i].items[j]['img']);
-                    maifest.push(config.pages[i].items[j]['thumb']);
+                    mainfest.push(config.pages[i].items[j]['img']);
                 }
-                _loadingContent.push(maifest);
+                _loadingContent.push(mainfest);
             }
+
 
             TweenLite.delayedCall(.01, function () {
                 _scope.s.onDataHandlerReady.dispatch();
             });
-
-
         }
 
+        /*--------------------------------------------
+         ~ LOAD ASSETS
+         --------------------------------------------*/
+
+        this.loadAssets = function () {
+            var assetLoader= new createjs.LoadQueue(false);
+            assetLoader.addEventListener("progress", onLoadAssets);
+            assetLoader.addEventListener("complete", onAssetsLoaded);
+            assetLoader.loadManifest(config.assets.manifest);
+
+            function onLoadAssets(e) {
+                console.log(e.loaded);
+            }
+
+            function onAssetsLoaded() {
+                console.log('assets loaded!')
+
+                _scope.s.onAssetsLoaded.dispatch(assetLoader);
+            }
+        }
+
+        /*--------------------------------------------
+         ~ LOAD PAGES
+         --------------------------------------------*/
 
         this.loadPage = function (pageID) {
 
@@ -69,15 +92,11 @@ this.jks = this.jks || {};
 
             function onPageLoad() {
 
-                console.log('onAssetsLoaded: ', config.pageData[pageID])
-
-
                 for (var i = 0; i < config.pageData[pageID].numImages; i++) {
                     var add = i + 1;
                     var str = add < 10 ? '0' : '';
                     var data = config.pageData[pageID];
                     data.images.push(_loader.getResult("img_" + config.pageData[pageID].category + "_" + str + add));
-                    //data.thumbs.push(_loader.getResult("thumb_" + config.pageData[pageID].category + "_" + i));
                 }
 
                 console.log('pageLoaded!', pageID);

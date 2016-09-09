@@ -36,20 +36,6 @@ this.jks = this.jks || {};
 
             console.log('init => core');
 
-            // TODO ... load queue
-
-            //var _jsonLoader = new createjs.JSONLoader("assets/js/jks/assets.json");
-            //_jsonLoader.addEventListener("complete", onAssetsLoaded);
-            //_jsonLoader.load();
-            //
-            //function onAssetsLoaded() {
-            //    console.log(_jsonLoader.getResult()[0])
-            //    _assets = new jks.Assets(_jsonLoader.getResult()[0]);
-            //}
-            //
-            //return;
-
-
             var _jsonLoader = new createjs.JSONLoader("assets/js/jks/content.json");
             _jsonLoader.addEventListener("complete", onJSONLoaded);
             _jsonLoader.load();
@@ -60,7 +46,7 @@ this.jks = this.jks || {};
                 _config = new jks.Config(_jsonLoader.getResult()[0]);
                 _jsonLoader.destroy();
 
-                _dataHandler = new jks.DataHandler(_config); //TODO add assets
+                _dataHandler = new jks.DataHandler(_config);
                 _dataHandler.s.onDataHandlerReady.add(onDataHandlerReady);
 
                 function onDataHandlerReady() {

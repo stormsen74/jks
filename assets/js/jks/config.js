@@ -30,9 +30,22 @@ this.jks = this.jks || {};
             data.category = _json.pages[i].category;
             data.numImages = _json.pages[i].items.length;
             data.images = [];
-            data.thumbs = [];
             this.pageData.push(data);
         }
+
+
+        this.assets = {};
+        this.assets.manifest = [
+            {
+                "src": "assets/img/navigation/nav_arrow_42x130.png",
+                "id": "nav_arrow"
+            },
+            {
+                "src": "assets/img/navigation/nav_arrow_42x130.png",
+                "id": "nav_arrow_2"
+            }
+        ];
+
 
         console.log('Config :: pageData created!');
 
