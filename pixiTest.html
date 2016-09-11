@@ -215,6 +215,7 @@
         sprite.on('mouseupoutside', stopDrag)
         sprite.on('mousemove', moveDrag);
         var tracker = VelocityTracker.track(sprite, "x,y");
+        console.log(VelocityTracker)
 
         function startDrag(event) {
             dragData.isDragging = true;

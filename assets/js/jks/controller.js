@@ -28,11 +28,12 @@ this.jks = this.jks || {};
         }
 
 
-        dataHandler.loadPage(1);
+        dataHandler.loadPage(0);
         dataHandler.s.onContentLoaded.add(onContentLoaded);
 
         function onContentLoaded(pageID) {
             console.log('onContentLoaded! ::', pageID);
+
             view.initSlide(config, pageID);
             view.initThumbNavigation();
             if (!jks.Core.isMobile()) {

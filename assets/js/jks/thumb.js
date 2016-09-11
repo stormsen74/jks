@@ -92,6 +92,7 @@ this.jks = this.jks || {};
         this.mask.ID = _id;
 
 
+
         this.onHover = function () {
             TweenLite.to(this.front, .3, {
                 alpha: 0,

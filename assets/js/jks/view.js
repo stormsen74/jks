@@ -63,6 +63,7 @@ this.jks = this.jks || {};
             _stats.domElement.style.top = '0px';
 
             document.body.appendChild(_stats.domElement);
+
         }
 
 
@@ -298,7 +299,7 @@ this.jks = this.jks || {};
         function transition() {
 
             _thumbNavigation.isLocked = true;
-            _sideNavigation.isLocked = true;
+            if (_sideNavigation)_sideNavigation.isLocked = true;
 
             _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.previousImage].src);
             _imgSpriteFront.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.currentImage].src);
@@ -333,7 +334,7 @@ this.jks = this.jks || {};
             _thumbNavigation.selectThumb(_slideObject.currentImage);
 
             _thumbNavigation.isLocked = false;
-            _sideNavigation.isLocked = false;
+            if (_sideNavigation) _sideNavigation.isLocked = false;
 
             tl_1.progress(0);
             tl_2.progress(0);

@@ -14,7 +14,7 @@ this.jks = this.jks || {};
 
     function Config(json) {
 
-        this.version = '0.3.6';
+        this.version = '0.3.7';
         this.debug = true;
 
         _json = json;
