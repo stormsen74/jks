@@ -28,7 +28,7 @@ this.jks = this.jks || {};
         }
 
 
-        dataHandler.loadPage(0);
+        dataHandler.loadPage(1);
         dataHandler.s.onContentLoaded.add(onContentLoaded);
 
         function onContentLoaded(pageID) {
