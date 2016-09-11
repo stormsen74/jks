@@ -22,12 +22,10 @@ this.jks = this.jks || {};
 
         dataHandler.loadAssets();
         dataHandler.s.onAssetsLoaded.add(onAssetsLoaded);
-        
+
         function onAssetsLoaded(assetLoader) {
             view.initAssets(assetLoader);
         }
-
-
 
 
         dataHandler.loadPage(1);
@@ -37,7 +35,9 @@ this.jks = this.jks || {};
             console.log('onContentLoaded! ::', pageID);
             view.initSlide(config, pageID);
             view.initThumbNavigation();
-            view.initSideNavigation();
+            if (!jks.Core.isMobile()) {
+                view.initSideNavigation();
+            }
 
             TweenLite.delayedCall(.5, view.resizeScreen);
         }

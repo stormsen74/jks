@@ -8,10 +8,13 @@
     <script src="assets/js/preloadjs-0.6.2.min.js"></script>
 
     <!--<script src="assets/js/pixi/pixi.js"></script>-->
+    <script src="assets/js/gsap/plugins/ThrowPropsPlugin.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.0-rc3/pixi.js"></script>
     <script src="assets/js/pixi/filters.min.js"></script>
     <script src="assets/js/gsap/TweenLite.min.js"></script>
+    <script src="assets/js/gsap/TweenMax.min.js"></script>
     <script src="assets/js/gsap/easing/EasePack.min.js"></script>
+    <script src="assets/js/gsap/utils/Draggable.min.js"></script>
 
 
     <style>
@@ -121,6 +124,7 @@
 
         initPixi();
         initFilterTest();
+        initDraggableTest();
         animate();
     }
 
@@ -175,7 +179,7 @@
         stage.addChild(fsImageContainer);
 
         //  FILTER TEST!
-            var filter = new PIXI.filters.AsciiFilter();
+        var filter = new PIXI.filters.AsciiFilter();
 //        var filter = new PIXI.filters.BloomFilter()
         // colorMatrix
 //            var filter = new PIXI.filters.ColorMatrixFilter()
@@ -187,6 +191,58 @@
         console.log('ratio', fsImageRatio);
 
         TweenLite.delayedCall(.1, onResize);
+    }
+
+
+    function initDraggableTest() {
+//        http://pixijs.github.io/examples/#/demos/dragging.js
+        var sprite = new PIXI.Sprite();
+        var gfx = new PIXI.Graphics();
+        gfx.beginFill(0x00ff00);
+        gfx.drawRect(0, 0, 100, 100);
+        gfx.endFill();
+        sprite.addChild(gfx);
+        sprite.interactive = true;
+        sprite.buttonMode = true;
+        stage.addChild(sprite)
+
+        var dragData = {
+            isDragging: false
+        }
+
+        sprite.on('mousedown', startDrag);
+        sprite.on('mouseup', stopDrag);
+        sprite.on('mouseupoutside', stopDrag)
+        sprite.on('mousemove', moveDrag);
+        var tracker = VelocityTracker.track(sprite, "x,y");
+
+        function startDrag(event) {
+            dragData.isDragging = true;
+        }
+
+        function stopDrag(event) {
+            dragData.isDragging = false;
+            TweenLite.to(sprite, 1, {
+                throwProps: {x: {velocity: tracker.getVelocity("x"), max: 300, min: 0}},
+                ease: Strong.easeOut
+            });
+        }
+
+        function moveDrag(e) {
+            if (dragData.isDragging) {
+                console.log(e.data)
+                sprite.x = e.data.global.x - 50;
+//                console.log(tracker.getVelocity("x"));
+
+            }
+//            var newPosition = dragData.startX;
+//            sprite.x = dragData.startX;
+        }
+
+
+//        TweenLite.to(sprite, 2, {throwProps: {x: 500}});
+//
+
     }
 
     var tSprite, tSpriteMask, tContainer;

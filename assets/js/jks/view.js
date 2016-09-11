@@ -23,7 +23,9 @@ this.jks = this.jks || {};
     var tl_1, tl_2;
 
     var _thumbNavigation;
+    var _sideNavigation;
     var _dragShape;
+
 
     var _slideObject = {};
 
@@ -70,6 +72,10 @@ this.jks = this.jks || {};
 
         function initListener() {
             window.addEventListener('resize', onResize);
+            window.addEventListener("orientationchange", function () {
+                // Announce the new orientation number
+                alert(screen.orientation);
+            }, false);
         };
 
 
@@ -84,7 +90,7 @@ this.jks = this.jks || {};
                 antialiasing: false,
                 transparent: false,
                 backgroundColor: 0xcccccc,
-                autoResize: false
+                autoResize: false,
             };
 
             _renderer = new PIXI.autoDetectRenderer(screenWidth(), screenHeight(), rendererOptions);
@@ -139,7 +145,6 @@ this.jks = this.jks || {};
             _thumbNavigation.setSelectedThumb(_slideObject.currentImage);
 
         }
-
 
         function onDragMove(event) {
             if (dragData.isDragging) {
@@ -293,6 +298,7 @@ this.jks = this.jks || {};
         function transition() {
 
             _thumbNavigation.isLocked = true;
+            _sideNavigation.isLocked = true;
 
             _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.previousImage].src);
             _imgSpriteFront.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.currentImage].src);
@@ -327,6 +333,7 @@ this.jks = this.jks || {};
             _thumbNavigation.selectThumb(_slideObject.currentImage);
 
             _thumbNavigation.isLocked = false;
+            _sideNavigation.isLocked = false;
 
             tl_1.progress(0);
             tl_2.progress(0);
@@ -362,8 +369,9 @@ this.jks = this.jks || {};
 
 
         function updateContent() {
-            _thumbNavigation.container.x = screenWidth() * .5 - _thumbNavigation.container.getWidth() * .5;
-            _thumbNavigation.container.y = screenHeight() - _thumbNavigation.container.getHeight() - 30;
+
+            _thumbNavigation.update();
+            if (_sideNavigation) _sideNavigation.update();
 
             _dragShape.width = screenWidth();
             _dragShape.height = screenHeight() - _thumbNavigation.container.getHeight() - 60;
@@ -438,9 +446,6 @@ this.jks = this.jks || {};
             _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_pageID].images[_slideObject.currentImage].src);
 
 
-
-
-
             // TweenLite.delayedCall(2.6, _scope.slidePrev);
 
         }
@@ -449,8 +454,8 @@ this.jks = this.jks || {};
          ~ THUMB NAVIGATION
          --------------------------------------------*/
 
-        this.initThumbNavigation = function() {
-            console.log('initThumbNavigation:', _slideObject);
+        this.initThumbNavigation = function () {
+            //console.log('initThumbNavigation:', _slideObject);
             _thumbNavigation = new jks.ThumbNavigation($imageRatio);
             _thumbNavigation.s.onClickThumb.add(onThumbClick)
             _stage.addChild(_thumbNavigation.container);
@@ -464,13 +469,21 @@ this.jks = this.jks || {};
         }
 
         this.initSideNavigation = function () {
-            console.log('initSideNavigation');
-            var _sprite = new PIXI.Sprite();
-            _sprite.texture = PIXI.Texture.fromImage(getAssetByID('nav_arrow').src)
+            _sideNavigation = new jks.SideNavigation();
+            //_sideNavigation.init();
+            _stage.addChild(_sideNavigation.container);
 
-            _stage.addChild(_sprite)
+            _sideNavigation.s.onClickNext.add(onClickNext);
+            _sideNavigation.s.onClickPrev.add(onClickPrev);
+
+            function onClickNext() {
+                _scope.slideNext();
+            }
+
+            function onClickPrev() {
+                _scope.slidePrev();
+            }
         }
-
 
         this.slideNext = function () {
             _slideObject.previousImage = _slideObject.currentImage;
@@ -497,5 +510,18 @@ this.jks = this.jks || {};
     }
 
     jks.View = View;
+
+    jks.View.getScreenWidth = function () {
+        return screenWidth();
+    }
+
+    jks.View.getScreenHeight = function () {
+        return screenHeight();
+    }
+
+    jks.View.getAssetByID = function (id) {
+        return _assetLoader.getResult(id);
+    }
+
 
 }());

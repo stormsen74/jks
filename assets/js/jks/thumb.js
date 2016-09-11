@@ -21,16 +21,21 @@ this.jks = this.jks || {};
 
     function Thumb(_id, r, _texture) {
 
+        console.log('thumb')
+        console.log(jks.View.getScreenWidth());
+
         _scope = this;
         this.selected = false;
 
         _imgRatio = r;
 
-        var thumbImageWidth = 300;
         this.thumbSize = {
-            width: 75,
-            height: 75
+            width: device.portrait() ? jks.View.getScreenWidth() / 4 : 75,
+            height: device.portrait() ? jks.View.getScreenWidth() / 4 : 75,
+            //width: 75,
+            //height: 75
         }
+        var thumbImageWidth = device.portrait() ? jks.View.getScreenWidth() * .6 : 300;
         _imgHeight = this.thumbSize.height;
 
         this.o = {saturation: -.5};
@@ -137,6 +142,7 @@ this.jks = this.jks || {};
 
 
     jks.Thumb = Thumb;
+
 
 }());
 

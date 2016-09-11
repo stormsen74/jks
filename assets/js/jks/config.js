@@ -14,7 +14,7 @@ this.jks = this.jks || {};
 
     function Config(json) {
 
-        this.version = '0.3.2';
+        this.version = '0.3.6';
         this.debug = true;
 
         _json = json;
@@ -37,13 +37,13 @@ this.jks = this.jks || {};
         this.assets = {};
         this.assets.manifest = [
             {
-                "src": "assets/img/navigation/nav_arrow_42x130.png",
-                "id": "nav_arrow"
-            },
-            {
-                "src": "assets/img/navigation/nav_arrow_42x130.png",
-                "id": "nav_arrow_2"
+                "src": "assets/img/navigation/side_nav_arrow.png",
+                "id": "side_nav_arrow"
             }
+            //{
+            //    "src": "assets/img/navigation/nav_arrow_42x130.png",
+            //    "id": "nav_arrow_2"
+            //}
         ];
 
 

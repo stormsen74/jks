@@ -11,7 +11,6 @@ this.jks = this.jks || {};
 
     var _scope;
     var _config;
-    var _assets;
     var _dataHandler;
     var _router;
     var _navigation;
@@ -21,15 +20,6 @@ this.jks = this.jks || {};
 
     function Core() {
         _scope = this;
-
-        this.setOrder = function () {
-
-        };
-
-
-        function update() {
-
-        }
 
 
         function init() {
@@ -41,7 +31,6 @@ this.jks = this.jks || {};
             _jsonLoader.load();
 
             function onJSONLoaded() {
-
 
                 _config = new jks.Config(_jsonLoader.getResult()[0]);
                 _jsonLoader.destroy();
@@ -67,5 +56,10 @@ this.jks = this.jks || {};
     }
 
     jks.Core = Core;
+
+    jks.Core.isMobile = function () {
+        //http://matthewhudson.me/projects/device.js/
+        return device.mobile();
+    }
 
 }());

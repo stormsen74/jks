@@ -13,6 +13,7 @@ this.jks = this.jks || {};
     var _scope;
     var _imgRatio;
     var $ThumbOffsetX = 10;
+    var $OffsetBottom = 30;
     var _imgHeight = 23;
 
 
@@ -87,8 +88,13 @@ this.jks = this.jks || {};
 
 
         this.init = function (slideObject) {
-            console.log('init - ThumbNavigation');
+            console.log('init - ThumbNavigation', jks.Core.isMobile());
             //console.log(slideObject.slideNumImages);
+
+            if (jks.Core.isMobile()) {
+                $ThumbOffsetX = 0;
+                $OffsetBottom = 0;
+            }
 
 
             for (var i = 0; i < slideObject.slideNumImages; i++) {
@@ -108,6 +114,12 @@ this.jks = this.jks || {};
             _scope.thumbs[0].select();
 
 
+        }
+
+
+        this.update = function() {
+            _scope.container.x = jks.View.getScreenWidth() * .5 - _scope.container.getWidth() * .5;
+            _scope.container.y = jks.View.getScreenHeight() - _scope.container.getHeight() - $OffsetBottom;
         }
 
 
