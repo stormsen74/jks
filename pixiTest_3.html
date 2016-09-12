@@ -7,14 +7,16 @@
     <script src="https://rawgithub.com/mrdoob/stats.js/master/build/stats.min.js"></script>
     <script src="assets/js/preloadjs-0.6.2.min.js"></script>
 
-    <!--<script src="assets/js/pixi/pixi.js"></script>-->
+    <script src="assets/js/pixi/pixi.js"></script>
     <script src="assets/js/gsap/plugins/ThrowPropsPlugin.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.0-rc3/pixi.js"></script>
-    <script src="assets/js/pixi/filters.min.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.0-rc3/pixi.js"></script>-->
+    <!--<script src="assets/js/pixi/filters.min.js"></script>-->
     <script src="assets/js/gsap/TweenLite.min.js"></script>
     <script src="assets/js/gsap/TweenMax.min.js"></script>
     <script src="assets/js/gsap/easing/EasePack.min.js"></script>
     <script src="assets/js/gsap/utils/Draggable.min.js"></script>
+
+    <script src="assets/js/jks/pixiFilterTest.js"></script>
 
 
     <style>
@@ -120,7 +122,7 @@
 
     function onAssetsLoaded() {
         console.log('loaded!', _loader.getResult("img_0"))
-        var sprite = new PIXI.Sprite(PIXI.Texture.fromImage(_loader.getResult("img_0").src));
+//        var sprite = new PIXI.Sprite(PIXI.Texture.fromImage(_loader.getResult("img_0").src));
 
         initPixi();
         initFilterTest();
@@ -180,7 +182,7 @@
         stage.addChild(fsImageContainer);
 
         //  FILTER TEST!
-        var filter = new PIXI.filters.AsciiFilter();
+//        var filter = new PIXI.filters.AsciiFilter();
 //        var filter = new PIXI.filters.BloomFilter()
         // colorMatrix
 //            var filter = new PIXI.filters.ColorMatrixFilter()
@@ -293,33 +295,27 @@
     /*--------------------------------------------
      ~ CUSTOM FILTER
      --------------------------------------------*/
+//
+//    function CustomFilter(fragmentSource) {
+//
+//        PIXI.Filter.call(this,
+//                // vertex shader
+//                null,
+//                // fragment shader
+//                fragmentSource
+//        );
+//    }
+//
+//    CustomFilter.prototype = Object.create(PIXI.Filter.prototype);
+//    CustomFilter.prototype.constructor = CustomFilter;
 
-    function CustomFilter(fragmentSource) {
 
-        PIXI.Filter.call(this,
-                // vertex shader
-                null,
-                // fragment shader
-                fragmentSource
-        );
-    }
-
-    CustomFilter.prototype = Object.create(PIXI.Filter.prototype);
-    CustomFilter.prototype.constructor = CustomFilter;
-
-
-    var filter;
+    var _tresholdFilter;
     function initCustomFilterTest() {
-        PIXI.loader.add('shader', 'assets/js/jks/filters/treshold.frag');
-        PIXI.loader.once('complete', onLoaded);
-        PIXI.loader.load();
+        _tresholdFilter = new TresholdFilter();
+        _tresholdFilter.offset.x = 0;
+            fsImageContainer.filters = [_tresholdFilter];
 
-        function onLoaded(loader, res) {
-            var fragmentSrc = res.shader.data;
-            filter = new CustomFilter(fragmentSrc);
-            fsImageContainer.filters = [filter];
-//            filter.uniforms.offset.x = .5;
-        }
     }
 
     var t = 0
@@ -327,7 +323,7 @@
         requestAnimationFrame(animate);
 
         t += .01;
-        if (filter) filter.uniforms.offset.x = Math.sin(t);
+        if (_tresholdFilter) _tresholdFilter.offset.x = Math.sin(t);
         // render the container
         pixiRenderer.render(stage);
 
@@ -337,6 +333,7 @@
     }
 
     window.addEventListener('resize', onResize);
+    TweenLite.delayedCall(1, onResize)
 
     var _screenWidth, _screenHeight;
     var _scalePoint = new PIXI.Point(0, 0);
