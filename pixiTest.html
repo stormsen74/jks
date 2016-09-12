@@ -78,7 +78,7 @@
     var _loader;
     var manifest = [
         {
-            src: "assets/img/tst/fsImage_1200x750_c.jpg",
+            src: "assets/img/01_meeresrauschen/01.jpg",
             id: "img_0",
         }, {
             src: "assets/img/tst/fsImage_1920x1372.jpg",
@@ -125,6 +125,7 @@
         initPixi();
         initFilterTest();
         initDraggableTest();
+        initCustomFilterTest();
         animate();
     }
 
@@ -193,6 +194,9 @@
         TweenLite.delayedCall(.1, onResize);
     }
 
+    /*--------------------------------------------
+     ~ DRAGABLE TEST
+     --------------------------------------------*/
 
     function initDraggableTest() {
 //        http://pixijs.github.io/examples/#/demos/dragging.js
@@ -246,6 +250,9 @@
 
     }
 
+    /*--------------------------------------------
+     ~ FILTER TEST
+     --------------------------------------------*/
     var tSprite, tSpriteMask, tContainer;
     var displacementSprite, displacementFilter;
     var sFilter;
@@ -282,10 +289,44 @@
         TweenLite.to(swoosh, 2, {delay: 2, x: 512, ease: Sine.easeInOut});
     }
 
+    /*--------------------------------------------
+     ~ CUSTOM FILTER
+     --------------------------------------------*/
 
+    function CustomFilter(fragmentSource) {
+
+        PIXI.Filter.call(this,
+                // vertex shader
+                null,
+                // fragment shader
+                fragmentSource
+        );
+    }
+
+    CustomFilter.prototype = Object.create(PIXI.Filter.prototype);
+    CustomFilter.prototype.constructor = CustomFilter;
+
+
+    var filter;
+    function initCustomFilterTest() {
+        PIXI.loader.add('shader', 'assets/js/jks/filters/treshold.frag');
+        PIXI.loader.once('complete', onLoaded);
+        PIXI.loader.load();
+
+        function onLoaded(loader, res) {
+            var fragmentSrc = res.shader.data;
+            filter = new CustomFilter(fragmentSrc);
+            fsImageContainer.filters = [filter];
+//            filter.uniforms.offset.x = .5;
+        }
+    }
+
+    var t = 0
     function animate() {
         requestAnimationFrame(animate);
 
+        t += .01;
+        if (filter) filter.uniforms.offset.x = Math.sin(t);
         // render the container
         pixiRenderer.render(stage);
 

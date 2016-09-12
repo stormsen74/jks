@@ -5,7 +5,6 @@
 // @ https://developer.tizen.org/community/tip-tech/creating-pixi.js-filters-using-webgl
 
 
-
 /*--------------------------------------------
  ~ TRESHHOLD
  --------------------------------------------*/
@@ -27,7 +26,7 @@ function TresholdFilter() {
         'void main(void)',
         '{',
         '   vec2 pixelSize = vec2(1.0) / dimensions.xy;',
-        '   vec2 coord = vTextureCoord.xy - pixelSize.xy * offset;',
+    '   vec2 coord = vTextureCoord.xy - pixelSize.xy * offset;',
         '   vec4 pixel = texture2D(uSampler, vTextureCoord);',
 
         '   float bright = .33333 * (pixel.r + pixel.g + pixel.b);',
@@ -36,6 +35,7 @@ function TresholdFilter() {
         '   gl_FragColor = vec4(vec3(pixel.r*b,pixel.g*b,pixel.b*b),vec3(b));',
         '}'
     ].join('\n');
+
 
     var uniforms = {
         dimensions: {
@@ -51,10 +51,16 @@ function TresholdFilter() {
         }
     };
 
-    PIXI.AbstractFilter.call(this, vertexShader, fragmentShader, uniforms);
+    // PIXI.Filter.call(this, vertexShader, fragmentShader, uniforms);
+
+    var f = new PIXI.Filter(vertexShader, uniforms, fragmentShader)
+
+
+    console.log(f)
+
 }
 
-TresholdFilter.prototype = Object.create(PIXI.AbstractFilter.prototype);
+TresholdFilter.prototype = Object.create(PIXI.Filter.prototype);
 TresholdFilter.prototype.constructor = TresholdFilter;
 
 Object.defineProperties(TresholdFilter.prototype, {
