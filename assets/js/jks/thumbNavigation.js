@@ -121,7 +121,7 @@ this.jks = this.jks || {};
                 thumb.mask.on('mouseover', this.onHoverThumb);
                 thumb.mask.on('mouseout', this.onHoverOutThumb);
 
-                // thumb.mask
+                 //thumb.mask
                     // .on('mousedown', onTapStart).on('touchstart', onTapStart)
                     // .on('mousemove', onDragMove).on('touchmove', onDragMove)
                     // .on('mouseup', onTapEnd).on('mouseupoutside', onTapEnd)
