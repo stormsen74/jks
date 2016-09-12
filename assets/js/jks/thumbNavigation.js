@@ -48,6 +48,7 @@ this.jks = this.jks || {};
 
 
         this.onClickThumb = function (e) {
+            console.log('click')
             if (!_scope.isLocked) {
                 _scope.s.onClickThumb.dispatch(e.target.ID);
             }
@@ -115,16 +116,16 @@ this.jks = this.jks || {};
                 _imgHeight = thumb.thumbSize.height;
                 _compWidth += thumb.thumbSize.width + $ThumbOffsetX;
 
-                //thumb.mask.on('click', this.onClickThumb);
-                //thumb.mask.on('mousedown', this.onClickThumb).on('touchstart', this.onClickThumb)
+                thumb.mask.on('click', this.onClickThumb);
+                thumb.mask.on('mousedown', this.onClickThumb).on('touchstart', this.onClickThumb)
                 thumb.mask.on('mouseover', this.onHoverThumb);
                 thumb.mask.on('mouseout', this.onHoverOutThumb);
 
-                thumb.mask
-                    .on('mousedown', onTapStart).on('touchstart', onTapStart)
-                    .on('mousemove', onDragMove).on('touchmove', onDragMove)
-                    .on('mouseup', onTapEnd).on('mouseupoutside', onTapEnd)
-                    .on('touchend', onTapEnd).on('touchendoutside', onTapEnd)
+                // thumb.mask
+                    // .on('mousedown', onTapStart).on('touchstart', onTapStart)
+                    // .on('mousemove', onDragMove).on('touchmove', onDragMove)
+                    // .on('mouseup', onTapEnd).on('mouseupoutside', onTapEnd)
+                    // .on('touchend', onTapEnd).on('touchendoutside', onTapEnd)
 
 
                 function onTapStart() {

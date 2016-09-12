@@ -88,7 +88,7 @@ this.jks = this.jks || {};
             var _screen = document.getElementById('screen');
 
             var rendererOptions = {
-                antialiasing: false,
+                antialiasing: true,
                 transparent: false,
                 backgroundColor: 0xcccccc,
                 autoResize: false,

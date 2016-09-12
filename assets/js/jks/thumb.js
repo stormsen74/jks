@@ -21,6 +21,11 @@ this.jks = this.jks || {};
 
     function Thumb(_id, r, _texture) {
 
+        // TODO
+        // - remove front / addFilter To _texture
+        // cache as Bitmap
+        // mask TumbNavi
+
         console.log('thumb')
         console.log(jks.View.getScreenWidth());
 
@@ -48,6 +53,8 @@ this.jks = this.jks || {};
         _thumb.height = _thumb.width / _imgRatio;
         _thumb.x = (this.thumbSize.width - _thumb.width) * .5;
         _thumb.y = (this.thumbSize.height - _thumb.height) * .5;
+        // console.log(_thumb.getLocalBounds())
+        // _thumb.cacheAsBitmap = true;
 
         this.front = new PIXI.Sprite();
         this.front.texture = _texture;
@@ -60,6 +67,7 @@ this.jks = this.jks || {};
         _colorMatrixFilter = new PIXI.filters.ColorMatrixFilter()
         _colorMatrixFilter.saturate(-.9);
         this.front.filters = [_colorMatrixFilter];
+        // this.front.cacheAsBitmap = true;
 
 
         this.mask = new PIXI.Graphics();
@@ -86,11 +94,11 @@ this.jks = this.jks || {};
         this.container.addChild(this.overlay);
         this.container.addChild(this.outline);
         this.container.mask = this.mask;
+        // this.container.cacheAsBitmap = true;
 
         this.mask.interactive = true;
         this.mask.buttonMode = true;
         this.mask.ID = _id;
-
 
 
         this.onHover = function () {
