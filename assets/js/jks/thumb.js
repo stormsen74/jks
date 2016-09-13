@@ -12,6 +12,7 @@ this.jks = this.jks || {};
 
     var _scope;
     var _imgRatio;
+    var $outlineWidth = 2;
     var _imgHeight = 23;
     var _o;
 
@@ -21,16 +22,14 @@ this.jks = this.jks || {};
 
     function Thumb(_id, r, _texture) {
 
-        // TODO
-        // - remove front / addFilter To _texture
-        // cache as Bitmap
-        // mask TumbNavi
-
-        console.log('thumb')
-        // console.log(jks.View.getScreenWidth());
-
         _scope = this;
         this.selected = false;
+        this.ID = _id;
+
+        this.s = {
+            onTapDown: new signals.Signal(),
+            onTapUp: new signals.Signal()
+        };
 
         _imgRatio = r;
 
@@ -40,6 +39,7 @@ this.jks = this.jks || {};
             //width: 75,
             //height: 75
         }
+        //console.log(Math.round(jks.View.getScreenWidth() / 4))
         var thumbImageWidth = device.portrait() ? jks.View.getScreenWidth() * .6 : 300;
         _imgHeight = this.thumbSize.height;
 
@@ -52,8 +52,8 @@ this.jks = this.jks || {};
         _thumb.height = _thumb.width / _imgRatio;
         _thumb.x = (this.thumbSize.width - _thumb.width) * .5;
         _thumb.y = (this.thumbSize.height - _thumb.height) * .5;
-        console.log(this.thumbSize.width)
-        // _thumb.cacheAsBitmap = true;
+        //console.log(this.thumbSize.width)
+        //_thumb.cacheAsBitmap = true;
 
         this.front = new PIXI.Sprite(_texture);
         this.front.width = thumbImageWidth;
@@ -63,9 +63,10 @@ this.jks = this.jks || {};
 
 
         _colorMatrixFilter = new PIXI.filters.ColorMatrixFilter()
+        _colorMatrixFilter.padding = 0;
         _colorMatrixFilter.saturate(-.9);
         this.front.filters = [_colorMatrixFilter];
-        // this.front.cacheAsBitmap = true;
+        //this.front.cacheAsBitmap = true;
 
 
         this.mask = new PIXI.Graphics();
@@ -80,9 +81,15 @@ this.jks = this.jks || {};
         this.overlay.scale.x = 1.0;
         this.overlay.alpha = 0.0;
 
+
         this.outline = new PIXI.Graphics();
-        this.outline.lineStyle(4, this.color, 1);
-        this.outline.drawRect(this.mask.x, this.mask.y, this.mask.width, this.mask.height);
+        this.outline.lineStyle($outlineWidth, this.color);
+        this.outline.drawRect(
+            this.mask.x + $outlineWidth,
+            this.mask.y + $outlineWidth,
+            this.mask.width - $outlineWidth * 2,
+            this.mask.height - $outlineWidth * 2
+        );
         this.outline.alpha = 0;
 
         this.container.addChild(_thumb);
@@ -98,11 +105,28 @@ this.jks = this.jks || {};
         this.mask.ID = _id;
 
 
+        this.mask.on('mousedown', onTapDown).on('touchstart', onTapDown)
+        this.mask.on('mouseup', onTapUp).on('touchend', onTapUp)
         this.mask.on('mouseover', onHover);
-        function onHover(e) {
-            console.log(_scope.mask.ID)
+        this.mask.on('mouseout', onHoverOut);
+
+        function onTapDown(event) {
+            _scope.s.onTapDown.dispatch(event);
+            //console.log('e', event);
         }
 
+        function onTapUp(event) {
+            _scope.s.onTapUp.dispatch(this.ID, event);
+            //_scope.activateSlideDrag();
+        }
+
+        function onHover(e) {
+            jks.ThumbNavigation.getThumbByID(this.ID).onHover();
+        }
+
+        function onHoverOut(e) {
+            jks.ThumbNavigation.getThumbByID(this.ID).onHoverOut();
+        }
 
 
         this.onHover = function () {
@@ -128,9 +152,8 @@ this.jks = this.jks || {};
         }
 
         this.updateDragProgress = function (p) {
-            // console.log('th_updateDragProgress ', p)
-
             this.overlay.x = this.thumbSize.width * p;
+            // console.log('th_updateDragProgress ', p)
         }
 
         this.select = function () {
@@ -139,7 +162,7 @@ this.jks = this.jks || {};
             this.outline.alpha = 1;
             this.overlay.x = 0;
             this.overlay.scale.x = 1;
-            this.onHover();
+            //this.onHover();
             TweenLite.to(this.overlay, .3, {delay: .2, alpha: .2, ease: Circ.easeOut})
         };
 
@@ -155,7 +178,6 @@ this.jks = this.jks || {};
 
 
     jks.Thumb = Thumb;
-
 
 }());
 

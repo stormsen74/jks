@@ -496,6 +496,7 @@ this.jks = this.jks || {};
             _thumbNavigation.init(_slideObject);
 
             function onThumbClick(id) {
+                console.log('onThumbClick',id)
                 if (id != _slideObject.currentImage) {
                     _scope.slideTo(id);
                 }

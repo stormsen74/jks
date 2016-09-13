@@ -30,6 +30,7 @@ this.jks = this.jks || {};
         this.selectedThumb = null;
 
         this.dragShape = new PIXI.Graphics();
+        this.dragSlideEnabled = false;
 
 
         _imgRatio = imageRatio;
@@ -47,20 +48,28 @@ this.jks = this.jks || {};
         }
 
 
-        this.onClickThumb = function (e) {
-            console.log('click')
+        //this.onClickThumb = function (e) {
+        //    console.log('click')
+        //    if (!_scope.isLocked) {
+        //        _scope.s.onClickThumb.dispatch(e.target.ID);
+        //    }
+        //}
+
+
+        this.onDispatchClick = function (id) {
+            console.log('onDispatchClick')
             if (!_scope.isLocked) {
-                _scope.s.onClickThumb.dispatch(e.target.ID);
+                _scope.s.onClickThumb.dispatch(id);
             }
         }
 
-        this.onHoverThumb = function (e) {
-            if (!_scope.thumbs[e.target.ID].selected) _scope.thumbs[e.target.ID].onHover();
-        }
-
-        this.onHoverOutThumb = function (e) {
-            if (!_scope.thumbs[e.target.ID].selected) _scope.thumbs[e.target.ID].onHoverOut();
-        }
+        //this.onHoverThumb = function (e) {
+        //    if (!_scope.thumbs[e.target.ID].selected) _scope.thumbs[e.target.ID].onHover();
+        //}
+        //
+        //this.onHoverOutThumb = function (e) {
+        //    if (!_scope.thumbs[e.target.ID].selected) _scope.thumbs[e.target.ID].onHoverOut();
+        //}
 
         this.selectThumb = function (id) {
             _scope.thumbs[id].select();
@@ -81,7 +90,6 @@ this.jks = this.jks || {};
             _scope.thumbs[id].showProgress(t);
         }
 
-
         this.setSelectedThumb = function (id) {
             this.selectedThumb = _scope.thumbs[id];
         }
@@ -89,15 +97,6 @@ this.jks = this.jks || {};
         this.updateDragProgress = function (p) {
             this.selectedThumb.updateDragProgress(p);
             //_scope.thumbs[id].updateDragProgress(p);
-        }
-
-
-        function onTapStart() {
-            console.log('onTapStart');
-        }
-
-        function onTapEnd() {
-            console.log('onTapEnd');
         }
 
 
@@ -115,26 +114,25 @@ this.jks = this.jks || {};
                 var thumb = new jks.Thumb(i, _imgRatio, PIXI.Texture.fromImage(slideObject.configData.pageData[slideObject.pageID].images[i].src));
                 _imgHeight = thumb.thumbSize.height;
                 _compWidth += thumb.thumbSize.width + $ThumbOffsetX;
+                thumb.s.onTapDown.add(onTapDown);
+                thumb.s.onTapUp.add(onTapUp);
 
-                // thumb.overlay.on('click', this.onClickThumb);
-                thumb.mask.on('mousedown', this.onClickThumb).on('touchstart', this.onClickThumb)
-                thumb.mask.on('mouseover', this.onHoverThumb);
-                thumb.mask.on('mouseout', this.onHoverOutThumb);
+                function onTapUp(id, event) {
+                    //console.log('recieved:', id, event)
 
-                // thumb.mask
-                // .on('mousedown', onTapStart).on('touchstart', onTapStart)
-                // .on('mousemove', onDragMove).on('touchmove', onDragMove)
-                // .on('mouseup', onTapEnd).on('mouseupoutside', onTapEnd)
-                // .on('touchend', onTapEnd).on('touchendoutside', onTapEnd)
+                    TweenLite.killDelayedCallsTo(enableDragSlide)
 
-
-                function onTapStart() {
-                    console.log('onTapStart')
+                    if (!_scope.isLocked) {
+                        _scope.s.onClickThumb.dispatch(id);
+                    }
                 }
 
-                function onTapEnd() {
-                    _scope.activateSlideDrag();
-                    console.log('onTapEnd')
+                function onTapDown(event) {
+                    TweenLite.delayedCall(.2, enableDragSlide, [event])
+                }
+
+                function enableDragSlide(event) {
+                    _scope.activateSlideDrag(event);
                 }
 
                 thumb.container.x = i * (thumb.thumbSize.width + $ThumbOffsetX);
@@ -148,7 +146,8 @@ this.jks = this.jks || {};
             _scope.thumbs[0].select();
 
             //TODO
-            // initDrag(thumb, slideObject.slideNumImages);
+            initDrag(thumb, slideObject.slideNumImages);
+
 
 
         }
@@ -161,19 +160,21 @@ this.jks = this.jks || {};
             _scope.tracker = VelocityTracker.track(_scope.container, "x,y");
 
             _scope.shapeWidth = _lastThumb.thumbSize.width * _numThumbs;
+            //console.log(_scope.shapeWidth)
 
 
             _scope.dragShape.beginFill(0x55ff00);
             _scope.dragShape.drawRect(0, 0, _scope.shapeWidth, _lastThumb.thumbSize.height);
-            _scope.dragShape.alpha = .0;
+            _scope.dragShape.alpha = .3;
             _scope.dragShape.endFill();
 
-            _scope.dragShape.buttonMode = true;
+            _scope.dragShape.interactive = false;
+            _scope.dragShape.visible = false;
 
             _scope.container.addChild(_scope.dragShape)
 
             _scope.dragShape
-                .on('mousedown', onDragStart).on('touchstart', onDragStart)
+                //.on('mousedown', onDragStart).on('touchstart', onDragStart)
                 .on('mousemove', onDragMove).on('touchmove', onDragMove)
                 .on('mouseup', onDragEnd).on('mouseupoutside', onDragEnd)
                 .on('touchend', onDragEnd).on('touchendoutside', onDragEnd)
@@ -181,15 +182,21 @@ this.jks = this.jks || {};
         }
 
 
-        this.activateSlideDrag = function () {
-            _scope.dragShape.alpha = .3;
+        this.activateSlideDrag = function (event) {
+            _scope.dragSlideEnabled = true;
+            _scope.dragShape.visible = true;
             _scope.dragShape.interactive = true;
+            //_scope.dragShape.on('mousedown', onDragStart);
+            //_scope.dragShape.on('touchstart', onDragStart);
+            onDragStart(event)
         }
 
 
         this.deactivateSlideDrag = function () {
-            _scope.dragShape.alpha = 0;
+            _scope.dragShape.visible = false;
             _scope.dragShape.interactive = false;
+            //_scope.dragShape.off('mousedown', onDragStart);
+            //_scope.dragShape.off('touchstart', onDragStart);
         }
 
         //TweenLite.delayedCall(2, _scope.activateSlideDrag)
@@ -224,6 +231,7 @@ this.jks = this.jks || {};
             });
 
             console.log('onDragEnd');
+            _scope.deactivateSlideDrag();
         }
 
 
@@ -250,6 +258,10 @@ this.jks = this.jks || {};
 
 
     jks.ThumbNavigation = ThumbNavigation;
+
+    jks.ThumbNavigation.getThumbByID = function (id) {
+        return (_scope.thumbs[id]);
+    }
 
 }());
 
