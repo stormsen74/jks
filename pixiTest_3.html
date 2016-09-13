@@ -295,26 +295,27 @@
     /*--------------------------------------------
      ~ CUSTOM FILTER
      --------------------------------------------*/
-//
-//    function CustomFilter(fragmentSource) {
-//
-//        PIXI.Filter.call(this,
-//                // vertex shader
-//                null,
-//                // fragment shader
-//                fragmentSource
-//        );
-//    }
-//
-//    CustomFilter.prototype = Object.create(PIXI.Filter.prototype);
-//    CustomFilter.prototype.constructor = CustomFilter;
+    //
+    //    function CustomFilter(fragmentSource) {
+    //
+    //        PIXI.Filter.call(this,
+    //                // vertex shader
+    //                null,
+    //                // fragment shader
+    //                fragmentSource
+    //        );
+    //    }
+    //
+    //    CustomFilter.prototype = Object.create(PIXI.Filter.prototype);
+    //    CustomFilter.prototype.constructor = CustomFilter;
 
 
     var _tresholdFilter;
     function initCustomFilterTest() {
         _tresholdFilter = new TresholdFilter();
+        _tresholdFilter.padding = 0;
         _tresholdFilter.offset.x = 0;
-            fsImageContainer.filters = [_tresholdFilter];
+        fsImageContainer.filters = [_tresholdFilter];
 
     }
 

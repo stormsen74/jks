@@ -7,13 +7,13 @@
     <script src="https://rawgithub.com/mrdoob/stats.js/master/build/stats.min.js"></script>
     <script src="assets/js/preloadjs-0.6.2.min.js"></script>
 
-    <!--<script src="assets/js/pixi/pixi.js"></script>-->
-    <script src="assets/js/gsap/plugins/ThrowPropsPlugin.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.0-rc3/pixi.js"></script>
-    <script src="assets/js/pixi/filters.min.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.0-rc3/pixi.js"></script>-->
+    <script src="assets/js/pixi/pixi41.js"></script>
+    <!--<script src="assets/js/pixi/filters.min.js"></script>-->
     <script src="assets/js/gsap/TweenLite.min.js"></script>
     <script src="assets/js/gsap/TweenMax.min.js"></script>
     <script src="assets/js/gsap/easing/EasePack.min.js"></script>
+    <script src="assets/js/gsap/plugins/ThrowPropsPlugin.min.js"></script>
     <script src="assets/js/gsap/utils/Draggable.min.js"></script>
 
 
@@ -135,7 +135,7 @@
      --------------------------------------------*/
 
     var $imageWidth = 1200;
-    var $imageHeight = 750;
+    var $imageHeight = 800;
 
     var screenWidth = function () {
         return window.innerWidth
@@ -180,7 +180,7 @@
         stage.addChild(fsImageContainer);
 
         //  FILTER TEST!
-        var filter = new PIXI.filters.AsciiFilter();
+//        var filter = new PIXI.filters.AsciiFilter();
 //        var filter = new PIXI.filters.BloomFilter()
         // colorMatrix
 //            var filter = new PIXI.filters.ColorMatrixFilter()
@@ -188,7 +188,7 @@
 //        fsImageContainer.filters = [filter];
 
         var fsImageRatio;
-        fsImageRatio = fsImage.texture.width / fsImage.texture.height;
+        fsImageRatio = $imageWidth / $imageHeight;
         console.log('ratio', fsImageRatio);
 
         TweenLite.delayedCall(.1, onResize);
@@ -219,7 +219,6 @@
         sprite.on('mouseupoutside', stopDrag)
         sprite.on('mousemove', moveDrag);
         var tracker = VelocityTracker.track(sprite, "x,y");
-        console.log(VelocityTracker)
 
         function startDrag(event) {
             dragData.isDragging = true;
@@ -316,8 +315,9 @@
         function onLoaded(loader, res) {
             var fragmentSrc = res.shader.data;
             filter = new CustomFilter(fragmentSrc);
+            filter.padding = 0;
             fsImageContainer.filters = [filter];
-//            filter.uniforms.offset.x = .5;
+            filter.uniforms.offset.x = 0;
         }
     }
 

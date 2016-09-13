@@ -248,38 +248,38 @@ this.jks = this.jks || {};
          ~ CUSTOM FILTER
          --------------------------------------------*/
 
-        //function TresholdFilter(fragmentSource) {
-        //
-        //    PIXI.Filter.call(this,
-        //        // vertex shader
-        //        null,
-        //        // fragment shader
-        //        fragmentSource
-        //    );
-        //}
-        //
-        //TresholdFilter.prototype = Object.create(PIXI.Filter.prototype);
-        //TresholdFilter.prototype.constructor = TresholdFilter;
-        //
-        //function initCustomFilterTest() {
-        //    PIXI.loader.add('shader', 'assets/js/jks/filters/treshold.frag');
-        //    PIXI.loader.once('complete', onLoaded);
-        //    PIXI.loader.load();
-        //
-        //    function onLoaded(loader, res) {
-        //        var fragmentSrc = res.shader.data;
-        //        _tresholdFilter = new TresholdFilter(fragmentSrc);
-        //
-        //        initTransition();
-        //    }
-        //}
+        function TresholdFilter(fragmentSource) {
+
+           PIXI.Filter.call(this,
+               // vertex shader
+               null,
+               // fragment shader
+               fragmentSource
+           );
+        }
+
+        TresholdFilter.prototype = Object.create(PIXI.Filter.prototype);
+        TresholdFilter.prototype.constructor = TresholdFilter;
+
+        function initCustomFilterTest() {
+           PIXI.loader.add('shader', 'assets/js/jks/filters/treshold.frag');
+           PIXI.loader.once('complete', onLoaded);
+           PIXI.loader.load();
+
+           function onLoaded(loader, res) {
+               var fragmentSrc = res.shader.data;
+               _tresholdFilter = new TresholdFilter(fragmentSrc);
+               _tresholdFilter.padding = 0;
+
+               initTransition();
+           }
+        }
 
         function initTransition() {
 
 
-            _tresholdFilter = new TresholdFilter();
-
-            _tresholdFilter.offset.x = 1;
+            // _tresholdFilter = new TresholdFilter();
+            _tresholdFilter.uniforms.offset.x = 1;
 
             _colorMatrixFilter = new PIXI.filters.ColorMatrixFilter()
             _colorMatrixFilter.saturate(-1);
@@ -287,7 +287,7 @@ this.jks = this.jks || {};
             _fsImageContainerFront.filters = [_tresholdFilter, _colorMatrixFilter];
 
             tl_1 = new TimelineLite({paused: true});
-            tl_1.add(TweenLite.to(_tresholdFilter.offset, $transitionTime, {
+            tl_1.add(TweenLite.to(_tresholdFilter.uniforms.offset, $transitionTime, {
                 x: 0,
                 ease: Linear.easeNone,
                 onStart: onTransitionStart
@@ -357,7 +357,7 @@ this.jks = this.jks || {};
             console.log('onTransitionEnd');
 
             _o.saturation = -1;
-            _tresholdFilter.offset.x = 1;
+            _tresholdFilter.uniforms.offset.x = 1;
             _colorMatrixFilter.saturate(-1);
 
             _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.currentImage].src);
@@ -447,8 +447,8 @@ this.jks = this.jks || {};
         initRenderer();
         initFSImages();
         initDragShape();
-        //initCustomFilterTest();
-        initTransition();
+        initCustomFilterTest();
+        // initTransition();
 
         initListener();
         renderLoop();
@@ -503,9 +503,11 @@ this.jks = this.jks || {};
         }
 
         this.initSideNavigation = function () {
+            console.log('jks.SideNavigation')
             _sideNavigation = new jks.SideNavigation();
             //_sideNavigation.init();
             _stage.addChild(_sideNavigation.container);
+
 
             _sideNavigation.s.onClickNext.add(onClickNext);
             _sideNavigation.s.onClickPrev.add(onClickPrev);

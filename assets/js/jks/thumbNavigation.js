@@ -116,16 +116,16 @@ this.jks = this.jks || {};
                 _imgHeight = thumb.thumbSize.height;
                 _compWidth += thumb.thumbSize.width + $ThumbOffsetX;
 
-                thumb.mask.on('click', this.onClickThumb);
+                // thumb.overlay.on('click', this.onClickThumb);
                 thumb.mask.on('mousedown', this.onClickThumb).on('touchstart', this.onClickThumb)
                 thumb.mask.on('mouseover', this.onHoverThumb);
                 thumb.mask.on('mouseout', this.onHoverOutThumb);
 
-                 //thumb.mask
-                    // .on('mousedown', onTapStart).on('touchstart', onTapStart)
-                    // .on('mousemove', onDragMove).on('touchmove', onDragMove)
-                    // .on('mouseup', onTapEnd).on('mouseupoutside', onTapEnd)
-                    // .on('touchend', onTapEnd).on('touchendoutside', onTapEnd)
+                // thumb.mask
+                // .on('mousedown', onTapStart).on('touchstart', onTapStart)
+                // .on('mousemove', onDragMove).on('touchmove', onDragMove)
+                // .on('mouseup', onTapEnd).on('mouseupoutside', onTapEnd)
+                // .on('touchend', onTapEnd).on('touchendoutside', onTapEnd)
 
 
                 function onTapStart() {
@@ -147,8 +147,8 @@ this.jks = this.jks || {};
 
             _scope.thumbs[0].select();
 
-
-            initDrag(thumb, slideObject.slideNumImages);
+            //TODO
+            // initDrag(thumb, slideObject.slideNumImages);
 
 
         }
@@ -179,8 +179,6 @@ this.jks = this.jks || {};
                 .on('touchend', onDragEnd).on('touchendoutside', onDragEnd)
 
         }
-
-
 
 
         this.activateSlideDrag = function () {

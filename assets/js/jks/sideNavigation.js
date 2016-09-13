@@ -41,14 +41,14 @@ this.jks = this.jks || {};
         _activeRight.beginFill(0x00ff00)
         _activeRight.drawRect(0, 0, $HoverShapeWidth, $HoverShapeHeight)
         _activeRight.endFill();
-        _activeRight.alpha = .0;
+        _activeRight.alpha = .3;
         _activeRight.x -= $HoverShapeWidth;
         _activeRight.y -= $HoverShapeHeight * .5;
         _activeRight.interactive = true;
 
-        _sideArrowRight = new PIXI.Sprite();
-        _sideArrowRight.texture = PIXI.Texture.fromImage(jks.View.getAssetByID('side_nav_arrow').src);
-        _sideArrowRight.anchor = new PIXI.Point(1, .5)
+        _sideArrowRight = new PIXI.Sprite.fromImage(jks.View.getAssetByID('side_nav_arrow').src)
+        _sideArrowRight.anchor.x = 1;
+        _sideArrowRight.anchor.y = .5;
         _sideArrowRight.x = -$OffsetSide;
 
         this.sideArrowRight = new PIXI.Container();
@@ -59,15 +59,15 @@ this.jks = this.jks || {};
         _activeLeft.beginFill(0x00ff00)
         _activeLeft.drawRect(0, 0, $HoverShapeWidth, $HoverShapeHeight)
         _activeLeft.endFill();
-        _activeLeft.alpha = .0;
+        _activeLeft.alpha = .3;
         _activeLeft.x = 0;
         _activeLeft.y -= $HoverShapeHeight * .5;
         _activeLeft.interactive = true;
 
-        _sideArrowLeft = new PIXI.Sprite();
-        _sideArrowLeft.texture = PIXI.Texture.fromImage(jks.View.getAssetByID('side_nav_arrow').src);
+        _sideArrowLeft = new PIXI.Sprite.fromImage(jks.View.getAssetByID('side_nav_arrow').src)
+        _sideArrowLeft.anchor.x = 1;
+        _sideArrowLeft.anchor.y = .5;
         _sideArrowLeft.scale.x = -1;
-        _sideArrowLeft.anchor = new PIXI.Point(1, .5)
         _sideArrowLeft.x = $OffsetSide;
 
         this.sideArrowLeft = new PIXI.Container();

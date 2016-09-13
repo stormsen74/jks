@@ -27,7 +27,7 @@ this.jks = this.jks || {};
         // mask TumbNavi
 
         console.log('thumb')
-        console.log(jks.View.getScreenWidth());
+        // console.log(jks.View.getScreenWidth());
 
         _scope = this;
         this.selected = false;
@@ -47,17 +47,15 @@ this.jks = this.jks || {};
         this.container = new PIXI.Container();
         this.color = 0x408080; //0x506995
 
-        _thumb = new PIXI.Sprite();
-        _thumb.texture = _texture;
+        _thumb = new PIXI.Sprite(_texture);
         _thumb.width = thumbImageWidth;
         _thumb.height = _thumb.width / _imgRatio;
         _thumb.x = (this.thumbSize.width - _thumb.width) * .5;
         _thumb.y = (this.thumbSize.height - _thumb.height) * .5;
-        // console.log(_thumb.getLocalBounds())
+        console.log(this.thumbSize.width)
         // _thumb.cacheAsBitmap = true;
 
-        this.front = new PIXI.Sprite();
-        this.front.texture = _texture;
+        this.front = new PIXI.Sprite(_texture);
         this.front.width = thumbImageWidth;
         this.front.height = this.front.width / _imgRatio;
         this.front.x = (this.thumbSize.width - this.front.width) * .5;
@@ -71,7 +69,7 @@ this.jks = this.jks || {};
 
 
         this.mask = new PIXI.Graphics();
-        this.mask.beginFill();
+        this.mask.beginFill(0x00ff00);
         this.mask.drawRect(0, 0, this.thumbSize.width, this.thumbSize.height);
         this.mask.endFill();
 
@@ -79,7 +77,7 @@ this.jks = this.jks || {};
         this.overlay.beginFill(this.color);
         this.overlay.drawRect(this.mask.x, this.mask.y, this.mask.width, this.mask.height);
         this.overlay.endFill;
-        this.overlay.scale.x = 0.0;
+        this.overlay.scale.x = 1.0;
         this.overlay.alpha = 0.0;
 
         this.outline = new PIXI.Graphics();
@@ -87,18 +85,24 @@ this.jks = this.jks || {};
         this.outline.drawRect(this.mask.x, this.mask.y, this.mask.width, this.mask.height);
         this.outline.alpha = 0;
 
-
-        this.container.addChild(this.mask);
         this.container.addChild(_thumb);
         this.container.addChild(this.front);
         this.container.addChild(this.overlay);
         this.container.addChild(this.outline);
+        this.container.addChild(this.mask);
         this.container.mask = this.mask;
         // this.container.cacheAsBitmap = true;
 
         this.mask.interactive = true;
         this.mask.buttonMode = true;
         this.mask.ID = _id;
+
+
+        this.mask.on('mouseover', onHover);
+        function onHover(e) {
+            console.log(_scope.mask.ID)
+        }
+
 
 
         this.onHover = function () {
