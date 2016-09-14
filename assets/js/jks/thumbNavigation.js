@@ -39,22 +39,12 @@ this.jks = this.jks || {};
         var _compWidth = 0;
         this.container = new PIXI.Container();
 
-
         this.container.getWidth = function () {
             return _compWidth;
-        }
+        };
         this.container.getHeight = function () {
             return _imgHeight;
-        }
-
-
-        //this.onClickThumb = function (e) {
-        //    console.log('click')
-        //    if (!_scope.isLocked) {
-        //        _scope.s.onClickThumb.dispatch(e.target.ID);
-        //    }
-        //}
-
+        };
 
         this.onDispatchClick = function (id) {
             console.log('onDispatchClick')
@@ -92,14 +82,18 @@ this.jks = this.jks || {};
 
         this.setSelectedThumb = function (id) {
             this.selectedThumb = _scope.thumbs[id];
-        }
+        };
 
         this.updateDragProgress = function (p) {
             this.selectedThumb.updateDragProgress(p);
             //_scope.thumbs[id].updateDragProgress(p);
-        }
+        };
 
-
+        /*--------------------------------------------
+         ~ INIT /
+         --------------------------------------------*/
+        var thumbScaleMode = PIXI.SCALE_MODES.LINEAR;
+        var thumbCrossOrigin = false;
         this.init = function (slideObject) {
             console.log('init - ThumbNavigation', jks.Core.isMobile());
             //console.log(slideObject.slideNumImages);
@@ -109,16 +103,14 @@ this.jks = this.jks || {};
                 $OffsetBottom = 0;
             }
 
-
             for (var i = 0; i < slideObject.slideNumImages; i++) {
-                var thumb = new jks.Thumb(i, _imgRatio, PIXI.Texture.fromImage(slideObject.configData.pageData[slideObject.pageID].images[i].src));
+                var thumb = new jks.Thumb(i, _imgRatio, PIXI.Texture.fromImage(slideObject.configData.pageData[slideObject.pageID].images[i].src, thumbCrossOrigin, thumbScaleMode));
                 _imgHeight = thumb.thumbSize.height;
                 _compWidth += thumb.thumbSize.width + $ThumbOffsetX;
                 thumb.s.onTapDown.add(onTapDown);
                 thumb.s.onTapUp.add(onTapUp);
 
-                function onTapUp(id, event) {
-                    //console.log('recieved:', id, event)
+                function onTapUp(id) {
 
                     TweenLite.killDelayedCallsTo(enableDragSlide)
 
@@ -145,13 +137,13 @@ this.jks = this.jks || {};
 
             _scope.thumbs[0].select();
 
-            //TODO
             initDrag(thumb, slideObject.slideNumImages);
 
+        };
 
-
-        }
-
+        /*--------------------------------------------
+         ~ DRAGGING
+         --------------------------------------------*/
 
         function initDrag(_lastThumb, _numThumbs) {
 
@@ -174,7 +166,7 @@ this.jks = this.jks || {};
             _scope.container.addChild(_scope.dragShape)
 
             _scope.dragShape
-                //.on('mousedown', onDragStart).on('touchstart', onDragStart)
+            //.on('mousedown', onDragStart).on('touchstart', onDragStart)
                 .on('mousemove', onDragMove).on('touchmove', onDragMove)
                 .on('mouseup', onDragEnd).on('mouseupoutside', onDragEnd)
                 .on('touchend', onDragEnd).on('touchendoutside', onDragEnd)
@@ -186,8 +178,6 @@ this.jks = this.jks || {};
             _scope.dragSlideEnabled = true;
             _scope.dragShape.visible = true;
             _scope.dragShape.interactive = true;
-            //_scope.dragShape.on('mousedown', onDragStart);
-            //_scope.dragShape.on('touchstart', onDragStart);
             onDragStart(event)
         }
 
@@ -195,12 +185,8 @@ this.jks = this.jks || {};
         this.deactivateSlideDrag = function () {
             _scope.dragShape.visible = false;
             _scope.dragShape.interactive = false;
-            //_scope.dragShape.off('mousedown', onDragStart);
-            //_scope.dragShape.off('touchstart', onDragStart);
         }
 
-        //TweenLite.delayedCall(2, _scope.activateSlideDrag)
-        //TweenLite.delayedCall(5, _scope.deactivateSlideDrag)
 
         var dragData = {
             startX: 0,
@@ -217,9 +203,16 @@ this.jks = this.jks || {};
             console.log('onStartDrag', dragData.startX);
         }
 
+        function onDragMove(e) {
+            if (dragData.isDragging) {
+                //console.log(e.data)
+                _scope.container.x = e.data.global.x - dragData.startX;
+            }
+        }
+
         function onDragEnd(event) {
             dragData.isDragging = false;
-            TweenLite.to(_scope.container, 1, {
+            TweenLite.to(_scope.container, .5, {
                 throwProps: {
                     x: {
                         velocity: _scope.tracker.getVelocity("x"),
@@ -227,22 +220,12 @@ this.jks = this.jks || {};
                         min: -_scope.shapeWidth + jks.View.getScreenWidth()
                     }
                 },
-                ease: Strong.easeOut
+                onComplete:null,
+                ease: Power2.easeOut
             });
 
             console.log('onDragEnd');
             _scope.deactivateSlideDrag();
-        }
-
-
-        var oldX = 0;
-
-        function onDragMove(e) {
-            if (dragData.isDragging) {
-                //console.log(e.data)
-                _scope.container.x = e.data.global.x - dragData.startX;
-            }
-
         }
 
 

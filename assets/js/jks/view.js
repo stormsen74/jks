@@ -74,8 +74,9 @@ this.jks = this.jks || {};
         function initListener() {
             window.addEventListener('resize', onResize);
             window.addEventListener("orientationchange", function () {
-                // Announce the new orientation number
-                alert(screen.orientation);
+                var orientation;
+                device.portrait() ? orientation = 'portrait' : orientation = 'landscape';
+                console.log('view :: orientationchange:', orientation)
             }, false);
         };
 
@@ -88,10 +89,12 @@ this.jks = this.jks || {};
             var _screen = document.getElementById('screen');
 
             var rendererOptions = {
-                antialiasing: true,
                 transparent: false,
                 backgroundColor: 0xcccccc,
+                resolution: 1,
+                antialias: false,
                 autoResize: false,
+                roundPixels: true //performance
             };
 
             _renderer = new PIXI.autoDetectRenderer(screenWidth(), screenHeight(), rendererOptions);
@@ -250,29 +253,29 @@ this.jks = this.jks || {};
 
         function TresholdFilter(fragmentSource) {
 
-           PIXI.Filter.call(this,
-               // vertex shader
-               null,
-               // fragment shader
-               fragmentSource
-           );
+            PIXI.Filter.call(this,
+                // vertex shader
+                null,
+                // fragment shader
+                fragmentSource
+            );
         }
 
         TresholdFilter.prototype = Object.create(PIXI.Filter.prototype);
         TresholdFilter.prototype.constructor = TresholdFilter;
 
         function initCustomFilterTest() {
-           PIXI.loader.add('shader', 'assets/js/jks/filters/treshold.frag');
-           PIXI.loader.once('complete', onLoaded);
-           PIXI.loader.load();
+            PIXI.loader.add('shader', 'assets/js/jks/filters/treshold.frag');
+            PIXI.loader.once('complete', onLoaded);
+            PIXI.loader.load();
 
-           function onLoaded(loader, res) {
-               var fragmentSrc = res.shader.data;
-               _tresholdFilter = new TresholdFilter(fragmentSrc);
-               _tresholdFilter.padding = 0;
+            function onLoaded(loader, res) {
+                var fragmentSrc = res.shader.data;
+                _tresholdFilter = new TresholdFilter(fragmentSrc);
+                _tresholdFilter.padding = 0;
 
-               initTransition();
-           }
+                initTransition();
+            }
         }
 
         function initTransition() {
@@ -496,7 +499,7 @@ this.jks = this.jks || {};
             _thumbNavigation.init(_slideObject);
 
             function onThumbClick(id) {
-                console.log('onThumbClick',id)
+                console.log('onThumbClick', id)
                 if (id != _slideObject.currentImage) {
                     _scope.slideTo(id);
                 }

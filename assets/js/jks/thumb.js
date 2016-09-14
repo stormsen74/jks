@@ -14,13 +14,19 @@ this.jks = this.jks || {};
     var _imgRatio;
     var $outlineWidth = 2;
     var _imgHeight = 23;
-    var _o;
 
     var _thumb;
     var _colorMatrixFilter;
 
 
-    function Thumb(_id, r, _texture) {
+    // TODO Performance Optimization for Mobile!
+    // - Bitmap Caching
+    // - Masking
+    // - scaleMode
+    // - remove some Stuff ... (front)
+
+
+    function Thumb(_id, _r, _texture) {
 
         _scope = this;
         this.selected = false;
@@ -31,15 +37,15 @@ this.jks = this.jks || {};
             onTapUp: new signals.Signal()
         };
 
-        _imgRatio = r;
+        _imgRatio = _r;
 
         this.thumbSize = {
-            width: device.portrait() ? jks.View.getScreenWidth() / 4 : 75,
-            height: device.portrait() ? jks.View.getScreenWidth() / 4 : 75,
+            width: device.portrait() ? Math.round(jks.View.getScreenWidth() * .25) : 75,
+            height: device.portrait() ? Math.round(jks.View.getScreenWidth() * .25) : 75,
             //width: 75,
             //height: 75
         }
-        //console.log(Math.round(jks.View.getScreenWidth() / 4))
+        // console.log(jks.Config.getDeviceType())
         var thumbImageWidth = device.portrait() ? jks.View.getScreenWidth() * .6 : 300;
         _imgHeight = this.thumbSize.height;
 
@@ -85,12 +91,12 @@ this.jks = this.jks || {};
         this.outline = new PIXI.Graphics();
         this.outline.lineStyle($outlineWidth, this.color);
         this.outline.drawRect(
-            this.mask.x + $outlineWidth,
-            this.mask.y + $outlineWidth,
-            this.mask.width - $outlineWidth * 2,
-            this.mask.height - $outlineWidth * 2
+            $outlineWidth * .5,
+            $outlineWidth * .5,
+            this.mask.width - $outlineWidth,
+            this.mask.height - $outlineWidth
         );
-        this.outline.alpha = 0;
+        // this.outline.alpha = 0;
 
         this.container.addChild(_thumb);
         this.container.addChild(this.front);
@@ -116,7 +122,7 @@ this.jks = this.jks || {};
         }
 
         function onTapUp(event) {
-            _scope.s.onTapUp.dispatch(this.ID, event);
+            _scope.s.onTapUp.dispatch(this.ID);
             //_scope.activateSlideDrag();
         }
 
