@@ -96,10 +96,10 @@ this.jks = this.jks || {};
             this.mask.width - $outlineWidth,
             this.mask.height - $outlineWidth
         );
-        // this.outline.alpha = 0;
+        this.outline.visible = false;
 
         this.container.addChild(_thumb);
-        this.container.addChild(this.front);
+        if (jks.Config.getDeviceType() == 'desktop') this.container.addChild(this.front);
         this.container.addChild(this.overlay);
         this.container.addChild(this.outline);
         this.container.addChild(this.mask);
@@ -165,7 +165,7 @@ this.jks = this.jks || {};
         this.select = function () {
             // console.log('select', this.mask.ID, this.overlay)
             this.selected = true;
-            this.outline.alpha = 1;
+            this.outline.visible = true;
             this.overlay.x = 0;
             this.overlay.scale.x = 1;
             //this.onHover();
@@ -174,7 +174,7 @@ this.jks = this.jks || {};
 
         this.unselect = function () {
             this.selected = false;
-            this.outline.alpha = 0;
+            this.outline.visible = false;
             this.onHoverOut();
             TweenLite.to(this.overlay, .2, {alpha: 0, ease: Sine.easeIn})
         }

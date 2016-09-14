@@ -92,7 +92,7 @@ this.jks = this.jks || {};
         /*--------------------------------------------
          ~ INIT /
          --------------------------------------------*/
-        var thumbScaleMode = PIXI.SCALE_MODES.LINEAR;
+        var thumbScaleMode = PIXI.SCALE_MODES.NEAREST;
         var thumbCrossOrigin = false;
         this.init = function (slideObject) {
             console.log('init - ThumbNavigation', jks.Core.isMobile());
@@ -155,9 +155,9 @@ this.jks = this.jks || {};
             //console.log(_scope.shapeWidth)
 
 
-            _scope.dragShape.beginFill(0x55ff00);
+            _scope.dragShape.beginFill(0x408080);
             _scope.dragShape.drawRect(0, 0, _scope.shapeWidth, _lastThumb.thumbSize.height);
-            _scope.dragShape.alpha = .3;
+            _scope.dragShape.alpha = .2;
             _scope.dragShape.endFill();
 
             _scope.dragShape.interactive = false;
@@ -210,7 +210,7 @@ this.jks = this.jks || {};
             }
         }
 
-        function onDragEnd(event) {
+        function onDragEnd(e) {
             dragData.isDragging = false;
             TweenLite.to(_scope.container, .5, {
                 throwProps: {
