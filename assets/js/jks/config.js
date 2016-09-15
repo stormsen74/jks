@@ -16,7 +16,7 @@ this.jks = this.jks || {};
     function Config(json) {
         _scope = this;
 
-        this.version = '0.4.0';
+        this.version = '0.4.1';
         this.device = '';
         this.debug = true;
 

@@ -14,8 +14,14 @@ this.jks = this.jks || {};
 
 ( function () {
 
+    var _scope;
+
 
     function Controller(config, dataHandler, router, navigation, view) {
+
+        _scope = this;
+
+        console.log(navigation, this)
 
         console.log('init - Controller || version: ', config.version);
 
@@ -44,13 +50,11 @@ this.jks = this.jks || {};
         }
 
 
-
-
-
-        navigation.s.onKeyDownEvent.add(navigation.onKeyDown);
+        navigation.s.onKeyDownEvent.add(onKeyDown);
 
         function onKeyDown(e) {
-            console.log(e,'down');
+            console.log(e, 'down');
+            e == 'next' ? view.slideNext() : view.slidePrev();
         }
 
 
