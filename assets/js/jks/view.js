@@ -32,8 +32,9 @@ this.jks = this.jks || {};
     var $imageWidth = 1200;
     var $imageHeight = 800;
     var $imageRatio = $imageWidth / $imageHeight;
-
     var $transitionTime = 1.5;
+    var $imageScaleMode = PIXI.SCALE_MODES.LINEAR;
+    var $imageCrossOrigin = false;
 
     var screenWidth = function () {
         return window.innerWidth
@@ -91,7 +92,7 @@ this.jks = this.jks || {};
             var rendererOptions = {
                 transparent: false,
                 backgroundColor: 0xcccccc,
-                resolution: 1,
+                resolution: jks.Config.getDeviceResolution(),
                 antialias: false,
                 autoResize: false,
                 roundPixels: true //performance
@@ -331,13 +332,15 @@ this.jks = this.jks || {};
             _setTextures = true;
         }
 
+
+
         function transition() {
 
             _thumbNavigation.isLocked = true;
             if (_sideNavigation)_sideNavigation.isLocked = true;
 
-            _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.previousImage].src);
-            _imgSpriteFront.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.currentImage].src);
+            _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.previousImage].src, $imageCrossOrigin, $imageScaleMode);
+            _imgSpriteFront.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.currentImage].src, $imageCrossOrigin, $imageScaleMode);
 
             TweenLite.to(tl_1, $transitionTime, {progress: 1, ease: Sine.easeOut});
             TweenLite.to(tl_2, $transitionTime, {progress: 1, ease: Circ.easeOut});

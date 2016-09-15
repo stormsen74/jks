@@ -74,6 +74,7 @@ this.jks = this.jks || {};
         if (this.debug) {
             document.getElementById('version').innerHTML = 'version: ' + this.version +
                 '<br/>' + 'device: ' + this.device +
+                '<br/>' + 'dpr: ' + jks.Config.getDeviceResolution() +
                 '<br/>' + 'webgl: ' + PIXI.utils.isWebGLSupported();
         }
 
@@ -82,8 +83,14 @@ this.jks = this.jks || {};
 
     jks.Config = Config;
 
-    jks.Config.getDeviceType = function() {
+    jks.Config.getDeviceType = function () {
         return _scope.device;
+    }
+
+    jks.Config.getDeviceResolution = function () {
+        // maybe exclude sow slower devicves
+        var _device_pixel_ratio = res.dppx();
+        return _device_pixel_ratio;
     }
 
 }())

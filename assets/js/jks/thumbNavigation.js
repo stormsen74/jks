@@ -196,6 +196,7 @@ this.jks = this.jks || {};
         };
 
         function onDragStart(event) {
+            TweenLite.killTweensOf(_scope.container);
             dragData.startX = event.data.global.x - _scope.container.x;
             dragData.isDragging = true;
             //_dragShape.defaultCursor = "none";
@@ -211,17 +212,29 @@ this.jks = this.jks || {};
         }
 
         function onDragEnd(e) {
-            dragData.isDragging = false;
-            TweenLite.to(_scope.container, .5, {
+            // dragData.isDragging = false;
+            // TweenLite.to(_scope.container, .5, {
+            //     throwProps: {
+            //         x: {
+            //             velocity: _scope.tracker.getVelocity("x"),
+            //             max: 0,
+            //             min: -_scope.shapeWidth + jks.View.getScreenWidth()
+            //         }
+            //     },
+            //     onComplete:null,
+            //     ease: Power2.easeOut
+            // });
+            ThrowPropsPlugin.to(_scope.container, {
                 throwProps: {
                     x: {
                         velocity: _scope.tracker.getVelocity("x"),
                         max: 0,
-                        min: -_scope.shapeWidth + jks.View.getScreenWidth()
+                        min: -_scope.shapeWidth + jks.View.getScreenWidth(),
+                        resistance: 150
+                        // https://greensock.com/docs/#/HTML5/GSAP/Plugins/ThrowPropsPlugin/to/
                     }
                 },
-                onComplete:null,
-                ease: Power2.easeOut
+                ease: Power3.easeOut
             });
 
             console.log('onDragEnd');
