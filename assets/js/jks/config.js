@@ -89,7 +89,7 @@ this.jks = this.jks || {};
 
     jks.Config.getDeviceResolution = function () {
         // maybe exclude sow slower devicves
-        var _device_pixel_ratio = res.dppx();
+        var _device_pixel_ratio = device.desktop() ? 1 : res.dppx();
         return _device_pixel_ratio;
     }
 

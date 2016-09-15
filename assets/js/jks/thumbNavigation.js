@@ -53,14 +53,6 @@ this.jks = this.jks || {};
             }
         }
 
-        //this.onHoverThumb = function (e) {
-        //    if (!_scope.thumbs[e.target.ID].selected) _scope.thumbs[e.target.ID].onHover();
-        //}
-        //
-        //this.onHoverOutThumb = function (e) {
-        //    if (!_scope.thumbs[e.target.ID].selected) _scope.thumbs[e.target.ID].onHoverOut();
-        //}
-
         this.selectThumb = function (id) {
             _scope.thumbs[id].select();
         }

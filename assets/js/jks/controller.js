@@ -44,6 +44,16 @@ this.jks = this.jks || {};
         }
 
 
+
+
+
+        navigation.s.onKeyDownEvent.add(navigation.onKeyDown);
+
+        function onKeyDown(e) {
+            console.log(e,'down');
+        }
+
+
     }
 
     jks.Controller = Controller;
