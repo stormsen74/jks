@@ -18,7 +18,7 @@ this.jks = this.jks || {};
 
         this.version = '0.4.1';
         this.device = '';
-        this.debug = true;
+        this.debug = false;
 
         _json = json;
 
@@ -49,6 +49,23 @@ this.jks = this.jks || {};
             //}
         ];
 
+        if (device.mobile()) {
+            this.device = 'mobile';
+        } else if (device.tablet()) {
+            this.device = 'tablet';
+        } else if (device.desktop()) {
+            this.device = 'desktop';
+        }
+
+        if (this.debug) {
+            document.getElementById('version').innerHTML = 'version: ' + this.version +
+                '<br/>' + 'device: ' + this.device +
+                '<br/>' + 'dpr: ' + jks.Config.getDeviceResolution() +
+                '<br/>' + 'webgl: ' + PIXI.utils.isWebGLSupported();
+        } else {
+            window.hideLog();
+        }
+
 
         console.log('Config :: pageData created!');
 
@@ -62,21 +79,9 @@ this.jks = this.jks || {};
         // console.log(_json.pages);
 
 
-        if (device.mobile()) {
-            this.device = 'mobile';
-        } else if (device.tablet()) {
-            this.device = 'tablet';
-        } else if (device.desktop()) {
-            this.device = 'desktop';
-        }
 
 
-        if (this.debug) {
-            document.getElementById('version').innerHTML = 'version: ' + this.version +
-                '<br/>' + 'device: ' + this.device +
-                '<br/>' + 'dpr: ' + jks.Config.getDeviceResolution() +
-                '<br/>' + 'webgl: ' + PIXI.utils.isWebGLSupported();
-        }
+
 
 
     }

@@ -17,7 +17,6 @@ this.jks = this.jks || {};
     var _scope;
 
 
-
     function Navigation() {
         _scope = this;
 
@@ -27,15 +26,20 @@ this.jks = this.jks || {};
 
         console.log('init - Navigation');
 
-
-        document.onkeydown = function(e) {
+        document.onkeydown = function (e) {
             switch (e.keyCode) {
                 case 39:
-                    _scope.s.onKeyDownEvent.dispatch('next');
+                    if (!jks.ThumbNavigation.isLocked()) {
+                        _scope.s.onKeyDownEvent.dispatch('next');
+                        jks.SideNavigation.triggerArrow('next');
+                    }
                     //alert('right');
                     break;
                 case 37:
-                    _scope.s.onKeyDownEvent.dispatch('prev');
+                    if (!jks.ThumbNavigation.isLocked()) {
+                        _scope.s.onKeyDownEvent.dispatch('prev');
+                        jks.SideNavigation.triggerArrow('prev');
+                    }
                     //alert('left');
                     break;
                 case 38:
@@ -48,14 +52,8 @@ this.jks = this.jks || {};
         };
 
 
-
         function init() {
         }
-
-
-
-
-        init();
 
 
     }

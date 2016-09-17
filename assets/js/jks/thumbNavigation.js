@@ -90,7 +90,7 @@ this.jks = this.jks || {};
             console.log('init - ThumbNavigation', jks.Core.isMobile());
             //console.log(slideObject.slideNumImages);
 
-            if (jks.Core.isMobile()) {
+            if (jks.Config.getDeviceType() == "mobile" || jks.Config.getDeviceType() == "tablet") {
                 $ThumbOffsetX = 0;
                 $OffsetBottom = 0;
             }
@@ -158,7 +158,7 @@ this.jks = this.jks || {};
             _scope.container.addChild(_scope.dragShape)
 
             _scope.dragShape
-            //.on('mousedown', onDragStart).on('touchstart', onDragStart)
+                //.on('mousedown', onDragStart).on('touchstart', onDragStart)
                 .on('mousemove', onDragMove).on('touchmove', onDragMove)
                 .on('mouseup', onDragEnd).on('mouseupoutside', onDragEnd)
                 .on('touchend', onDragEnd).on('touchendoutside', onDragEnd)
@@ -249,6 +249,10 @@ this.jks = this.jks || {};
 
     jks.ThumbNavigation.getThumbByID = function (id) {
         return (_scope.thumbs[id]);
+    }
+
+    jks.ThumbNavigation.isLocked = function () {
+        return (_scope.isLocked);
     }
 
 }());

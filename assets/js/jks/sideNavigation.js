@@ -41,7 +41,7 @@ this.jks = this.jks || {};
         _activeRight.beginFill(0x00ff00)
         _activeRight.drawRect(0, 0, $HoverShapeWidth, $HoverShapeHeight)
         _activeRight.endFill();
-        _activeRight.alpha = .3;
+        _activeRight.alpha = .0;
         _activeRight.x -= $HoverShapeWidth;
         _activeRight.y -= $HoverShapeHeight * .5;
         _activeRight.interactive = true;
@@ -59,7 +59,7 @@ this.jks = this.jks || {};
         _activeLeft.beginFill(0x00ff00)
         _activeLeft.drawRect(0, 0, $HoverShapeWidth, $HoverShapeHeight)
         _activeLeft.endFill();
-        _activeLeft.alpha = .3;
+        _activeLeft.alpha = .0;
         _activeLeft.x = 0;
         _activeLeft.y -= $HoverShapeHeight * .5;
         _activeLeft.interactive = true;
@@ -134,6 +134,16 @@ this.jks = this.jks || {};
 
 
     jks.SideNavigation = SideNavigation;
+
+    jks.SideNavigation.triggerArrow = function (_type) {
+        if (_type == 'next') {
+            TweenLite.to(_sideArrowRight, .3, {x: 0, ease: $HoverEase})
+            TweenLite.to(_sideArrowRight, .4, {delay: .3, x: -$OffsetSide, ease: $HoverOutEase})
+        } else {
+            TweenLite.to(_sideArrowLeft, .3, {x: 0, ease: $HoverEase})
+            TweenLite.to(_sideArrowLeft, .4, {delay: .3, x: $OffsetSide, ease: $HoverOutEase})
+        }
+    }
 
 }());
 

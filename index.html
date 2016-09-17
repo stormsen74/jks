@@ -83,8 +83,10 @@
 
 <script>
 
-
-    window['console']['log'] = function () {};
+    window.hideLog = function () {
+        window['console']['log'] = function () {
+        };
+    }
 
     new jks.Core();
 
