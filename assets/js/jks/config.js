@@ -16,9 +16,9 @@ this.jks = this.jks || {};
     function Config(json) {
         _scope = this;
 
-        this.version = '0.4.1';
+        this.version = '0.4.11';
         this.device = '';
-        this.debug = false;
+        this.debug = true;
 
         _json = json;
 
@@ -49,12 +49,19 @@ this.jks = this.jks || {};
             //}
         ];
 
+
+
         if (device.mobile()) {
             this.device = 'mobile';
-        } else if (device.tablet()) {
+        } else if (device.tablet() || isMobile.apple.tablet) {
             this.device = 'tablet';
         } else if (device.desktop()) {
             this.device = 'desktop';
+
+
+            console.log(isMobile.apple);
+
+
         }
 
         if (this.debug) {
@@ -77,11 +84,6 @@ this.jks = this.jks || {};
 
         // console.log(_json.pages[0].items.length);
         // console.log(_json.pages);
-
-
-
-
-
 
 
     }
