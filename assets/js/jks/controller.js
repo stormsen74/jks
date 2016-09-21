@@ -33,14 +33,30 @@ this.jks = this.jks || {};
             view.initAssets(assetLoader);
         }
 
+        pageSwitch(1);
 
-        dataHandler.loadPage(0);
-        dataHandler.s.onContentLoaded.add(onContentLoaded);
+        TweenLite.delayedCall(5, pageSwitch, [0])
+        //TweenLite.delayedCall(6, pageSwitch, [1])
+
+        function pageSwitch(id) {
+            if (!config.pageData[id].contentLoaded) {
+                dataHandler.loadPage(id);
+                dataHandler.s.onContentLoaded.add(onContentLoaded);
+            } else {
+                switchPage(id);
+            }
+        }
 
         function onContentLoaded(pageID) {
-            console.log('onContentLoaded! ::', pageID);
+            console.log('content loaded', config.pageData[0].contentLoaded);
+
+            switchPage(pageID);
+        }
+
+        function switchPage(pageID) {
 
             view.initSlide(config, pageID);
+
             view.initThumbNavigation();
             if (!jks.Core.isMobile()) {
                 view.initSideNavigation();

@@ -333,7 +333,6 @@ this.jks = this.jks || {};
         }
 
 
-
         function transition() {
 
             _thumbNavigation.isLocked = true;
@@ -494,8 +493,24 @@ this.jks = this.jks || {};
          ~ THUMB NAVIGATION
          --------------------------------------------*/
 
+        var _thumbNavigation = {};
+        _thumbNavigation.container = null;
+
         this.initThumbNavigation = function () {
-            //console.log('initThumbNavigation:', _slideObject);
+            console.log('initThumbNavigation:', _slideObject, _thumbNavigation.container);
+
+            if (_thumbNavigation.container) {
+                console.log('destroy thumb')
+                //_thumbNavigation.container.destroy();
+                _thumbNavigation.s.onClickThumb.remove(onThumbClick);
+                //TODO - listener!?
+                _thumbNavigation.container.removeChildren();
+                _thumbNavigation.destroy();
+                _stage.removeChild(_thumbNavigation.container);
+                _thumbNavigation.container = null;
+                _thumbNavigation = null;
+            }
+
             _thumbNavigation = new jks.ThumbNavigation($imageRatio);
             _thumbNavigation.s.onClickThumb.add(onThumbClick)
             _stage.addChild(_thumbNavigation.container);
@@ -509,8 +524,27 @@ this.jks = this.jks || {};
             }
         }
 
+        /*--------------------------------------------
+         ~ SIDE NAVIGATION
+         --------------------------------------------*/
+
+        var _sideNavigation = {};
+        _sideNavigation.container = null;
+
         this.initSideNavigation = function () {
             console.log('jks.SideNavigation')
+
+            if (_sideNavigation.container) {
+                console.log('destroy side')
+
+                _sideNavigation.s.onClickNext.remove(onClickNext);
+                _sideNavigation.s.onClickPrev.remove(onClickPrev);
+                //_thumbNavigation.container.destroy();
+                _stage.removeChild(_sideNavigation.container);
+                _sideNavigation.container = null;
+                _sideNavigation = null;
+            }
+
             _sideNavigation = new jks.SideNavigation();
             //_sideNavigation.init();
             _stage.addChild(_sideNavigation.container);

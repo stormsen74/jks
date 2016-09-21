@@ -81,14 +81,18 @@ this.jks = this.jks || {};
             //_scope.thumbs[id].updateDragProgress(p);
         };
 
+
         /*--------------------------------------------
          ~ INIT /
          --------------------------------------------*/
         var thumbScaleMode = PIXI.SCALE_MODES.NEAREST;
         var thumbCrossOrigin = false;
+        var _currentSlideObject;
         this.init = function (slideObject) {
             console.log('init - ThumbNavigation', jks.Core.isMobile());
             //console.log(slideObject.slideNumImages);
+
+            _currentSlideObject = slideObject
 
             if (jks.Config.getDeviceType() == "mobile" || jks.Config.getDeviceType() == "tablet") {
                 $ThumbOffsetX = 0;
