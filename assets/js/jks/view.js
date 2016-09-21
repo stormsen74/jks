@@ -505,7 +505,6 @@ this.jks = this.jks || {};
                 _thumbNavigation.s.onClickThumb.remove(onThumbClick);
                 //TODO - listener!?
                 _thumbNavigation.container.removeChildren();
-                _thumbNavigation.destroy();
                 _stage.removeChild(_thumbNavigation.container);
                 _thumbNavigation.container = null;
                 _thumbNavigation = null;
