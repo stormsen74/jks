@@ -409,7 +409,8 @@ this.jks = this.jks || {};
         function updateContent() {
 
             _thumbNavigation.update();
-            if (_sideNavigation) _sideNavigation.update();
+            console.log(_sideNavigation)
+            if (_sideNavigation.container != null) _sideNavigation.update();
 
             _dragShape.width = screenWidth();
             _dragShape.height = screenHeight() - _thumbNavigation.container.getHeight() - 60;
