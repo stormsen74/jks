@@ -87,12 +87,10 @@ this.jks = this.jks || {};
          --------------------------------------------*/
         var thumbScaleMode = PIXI.SCALE_MODES.NEAREST;
         var thumbCrossOrigin = false;
-        var _currentSlideObject;
+
         this.init = function (slideObject) {
             console.log('init - ThumbNavigation', jks.Core.isMobile());
             //console.log(slideObject.slideNumImages);
-
-            _currentSlideObject = slideObject
 
             if (jks.Config.getDeviceType() == "mobile" || jks.Config.getDeviceType() == "tablet") {
                 $ThumbOffsetX = 0;
@@ -209,29 +207,33 @@ this.jks = this.jks || {};
 
         function onDragEnd(e) {
             // dragData.isDragging = false;
-            // TweenLite.to(_scope.container, .5, {
-            //     throwProps: {
-            //         x: {
-            //             velocity: _scope.tracker.getVelocity("x"),
-            //             max: 0,
-            //             min: -_scope.shapeWidth + jks.View.getScreenWidth()
-            //         }
-            //     },
-            //     onComplete:null,
-            //     ease: Power2.easeOut
-            // });
-            ThrowPropsPlugin.to(_scope.container, {
-                throwProps: {
-                    x: {
-                        velocity: _scope.tracker.getVelocity("x"),
-                        max: 0,
-                        min: -_scope.shapeWidth + jks.View.getScreenWidth(),
-                        resistance: 150
-                        // https://greensock.com/docs/#/HTML5/GSAP/Plugins/ThrowPropsPlugin/to/
-                    }
-                },
-                ease: Power3.easeOut
-            });
+
+            console.log('vel',_scope.tracker.getVelocity("x"));
+
+             TweenLite.to(_scope.container, .5, {
+                 throwProps: {
+                     x: {
+                         velocity: _scope.tracker.getVelocity("x"),
+                         max: 0,
+                         min: -_scope.shapeWidth + jks.View.getScreenWidth()
+                     }
+                 },
+                 onComplete:null,
+                 ease: Power2.easeOut
+             });
+
+            //ThrowPropsPlugin.to(_scope.container, {
+            //    throwProps: {
+            //        x: {
+            //            velocity: _scope.tracker.getVelocity("x"),
+            //            max: 0,
+            //            min: -_scope.shapeWidth + jks.View.getScreenWidth(),
+            //            resistance: 150
+            //            // https://greensock.com/docs/#/HTML5/GSAP/Plugins/ThrowPropsPlugin/to/
+            //        }
+            //    },
+            //    ease: Power3.easeOut
+            //});
 
             console.log('onDragEnd');
             _scope.deactivateSlideDrag();

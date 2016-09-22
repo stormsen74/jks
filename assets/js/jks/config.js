@@ -42,11 +42,15 @@ this.jks = this.jks || {};
             {
                 "src": "assets/img/navigation/side_nav_arrow.png",
                 "id": "side_nav_arrow"
+            },
+            {
+                "src": "assets/img/logo.png",
+                "id": "logo"
             }
             //{
             //    "src": "assets/img/navigation/nav_arrow_42x130.png",
             //    "id": "nav_arrow_2"
-            //}
+            //},
         ];
 
 

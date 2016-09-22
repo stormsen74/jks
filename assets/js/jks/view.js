@@ -597,7 +597,14 @@ this.jks = this.jks || {};
     }
 
     jks.View.getAssetByID = function (id) {
+        console.log(id)
         return _assetLoader.getResult(id);
+    }
+
+    jks.View.addNavigationContainer = function (c) {
+        console.log('addNavigationContainer');
+
+        _stage.addChild(c)
     }
 
 

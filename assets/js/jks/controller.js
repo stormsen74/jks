@@ -31,11 +31,14 @@ this.jks = this.jks || {};
 
         function onAssetsLoaded(assetLoader) {
             view.initAssets(assetLoader);
+
+
+            navigation.init();
         }
 
         pageSwitch(1);
 
-        TweenLite.delayedCall(5, pageSwitch, [0])
+        //TweenLite.delayedCall(5, pageSwitch, [0])
         //TweenLite.delayedCall(6, pageSwitch, [1])
 
         function pageSwitch(id) {
