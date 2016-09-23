@@ -11,7 +11,7 @@
     <script src="assets/js/pixi/pixi41.js"></script>
     <!--<script src="assets/js/pixi/filters.min.js"></script>-->
     <script src="assets/js/gsap/TweenLite.min.js"></script>
-    <script src="assets/js/gsap/TweenMax.min.js"></script>
+    <!--<script src="assets/js/gsap/TweenMax.min.js"></script>-->
     <script src="assets/js/gsap/easing/EasePack.min.js"></script>
     <script src="assets/js/gsap/plugins/ThrowPropsPlugin.min.js"></script>
     <script src="assets/js/gsap/utils/Draggable.min.js"></script>
@@ -80,30 +80,31 @@
         {
             src: "assets/img/01_meeresrauschen/01.jpg",
             id: "img_0",
-        }, {
-            src: "assets/img/tst/fsImage_1920x1372.jpg",
-            id: "img_1"
-        },
-        {
-            src: "assets/img/tst/text.png",
-            id: "txt"
-        },
-        {
-            src: "assets/img/tst/text_mask.png",
-            id: "txt_mask"
-        },
-        {
-            src: "assets/img/tst/swoosh.png",
-            id: "swoosh"
-        },
-        {
-            src: "assets/img/tst/displacementMap.jpg",
-            id: "displace"
-        },
-        {
-            src: "assets/img/tst/displacementMap_sw.jpg",
-            id: "displace_sw"
         }
+//        {
+//            src: "assets/img/tst/fsImage_1920x1372.jpg",
+//            id: "img_1"
+//        },
+//        {
+//            src: "assets/img/tst/text.png",
+//            id: "txt"
+//        },
+//        {
+//            src: "assets/img/tst/text_mask.png",
+//            id: "txt_mask"
+//        },
+//        {
+//            src: "assets/img/tst/swoosh.png",
+//            id: "swoosh"
+//        },
+//        {
+//            src: "assets/img/tst/displacementMap.jpg",
+//            id: "displace"
+//        },
+//        {
+//            src: "assets/img/tst/displacementMap_sw.jpg",
+//            id: "displace_sw"
+//        }
     ];
 
     console.log(manifest);
@@ -123,10 +124,36 @@
         var sprite = new PIXI.Sprite(PIXI.Texture.fromImage(_loader.getResult("img_0").src));
 
         initPixi();
-        initFilterTest();
+//        initFilterTest();
         initDraggableTest();
-        initCustomFilterTest();
+//        initCustomFilterTest();
         animate();
+    }
+
+    /*--------------------------------------------
+     ~ PIXI LOADER
+     --------------------------------------------*/
+
+    PIXI.loader.add('assets', 'assets/img/res/assets.json').load(assetsLoaded);
+    PIXI.loader.on('progress', function (e) {
+        console.log('/', e.progress)
+    })
+
+    function assetsLoaded(e) {
+        //https://github.com/englercj/resource-loader
+        console.log('assetsLoaded', e);
+
+        // assoziative Array -> config
+        var a = [];
+        a['a'] = 'assets Instanz 10000';
+        a['b'] = 'assets Instanz 10001';
+        console.log(a['a'])
+
+        var asset_1 = PIXI.Sprite.fromFrame(a['a']);
+        var asset_2 = PIXI.Sprite.fromFrame(a['b']);
+        asset_2.x = 100;
+        stage.addChild(asset_1);
+        stage.addChild(asset_2);
     }
 
 
@@ -171,7 +198,7 @@
         fsImage = new PIXI.Sprite(PIXI.Texture.fromImage(_loader.getResult("img_0").src));
         fsImageContainer = new PIXI.Container();
         fsImageContainer.addChild(fsImage);
-//        fsImageContainer.alpha = .5;
+        fsImageContainer.alpha = .1;
 
 //        fsImage.anchor.x = 0.0;
 //        fsImage.anchor.y = 0.0;
