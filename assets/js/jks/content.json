@@ -3,6 +3,7 @@
     "pages": [
       {
         "category": "meeresrauschen",
+        "categoryText": "Meeresrauschen",
         "itemsLoaded": false,
         "items": [
           {
@@ -81,6 +82,7 @@
       },
       {
         "category": "fragmente",
+        "categoryText": "Fragmente",
         "itemsLoaded": false,
         "items": [
           {
@@ -88,24 +90,24 @@
               "src": "assets/img/02_fragmente/01.jpg",
               "id": "img_fragmente_01"
             },
-            "type": "Orhänger",
-            "description": "desription as html"
+            "type": "Ringe",
+            "description": "Ringe\n925er Silber\nPorzellan alt\nZuchtperlen"
           },
           {
             "img": {
               "src": "assets/img/02_fragmente/02.jpg",
               "id": "img_fragmente_02"
             },
-            "type": "Orhänger",
-            "description": "desription as html"
+            "type": "offener Ring",
+            "description": "925er Silber\nFeingold\nPorzellan alt"
           },
           {
             "img": {
               "src": "assets/img/02_fragmente/03.jpg",
               "id": "img_fragmente_03"
             },
-            "type": "Orhänger",
-            "description": "desription as html"
+            "type": "Armreif",
+            "description": "925er Silber\nPorzellan alt\nZuchtperlen"
           },
           {
             "img": {

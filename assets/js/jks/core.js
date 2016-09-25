@@ -39,12 +39,7 @@ this.jks = this.jks || {};
                 _dataHandler.s.onDataHandlerReady.add(onDataHandlerReady);
 
                 function onDataHandlerReady() {
-
-                    _router = new jks.Router();
-                    _navigation = new jks.Navigation();
-                    _view = new jks.View();
-
-                    _controller = new jks.Controller(_config, _dataHandler, _router, _navigation, _view);
+                    _controller = new jks.Controller(_config, _dataHandler);
                 }
 
 

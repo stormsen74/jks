@@ -56,6 +56,7 @@ this.jks = this.jks || {};
          ~ LOAD ASSETS
          --------------------------------------------*/
 
+
         this.loadAssets = function () {
             var assetLoader= new createjs.LoadQueue(false);
             assetLoader.addEventListener("progress", onLoadAssets);

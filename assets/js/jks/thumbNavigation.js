@@ -240,7 +240,7 @@ this.jks = this.jks || {};
         }
 
 
-        this.update = function () {
+        this.updateView = function () {
             if (!_scope.isMobile) {
                 _scope.container.x = jks.View.getScreenWidth() * .5 - _scope.container.getWidth() * .5;
             }

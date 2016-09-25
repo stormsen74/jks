@@ -64,7 +64,7 @@ this.jks = this.jks || {};
 
             this.o = {saturation: -.5};
             this.container = new PIXI.Container();
-            this.color = 0x408080; //0x506995
+            this.color =  jks.Config.getColor('blue'); //0x506995
 
             _thumb = new PIXI.Sprite(_texture);
             _thumb.width = thumbImageWidth;

@@ -16,29 +16,51 @@ this.jks = this.jks || {};
     function Config(json) {
         _scope = this;
 
-        this.version = '0.4.12';
+        this.version = '0.5.0';
         this.device = '';
         this.debug = true;
 
-        _json = json;
 
+        _json = json;
         this.numPages = _json.pages.length;
         this.pages = _json.pages;
         this.pageData = [];
+
+        this.colors = {
+            blue: 0x408080
+        }
+
+        this.shaders = [];
+
+        this.backgroundImageSize = {
+            width: 1200,
+            height: 800
+        }
+
+        TweenLite.delayedCall(3, function () {
+            jks.Config.getColor('blue')
+        })
+
 
         for (var i = 0; i < this.numPages; i++) {
             var data = {};
             data.pageID = i;
             data.contentLoaded = false;
             data.category = _json.pages[i].category;
+            data.categoryText = _json.pages[i].categoryText;
             data.numImages = _json.pages[i].items.length;
             data.images = [];
+            data.items = _json.pages[i].items
             this.pageData.push(data);
         }
 
 
         this.assets = {};
         this.assets.manifest = [
+            {
+                "src": "assets/img/bg_home.jpg",
+                "id": "bg_home"
+            },
             {
                 "src": "assets/img/navigation/side_nav_arrow.png",
                 "id": "side_nav_arrow"
@@ -54,16 +76,12 @@ this.jks = this.jks || {};
         ];
 
 
-
         if (device.mobile()) {
             this.device = 'mobile';
         } else if (device.tablet() || isMobile.apple.tablet) {
             this.device = 'tablet';
         } else if (device.desktop()) {
             this.device = 'desktop';
-
-
-            console.log(isMobile.apple);
 
 
         }
@@ -102,6 +120,18 @@ this.jks = this.jks || {};
         // maybe exclude sow slower devicves
         var _device_pixel_ratio = device.desktop() ? 1 : res.dppx();
         return _device_pixel_ratio;
+    }
+
+    jks.Config.getColor = function (id) {
+        return _scope.colors[id]
+    }
+
+    jks.Config.backgroundImageSize = function (id) {
+        return _scope.backgroundImageSize;
+    }
+
+    jks.Config.shaders = function () {
+        return _scope.shaders;
     }
 
 }())

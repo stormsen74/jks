@@ -24,14 +24,14 @@ this.jks = this.jks || {};
 
     var _thumbNavigation;
     var _sideNavigation;
+    var _textField;
     var _dragShape;
 
+    var _slideObject = {isActive: false};
 
-    var _slideObject = {};
-
-    var $imageWidth = 1200;
-    var $imageHeight = 800;
-    var $imageRatio = $imageWidth / $imageHeight;
+    var $imageWidth;
+    var $imageHeight;
+    var $imageRatio;
     var $transitionTime = 1.5;
     var $imageScaleMode = PIXI.SCALE_MODES.LINEAR;
     var $imageCrossOrigin = false;
@@ -44,10 +44,27 @@ this.jks = this.jks || {};
     };
 
 
-    function View() {
+    function View(config, assets) {
         _scope = this;
 
+        $imageWidth = config.backgroundImageSize.width;
+        $imageHeight = config.backgroundImageSize.height;
+        $imageRatio = $imageWidth / $imageHeight;
+
+        _assetLoader = assets;
+
         console.log('init - View');
+
+        this.s = {
+            onResize: new signals.Signal(),
+            onReady: new signals.Signal()
+        };
+
+
+        this.containerPages = new PIXI.Container();
+        this.containerNavigation = new PIXI.Container();
+        this.containerSlideImages = new PIXI.Container();
+        this.containerSlideNavigation = new PIXI.Container();
 
 
         /*--------------------------------------------
@@ -59,12 +76,14 @@ this.jks = this.jks || {};
             _stats.setMode(0); // 0: fps, 1: ms
 
             // Align top-left
-            _stats.domElement.style.position = 'absolute';
-            _stats.domElement.style.left = '0px';
-            _stats.domElement.style.top = '0px';
 
             document.body.appendChild(_stats.domElement);
 
+            _stats.domElement.style.position = 'absolute';
+            _stats.domElement.style.left = '0px';
+            _stats.domElement.style.top = '50px';
+
+            document.getElementById('version').style.display = 'block';
         }
 
 
@@ -91,7 +110,7 @@ this.jks = this.jks || {};
 
             var rendererOptions = {
                 transparent: false,
-                backgroundColor: 0xcccccc,
+                backgroundColor: jks.Config.getColor('blue'),
                 resolution: jks.Config.getDeviceResolution(),
                 antialias: false,
                 autoResize: false,
@@ -113,10 +132,10 @@ this.jks = this.jks || {};
             _dragShape = new PIXI.Graphics();
 
             _dragShape.beginFill(0x00ff66);
-            _dragShape.drawRect(0, 0, screenWidth(), screenHeight());
+            _dragShape.drawRect(0, 0, 1, 1);
             _dragShape.endFill;
 
-            _dragShape.alpha = .02;
+            _dragShape.alpha = 0;
             _dragShape.interactive = true;
             _dragShape.buttonMode = true;
             _dragShape.defaultCursor = 'auto';
@@ -145,7 +164,7 @@ this.jks = this.jks || {};
             dragData.range = screenWidth() * .7;
             _dragShape.defaultCursor = "none";
 
-            console.log('_slideObject.currentImage: ', _slideObject.currentImage, dragData.startX);
+            //console.log('_slideObject.currentImage: ', _slideObject.currentImage, dragData.startX);
 
             _thumbNavigation.setSelectedThumb(_slideObject.currentImage);
 
@@ -228,13 +247,13 @@ this.jks = this.jks || {};
          ~ FS-IMAGE
          --------------------------------------------*/
 
-        function initFSImages() {
+        function initSlideImages() {
 
             _fsImageContainerBack = new PIXI.Container();
             _fsImageContainerFront = new PIXI.Container();
 
-            _stage.addChild(_fsImageContainerBack);
-            _stage.addChild(_fsImageContainerFront);
+            _scope.containerSlideImages.addChild(_fsImageContainerBack);
+            _scope.containerSlideImages.addChild(_fsImageContainerFront);
 
             _imgSpriteBack = new PIXI.Sprite();
             _imgSpriteFront = new PIXI.Sprite();
@@ -246,10 +265,6 @@ this.jks = this.jks || {};
 
         /*--------------------------------------------
          ~ TRANSITION / FILTERS
-         --------------------------------------------*/
-
-        /*--------------------------------------------
-         ~ CUSTOM FILTER
          --------------------------------------------*/
 
         function TresholdFilter(fragmentSource) {
@@ -265,13 +280,16 @@ this.jks = this.jks || {};
         TresholdFilter.prototype = Object.create(PIXI.Filter.prototype);
         TresholdFilter.prototype.constructor = TresholdFilter;
 
-        function initCustomFilterTest() {
+        function initTresholdFilter() {
+
             PIXI.loader.add('shader', 'assets/js/jks/filters/treshold.frag');
             PIXI.loader.once('complete', onLoaded);
             PIXI.loader.load();
 
             function onLoaded(loader, res) {
                 var fragmentSrc = res.shader.data;
+                jks.Config.shaders()['treshold'] = res.shader.data;
+                //console.log(jks.Config.shaders()['treshold'])
                 _tresholdFilter = new TresholdFilter(fragmentSrc);
                 _tresholdFilter.padding = 0;
 
@@ -281,8 +299,6 @@ this.jks = this.jks || {};
 
         function initTransition() {
 
-
-            // _tresholdFilter = new TresholdFilter();
             _tresholdFilter.uniforms.offset.x = 1;
 
             _colorMatrixFilter = new PIXI.filters.ColorMatrixFilter()
@@ -324,7 +340,7 @@ this.jks = this.jks || {};
                 _slideObject.currentImage > 0 ? _slideObject.currentImage-- : _slideObject.currentImage = _slideObject.slideNumImages - 1;
             }
 
-            console.log('setTransitionTextures', dragData.direction, _slideObject.currentImage, _slideObject.previousImage)
+            //console.log('setTransitionTextures', dragData.direction, _slideObject.currentImage, _slideObject.previousImage)
 
             _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.previousImage].src);
             _imgSpriteFront.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.currentImage].src);
@@ -332,6 +348,10 @@ this.jks = this.jks || {};
             _setTextures = true;
         }
 
+        function setText(id) {
+            //console.log(_slideObject.configData.pageData[_slideObject.pageID].items[id]);
+            _textField.setText(_slideObject.configData.pageData[_slideObject.pageID].items[id])
+        }
 
         function transition() {
 
@@ -376,6 +396,9 @@ this.jks = this.jks || {};
             tl_1.progress(0);
             tl_2.progress(0);
 
+
+            setText(_slideObject.currentImage)
+
         }
 
         /*--------------------------------------------
@@ -403,17 +426,24 @@ this.jks = this.jks || {};
 
         function onResize(e) {
             _scope.resizeScreen();
+            _scope.s.onResize.dispatch();
         }
 
 
         function updateContent() {
 
-            _thumbNavigation.update();
-            console.log(_sideNavigation)
-            if (_sideNavigation.container != null) _sideNavigation.update();
+            if (_slideObject.isActive) {
 
-            _dragShape.width = screenWidth();
-            _dragShape.height = screenHeight() - _thumbNavigation.container.getHeight() - 60;
+                _thumbNavigation.updateView();
+                if (_sideNavigation.container != null) _sideNavigation.update();
+
+                _dragShape.width = screenWidth();
+                _dragShape.height = screenHeight() - _thumbNavigation.container.getHeight() - 60;
+
+            }
+
+            _textField.updateView();
+
         }
 
         this.resizeScreen = function () {
@@ -451,13 +481,27 @@ this.jks = this.jks || {};
 
         initDevStuff();
         initRenderer();
-        initFSImages();
+        initSlideImages();
+        initTresholdFilter();
+
+        _stage.addChild(_scope.containerSlideImages);
+        _stage.addChild(_scope.containerSlideNavigation);
+        _stage.addChild(_scope.containerPages);
         initDragShape();
-        initCustomFilterTest();
-        // initTransition();
+        _stage.addChild(_scope.containerNavigation);
+
+        _textField = new jks.TextField();
+        _scope.containerSlideImages.addChild(_textField.container);
+
 
         initListener();
         renderLoop();
+
+
+        TweenLite.delayedCall(.5, function () {
+            onResize();
+            _scope.s.onReady.dispatch();
+        });
 
 
         /*--------------------------------------------
@@ -467,10 +511,6 @@ this.jks = this.jks || {};
         function getAssetByID(id) {
             return _assetLoader.getResult(id)
         }
-
-        this.initAssets = function (assetLoader) {
-            _assetLoader = assetLoader;
-        };
 
 
         this.initSlide = function (_config, _pageID) {
@@ -482,10 +522,12 @@ this.jks = this.jks || {};
             _slideObject.slideNumImages = _config.pageData[_pageID].images.length;
             _slideObject.pageID = _pageID;
             _slideObject.configData = _config;
+            _slideObject.isActive = true;
 
             _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_pageID].images[_slideObject.currentImage].src);
 
-
+            _textField.setCategory(_slideObject.configData.pageData[_pageID].categoryText);
+            setText(_slideObject.currentImage)
             // TweenLite.delayedCall(2.6, _scope.slidePrev);
 
         }
@@ -498,7 +540,7 @@ this.jks = this.jks || {};
         _thumbNavigation.container = null;
 
         this.initThumbNavigation = function () {
-            console.log('initThumbNavigation:', _slideObject, _thumbNavigation.container);
+            //console.log('initThumbNavigation:', _thumbNavigation.container);
 
             if (_thumbNavigation.container) {
                 console.log('destroy thumb')
@@ -506,14 +548,14 @@ this.jks = this.jks || {};
                 _thumbNavigation.s.onClickThumb.remove(onThumbClick);
                 //TODO - listener!?
                 _thumbNavigation.container.removeChildren();
-                _stage.removeChild(_thumbNavigation.container);
+                _scope.containerSlideNavigation.removeChild(_thumbNavigation.container);
                 _thumbNavigation.container = null;
                 _thumbNavigation = null;
             }
 
             _thumbNavigation = new jks.ThumbNavigation($imageRatio);
             _thumbNavigation.s.onClickThumb.add(onThumbClick)
-            _stage.addChild(_thumbNavigation.container);
+            _scope.containerSlideNavigation.addChild(_thumbNavigation.container);
             _thumbNavigation.init(_slideObject);
 
             function onThumbClick(id) {
@@ -534,20 +576,21 @@ this.jks = this.jks || {};
         this.initSideNavigation = function () {
             console.log('jks.SideNavigation')
 
+
             if (_sideNavigation.container) {
                 console.log('destroy side')
 
                 _sideNavigation.s.onClickNext.remove(onClickNext);
                 _sideNavigation.s.onClickPrev.remove(onClickPrev);
                 //_thumbNavigation.container.destroy();
-                _stage.removeChild(_sideNavigation.container);
+                _scope.containerSlideNavigation.removeChild(_sideNavigation.container);
                 _sideNavigation.container = null;
                 _sideNavigation = null;
             }
 
             _sideNavigation = new jks.SideNavigation();
             //_sideNavigation.init();
-            _stage.addChild(_sideNavigation.container);
+            _scope.containerSlideNavigation.addChild(_sideNavigation.container);
 
 
             _sideNavigation.s.onClickNext.add(onClickNext);
@@ -579,7 +622,9 @@ this.jks = this.jks || {};
         this.slideTo = function (id) {
             _slideObject.previousImage = _slideObject.currentImage;
             _slideObject.currentImage = id;
+
             transition();
+
             console.log('slideTo ', _slideObject.currentImage);
         };
 
@@ -597,14 +642,11 @@ this.jks = this.jks || {};
     }
 
     jks.View.getAssetByID = function (id) {
-        console.log(id)
         return _assetLoader.getResult(id);
     }
 
-    jks.View.addNavigationContainer = function (c) {
-        console.log('addNavigationContainer');
-
-        _stage.addChild(c)
+    jks.View.forceResize = function () {
+        _scope.resizeScreen()
     }
 
 

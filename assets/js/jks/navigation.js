@@ -19,36 +19,99 @@ this.jks = this.jks || {};
     var _logo;
 
 
-    function Navigation() {
+    function Navigation(config) {
         _scope = this;
 
-        console.log('init - Navigation');
+        console.log('init - Navigation', jks.Config.getDeviceType());
+
 
         this.s = {
-            onKeyDownEvent: new signals.Signal()
+            onKeyDownEvent: new signals.Signal(),
+            onNavSelect: new signals.Signal(),
+            onTapHome: new signals.Signal()
         };
+
+        var currentSelectedID = null;
 
 
         this.container = new PIXI.Container();
         this.container.interactive = true;
         this.container.buttonMode = true;
 
-        function initGFX() {
+        var _logoColor = new PIXI.Sprite.fromImage(jks.View.getAssetByID('logo').src);
 
-            _logo = new PIXI.Sprite.fromImage(jks.View.getAssetByID('logo').src);
-            _logo.anchor.x = .5;
-            _logo.anchor.y = 0;
-            _logo.scale.x = _logo.scale.y = .3;
+        _logo = new PIXI.Container();
+        _logo.interactive = true;
+        _logo.addChild(_logoColor);
 
-            //_logo.texture.baseTexture.width
-
-            _logo.x = jks.View.getScreenWidth();
-            _logo.y = 0;
+        _logo.x = 15;
+        _logo.y = 15;
+        _logo.on('mousedown', onTapHome).on('touchstart', onTapHome);
 
 
-            _scope.container.addChild(_logo);
+        function onTapHome() {
+            _scope.s.onTapHome.dispatch();
+            currentSelectedID = null;
+        }
 
-            jks.View.addNavigationContainer(_scope.container);
+
+        this.btn = new PIXI.Graphics();
+        setup(this.btn, 0);
+
+        this.btn2 = new PIXI.Graphics();
+        setup(this.btn2, 1);
+
+        function setup(_btn, id) {
+            _btn.interactive = true;
+            _btn.buttonMode = true;
+            _btn.beginFill(0x00cc00);
+            _btn.drawRect(0, 0, 40, 40);
+            _btn.endFill;
+            _btn.alpha = 0.5;
+            _btn.on('mousedown', onTapDown).on('touchstart', onTapDown);
+            _btn.x = 300;
+            _btn.y = 0;
+            _btn.selectionID = id;
+        }
+
+
+        this.container.addChild(this.btn)
+        this.container.addChild(this.btn2)
+
+
+        function onTapDown(e) {
+            console.log('tap', e.target.selectionID)
+            if (e.target.selectionID != currentSelectedID)
+                _scope.s.onNavSelect.dispatch(e.target.selectionID);
+            currentSelectedID = e.target.selectionID;
+        }
+
+        //_logo.anchor.x = 0;
+        //_logo.anchor.y = 0;
+        //_logo.scale.x = _logo.scale.y = .3;
+
+
+        _scope.container.addChild(_logo);
+
+        //jks.View.addNavigationContainer(_scope.container);
+
+        var w, s, o;
+        var minOffset = 20;
+        var maxOffset = 30;
+        this.updateView = function () {
+            w = jks.View.getScreenWidth()
+            if (w <= 768) {
+                s = mathUtils.convertToRange(w, [0, 768], [.4, .7]);
+                _logo.x = _logo.y = minOffset;
+            } else {
+                s = .7;
+                o = mathUtils.convertToRange(w, [728, 1200], [0, 1]);
+                _logo.x = _logo.y = minOffset + o * maxOffset;
+            }
+            _logo.scale.x = _logo.scale.y = s * .5;
+
+            _scope.btn.y = _logo.y;
+            _scope.btn2.y = _scope.btn.y + 35 + _logo.y;
         }
 
 
@@ -82,18 +145,6 @@ this.jks = this.jks || {};
             };
 
         }
-
-
-        this.init = function () {
-
-            console.log('navigation init!')
-            console.log(jks.View.getAssetByID('logo'))
-            //initKeyMode();
-            //TweenLite.delayedCall(2, initGFX)
-            initGFX();
-        }
-
-        //init();
 
 
     }
