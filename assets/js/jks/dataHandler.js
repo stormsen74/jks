@@ -35,10 +35,10 @@ this.jks = this.jks || {};
 
             console.log('init - DataHandler');
 
-            generateLoadingContent();
+            generateSlideContent();
         }
 
-        function generateLoadingContent() {
+        function generateSlideContent() {
             for (var i = 0; i < config.numPages; i++) {
                 var mainfest = [];
                 for (var j = 0; j < config.pages[i].items.length; j++) {
@@ -72,6 +72,8 @@ this.jks = this.jks || {};
                 console.log('assets loaded!')
 
                 _scope.s.onAssetsLoaded.dispatch(assetLoader);
+                //TweenLite.delayedCall(.3, _scope.s.onAssetsLoadingProgress.dispatch,[assetLoader])
+                //TODO - get Assets from Loader?
             }
         }
 

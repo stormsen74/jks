@@ -49,7 +49,7 @@ this.jks = this.jks || {};
             window.removeEventListener('resize', onResizePreloader);
 
 
-            return
+            //return
 
             //router = new jks.Router();
 
@@ -60,7 +60,7 @@ this.jks = this.jks || {};
 
             pageHome = new jks.PageHome(config);
 
-            navigation = new jks.Navigation();
+            navigation = new jks.Navigation(config);
             navigation.s.onKeyDownEvent.add(onKeyDown);
             navigation.s.onNavSelect.add(onNavSelect);
             navigation.s.onTapHome.add(onTapHome);
