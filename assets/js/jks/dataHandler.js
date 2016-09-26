@@ -25,6 +25,7 @@ this.jks = this.jks || {};
 
         this.s = {
             onContentLoaded: new signals.Signal(),
+            onAssetsLoadingProgress: new signals.Signal(),
             onAssetsLoaded: new signals.Signal(),
             onDataHandlerReady: new signals.Signal()
         };
@@ -64,7 +65,7 @@ this.jks = this.jks || {};
             assetLoader.loadManifest(config.assets.manifest);
 
             function onLoadAssets(e) {
-                console.log(e.loaded);
+                _scope.s.onAssetsLoadingProgress.dispatch(e.loaded);
             }
 
             function onAssetsLoaded() {

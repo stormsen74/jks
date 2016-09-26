@@ -27,7 +27,7 @@ this.jks = this.jks || {};
     var _textField;
     var _dragShape;
 
-    var _slideObject = {isActive: false};
+    var _slideObject = {isActive: false, isCreated: false};
 
     var $imageWidth;
     var $imageHeight;
@@ -446,9 +446,13 @@ this.jks = this.jks || {};
 
         }
 
+
+
         this.resizeScreen = function () {
 
-            updateContent();
+            console.log('resizeScreen')
+
+          updateContent();
 
             _screenWidth = screenWidth();
             _screenHeight = screenHeight();
@@ -485,9 +489,9 @@ this.jks = this.jks || {};
         initTresholdFilter();
 
         _stage.addChild(_scope.containerSlideImages);
+        initDragShape();
         _stage.addChild(_scope.containerSlideNavigation);
         _stage.addChild(_scope.containerPages);
-        initDragShape();
         _stage.addChild(_scope.containerNavigation);
 
         _textField = new jks.TextField();
@@ -512,10 +516,13 @@ this.jks = this.jks || {};
             return _assetLoader.getResult(id)
         }
 
-
         this.initSlide = function (_config, _pageID) {
 
             console.log('initSlide:', _slideObject);
+
+            if (_slideObject.isCreated) {
+                _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.currentImage].src, $imageCrossOrigin, $imageScaleMode);
+            }
 
             _slideObject.previousImage = 0;
             _slideObject.currentImage = 0;
@@ -524,11 +531,30 @@ this.jks = this.jks || {};
             _slideObject.configData = _config;
             _slideObject.isActive = true;
 
-            _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_pageID].images[_slideObject.currentImage].src);
+
+            if (_slideObject.isCreated) {
+                _imgSpriteFront.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_pageID].images[_slideObject.currentImage].src);
+                transitionSwitch();
+            } else {
+                _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_pageID].images[_slideObject.currentImage].src);
+            }
+            _slideObject.isCreated = true;
+
+
 
             _textField.setCategory(_slideObject.configData.pageData[_pageID].categoryText);
             setText(_slideObject.currentImage)
-            // TweenLite.delayedCall(2.6, _scope.slidePrev);
+
+        }
+
+        function transitionSwitch() {
+
+            _thumbNavigation.isLocked = true;
+            if (_sideNavigation)_sideNavigation.isLocked = true;
+
+            _scope.resizeScreen();
+            TweenLite.to(tl_1, $transitionTime, {progress: 1, ease: Sine.easeOut});
+            TweenLite.to(tl_2, $transitionTime, {progress: 1, ease: Circ.easeOut});
 
         }
 

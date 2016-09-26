@@ -80,11 +80,15 @@ this.jks = this.jks || {};
         }
 
         function blendIn() {
-            if( !_background.visible ) _background.visible = true;
+            if (!_background.visible) _background.visible = true;
             _scope.container.visible = true;
-            TweenLite.to(_tresholdFilter.uniforms.offset, 1, {
-                x: 0,
-                ease: Sine.easeOut
+            // smart delay to get correct resize!
+            TweenLite.delayedCall(.1, function () {
+                _scope.updateView();
+                TweenLite.to(_tresholdFilter.uniforms.offset, 1, {
+                    x: 0,
+                    ease: Sine.easeOut
+                })
             })
 
             //_tresholdFilter.uniforms.offset.x =1;
@@ -104,7 +108,9 @@ this.jks = this.jks || {};
 
 
         var _screenWidth, _screenHeight;
-        var _scalePoint = new PIXI.Point(0, 0);
+        var _scale = jks.View.getScreenWidth() / $imageWidth;
+        _background.scale.x = _background.scale.y = _scale;
+
 
         this.updateView = function () {
             //_logo.x = jks.View.getScreenWidth();
@@ -112,17 +118,17 @@ this.jks = this.jks || {};
             _screenWidth = jks.View.getScreenWidth();
             _screenHeight = jks.View.getScreenHeight();
 
-            _scalePoint.set(_screenWidth / $imageWidth);
-            _background.scale = _scalePoint;
+            _scale = _screenWidth / $imageWidth;
+            _background.scale.x = _background.scale.y = _scale;
 
             if (_background.height >= _screenHeight) {
-                _scalePoint.set(_screenWidth / $imageWidth);
-                _background.scale = _scalePoint;
+                _scale = _screenWidth / $imageWidth;
+                _background.scale.x = _background.scale.y = _scale;
                 _background.x = 0;
                 _background.y = -(_background.height - _screenHeight) * .5;
             } else if (_background.height <= _screenHeight) {
-                _scalePoint.set(_screenHeight / $imageHeight);
-                _background.scale = _scalePoint;
+                _scale = _screenHeight / $imageHeight;
+                _background.scale.x = _background.scale.y = _scale;
                 _background.y = 0;
                 _background.x = (_screenWidth - _background.width) * .2;
             }
@@ -131,7 +137,6 @@ this.jks = this.jks || {};
 
 
         this.show = function () {
-            console.log('show')
             blendIn();
         }
 

@@ -37,9 +37,6 @@ this.jks = this.jks || {};
             height: 800
         }
 
-        TweenLite.delayedCall(3, function () {
-            jks.Config.getColor('blue')
-        })
 
 
         for (var i = 0; i < this.numPages; i++) {
@@ -69,10 +66,6 @@ this.jks = this.jks || {};
                 "src": "assets/img/logo.png",
                 "id": "logo"
             }
-            //{
-            //    "src": "assets/img/navigation/nav_arrow_42x130.png",
-            //    "id": "nav_arrow_2"
-            //},
         ];
 
 
@@ -117,7 +110,7 @@ this.jks = this.jks || {};
     }
 
     jks.Config.getDeviceResolution = function () {
-        // maybe exclude sow slower devicves
+        // maybe exclude some slower devicves
         var _device_pixel_ratio = device.desktop() ? 1 : res.dppx();
         return _device_pixel_ratio;
     }
@@ -126,7 +119,7 @@ this.jks = this.jks || {};
         return _scope.colors[id]
     }
 
-    jks.Config.backgroundImageSize = function (id) {
+    jks.Config.backgroundImageSize = function () {
         return _scope.backgroundImageSize;
     }
 

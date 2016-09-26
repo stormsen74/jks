@@ -38,7 +38,10 @@ this.jks = this.jks || {};
         this.container.interactive = true;
         this.container.buttonMode = true;
 
-        var _logoColor = new PIXI.Sprite.fromImage(jks.View.getAssetByID('logo').src);
+        var _logoColor = new PIXI.Sprite.fromImage(jks.View.getAssetByID('logo').src, false, PIXI.SCALE_MODES.NEAREST);
+        _logoColor.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
+        _logoColor.texture.baseTexture.mipmap = true;
+        _logoColor.mipmap = true;
 
         _logo = new PIXI.Container();
         _logo.interactive = true;
@@ -47,6 +50,10 @@ this.jks = this.jks || {};
         _logo.x = 15;
         _logo.y = 15;
         _logo.on('mousedown', onTapHome).on('touchstart', onTapHome);
+
+        _scope.container.addChild(_logo);
+        _logo.scaleMode = PIXI.SCALE_MODES.NEAREST;
+        // _logo.scale.x = _logo.scale.y = .5;
 
 
         function onTapHome() {
@@ -86,12 +93,8 @@ this.jks = this.jks || {};
             currentSelectedID = e.target.selectionID;
         }
 
-        //_logo.anchor.x = 0;
-        //_logo.anchor.y = 0;
-        //_logo.scale.x = _logo.scale.y = .3;
 
 
-        _scope.container.addChild(_logo);
 
         //jks.View.addNavigationContainer(_scope.container);
 
@@ -99,16 +102,17 @@ this.jks = this.jks || {};
         var minOffset = 20;
         var maxOffset = 30;
         this.updateView = function () {
+            // return
             w = jks.View.getScreenWidth()
             if (w <= 768) {
                 s = mathUtils.convertToRange(w, [0, 768], [.4, .7]);
                 _logo.x = _logo.y = minOffset;
             } else {
-                s = .7;
+                s = 1;
                 o = mathUtils.convertToRange(w, [728, 1200], [0, 1]);
                 _logo.x = _logo.y = minOffset + o * maxOffset;
             }
-            _logo.scale.x = _logo.scale.y = s * .5;
+            _logo.scale.x = _logo.scale.y = s  ;
 
             _scope.btn.y = _logo.y;
             _scope.btn2.y = _scope.btn.y + 35 + _logo.y;

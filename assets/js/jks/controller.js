@@ -26,12 +26,30 @@ this.jks = this.jks || {};
 
         console.log('init - Controller || version: ', config.version);
 
-        dataHandler.loadAssets();
+        window.addEventListener('resize', onResizePreloader);
+        document.getElementById('preload').style.height = window.innerHeight + 'px'
+        function onResizePreloader() {
+            document.getElementById('preload').style.height = window.innerHeight + 'px'
+        }
+
+        dataHandler.s.onAssetsLoadingProgress.add(onAssetsLoadingProgress);
         dataHandler.s.onAssetsLoaded.add(onAssetsLoaded);
+        dataHandler.loadAssets();
+
+        function onAssetsLoadingProgress(progress) {
+            document.getElementById('preload').style.width = progress * 100 + '%'
+        }
 
         function onAssetsLoaded(assets) {
 
             console.log('onAssetsLoaded');
+
+            dataHandler.s.onAssetsLoadingProgress.remove(onAssetsLoadingProgress);
+            dataHandler.s.onAssetsLoaded.remove(onAssetsLoaded);
+            window.removeEventListener('resize', onResizePreloader);
+
+
+            return
 
             //router = new jks.Router();
 
@@ -50,9 +68,10 @@ this.jks = this.jks || {};
 
             view.containerPages.addChild(pageHome.container);
             view.containerNavigation.addChild(navigation.container)
+            TweenLite.delayedCall(.1, view.resizeScreen);
 
 
-            //pageSwitch(1)
+            //slideSwitch(1)
         }
 
 
@@ -65,28 +84,30 @@ this.jks = this.jks || {};
             pageHome.show();
         }
 
-        //TweenLite.delayedCall(5, pageSwitch, [0])
-        //TweenLite.delayedCall(6, pageSwitch, [1])
+        //TweenLite.delayedCall(5, slideSwitch, [0])
+        //TweenLite.delayedCall(6, slideSwitch, [1])
 
-        function pageSwitch(id) {
+        function slideSwitch(id) {
             if (!config.pageData[id].contentLoaded) {
                 dataHandler.loadPage(id);
                 dataHandler.s.onContentLoaded.add(onContentLoaded);
             } else {
-                switchPage(id);
+                switchSlide(id);
             }
         }
 
         function onContentLoaded(pageID) {
-            //console.log('content loaded', config.pageData[0].contentLoaded);
-            switchPage(pageID);
+            console.log('content loaded', config.pageData[pageID].contentLoaded);
+            switchSlide(pageID);
         }
 
-        function switchPage(pageID) {
+        function switchSlide(pageID) {
+
+            pageHome.hide();
 
             view.initSlide(config, pageID);
-
             view.initThumbNavigation();
+
             if (!jks.Core.isMobile()) {
                 view.initSideNavigation();
             }
@@ -96,14 +117,13 @@ this.jks = this.jks || {};
 
 
         function onKeyDown(e) {
-            console.log(e, 'down');
             e == 'next' ? view.slideNext() : view.slidePrev();
         }
 
         function onNavSelect(id) {
             console.log(id = id || 0, 'onNavSelect');
-            pageSwitch(id);
-            pageHome.hide();
+            slideSwitch(id);
+            // pageHome.hide();
         }
 
         function onTapHome() {

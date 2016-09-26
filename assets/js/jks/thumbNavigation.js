@@ -39,6 +39,7 @@ this.jks = this.jks || {};
         var _compWidth = 0;
         this.container = new PIXI.Container();
 
+
         this.container.getWidth = function () {
             return _compWidth;
         };
@@ -92,6 +93,9 @@ this.jks = this.jks || {};
             console.log('init - ThumbNavigation', jks.Core.isMobile());
             //console.log(slideObject.slideNumImages);
 
+            // hide container!
+            _scope.container.visible = false;
+
             if (jks.Config.getDeviceType() == "mobile" || jks.Config.getDeviceType() == "tablet") {
                 $ThumbOffsetX = 0;
                 $OffsetBottom = 0;
@@ -132,6 +136,11 @@ this.jks = this.jks || {};
             _scope.thumbs[0].select();
 
             initDrag(thumb, slideObject.slideNumImages);
+
+            // show container
+            TweenLite.delayedCall(.2, function () {
+                _scope.container.visible = true;
+            })
 
         };
 
