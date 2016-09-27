@@ -22,6 +22,16 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
+
+            font-family: "Linotype Feltpen W01 Medium" !important;
+        }
+
+        /*https://www.onlinewebfonts.com/download/7e1ab87ac403849d49bb8a60bf578ee7*/
+        /*<div>Font made from <a href="http://www.onlinewebfonts.com">oNline Web Fonts</a>is licensed by CC BY 3.0</div>*/
+        @font-face {
+            font-family: "Linotype Feltpen W01 Medium";
+            src: url("assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.eot"); /* IE9*/
+            src: url("assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */ url("assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.woff2") format("woff2"), /* chrome、firefox */ url("assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.woff") format("woff"), /* chrome、firefox */ url("assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.ttf") format("truetype"), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/ url("assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.svg#Linotype Feltpen W01 Medium") format("svg"); /* iOS 4.1- */
         }
 
         #screen {
@@ -107,7 +117,7 @@
 //        }
     ];
 
-    console.log(manifest);
+    //    console.log(manifest);
 
     _loader = new createjs.LoadQueue(false);
     _loader.addEventListener("progress", onLoadProgress);
@@ -127,6 +137,7 @@
 //        initFilterTest();
         initDraggableTest();
 //        initCustomFilterTest();
+        initPixiText();
         animate();
     }
 
@@ -134,10 +145,10 @@
      ~ PIXI LOADER
      --------------------------------------------*/
 
-    PIXI.loader.add('assets', 'assets/img/res/assets.json').load(assetsLoaded);
-    PIXI.loader.on('progress', function (e) {
-        console.log('/', e.progress)
-    })
+    //    PIXI.loader.add('assets', 'assets/img/res/assets.json').load(assetsLoaded);
+    //    PIXI.loader.on('progress', function (e) {
+    //        console.log('/', e.progress)
+    //    })
 
     function assetsLoaded(e) {
         //https://github.com/englercj/resource-loader
@@ -184,7 +195,8 @@
             antialiasing: false,
             transparent: false,
             backgroundColor: 0x0a5a15,
-            autoResize: false
+            autoResize: false,
+            roundPixels: true //performance
         };
 
         pixiRenderer = new PIXI.autoDetectRenderer(screenWidth(), screenHeight(), rendererOptions);
@@ -222,6 +234,44 @@
     }
 
     /*--------------------------------------------
+     ~ PIXI TEXT
+     --------------------------------------------*/
+
+    var textContainer, pixiText;
+
+    function initPixiText() {
+
+        // https://pixijs.github.io/docs/PIXI.TextStyle.html
+
+        var textContainer = new PIXI.Container();
+        var pixiText = new PIXI.Text('Peter Pan Speedrock', {
+            fontFamily: 'Linotype Feltpen W01 Medium',
+            fontSize: 24,
+            fill: 0xff0000,
+            align: 'left',
+            dropShadow: true,
+            dropShadowColor: 0x000000,
+            dropShadowDistance: 1,
+            dropShadowBlur: 4
+        });
+
+        textContainer.addChild(pixiText);
+        stage.addChild(textContainer);
+
+
+        textContainer.x = 200;
+        textContainer.y = 200;
+
+        TweenLite.to(pixiText.style, 1, {
+            delay: 1,
+            fontSize: 48,
+        })
+//        pixiText.style.fontSize = 48;
+//        textContainer.scale.x = textContainer.scale.y = 2;
+    }
+
+
+    /*--------------------------------------------
      ~ DRAGABLE TEST
      --------------------------------------------*/
 
@@ -254,14 +304,13 @@
         function stopDrag(event) {
             dragData.isDragging = false;
             TweenLite.to(sprite, 1, {
-                throwProps: {x: {velocity: tracker.getVelocity("x"), max: 300, min: 0}},
+                throwProps: {x: {velocity: tracker.getVelocity("x"), min: 0, max: 300}},
                 ease: Strong.easeOut
             });
         }
 
         function moveDrag(e) {
             if (dragData.isDragging) {
-                console.log(e.data)
                 sprite.x = e.data.global.x - 50;
 //                console.log(tracker.getVelocity("x"));
 
