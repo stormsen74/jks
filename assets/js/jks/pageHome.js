@@ -95,9 +95,9 @@ this.jks = this.jks || {};
         }
 
         function blendOut() {
-            TweenLite.to(_tresholdFilter.uniforms.offset, 1, {
+            TweenLite.to(_tresholdFilter.uniforms.offset, 1.5, {
                 x: 1,
-                ease: Sine.easeInOut,
+                ease: Circ.easeIn,
                 onComplete: function () {
                     _scope.container.visible = false;
                 }

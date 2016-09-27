@@ -65,10 +65,10 @@ this.jks = this.jks || {};
 
         var navContainer = new PIXI.Container();
         //navContainer.width = jks.View.getScreenWidth();
-        navContainer.pivot.x = .5;
+        navContainer.pivot.x = 1;
         navContainer.pivot.y = .5;
-        navContainer.x = jks.View.getScreenWidth() * .5;
-        navContainer.y = jks.View.getScreenHeight() * .5;
+        navContainer.x = jks.View.getScreenWidth() * .63;
+        navContainer.y = jks.View.getScreenHeight() * .1;
         _scope.container.addChild(navContainer);
 
         var buttons = [];
@@ -76,7 +76,7 @@ this.jks = this.jks || {};
         function generateSlideNavigation() {
             var size = 50;
             var margin = 30;
-            var length = 0;
+            var length = 50;
 
             for (var i = 0; i < config.numPages; i++) {
                 console.log('create Button!', i)
@@ -92,8 +92,8 @@ this.jks = this.jks || {};
                 this['button_' + i].on('mousedown', onTapDown).on('touchstart', onTapDown);
                 this['button_' + i].pivot.x = .5;
                 this['button_' + i].pivot.y = .5;
-                this['button_' + i].x = -size * .5;
-                this['button_' + i].y = length;
+                this['button_' + i].x -= length;
+                this['button_' + i].y = size;
                 //this['button_' + i].y = -20;
                 this['button_' + i].selectionID = i;
 
@@ -113,31 +113,7 @@ this.jks = this.jks || {};
 
         generateSlideNavigation();
 
-        TweenLite.to(navContainer, 2, {delay: 2, rotation: Math.PI * 2, ease: Sine.easeInOut})
-
-
-        //this.btn = new PIXI.Graphics();
-        //setup(this.btn, 0);
-        //
-        //this.btn2 = new PIXI.Graphics();
-        //setup(this.btn2, 1);
-        //
-        //function setup(_btn, id) {
-        //    _btn.interactive = true;
-        //    _btn.buttonMode = true;
-        //    _btn.beginFill(0x00cc00);
-        //    _btn.drawRect(0, 0, 40, 40);
-        //    _btn.endFill;
-        //    _btn.alpha = 0.5;
-        //    _btn.on('mousedown', onTapDown).on('touchstart', onTapDown);
-        //    _btn.x = 300;
-        //    _btn.y = 0;
-        //    _btn.selectionID = id;
-        //}
-        //
-        //
-        //this.container.addChild(this.btn)
-        //this.container.addChild(this.btn2)
+        //TweenLite.to(navContainer, 2, {delay: 2, rotation: Math.PI * 2, ease: Sine.easeInOut})
 
 
         function onTapDown(e) {
