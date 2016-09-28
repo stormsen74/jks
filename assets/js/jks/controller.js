@@ -44,11 +44,6 @@ this.jks = this.jks || {};
 
             console.log('onAssetsLoaded');
 
-            dataHandler.s.onAssetsLoadingProgress.remove(onAssetsLoadingProgress);
-            dataHandler.s.onAssetsLoaded.remove(onAssetsLoaded);
-            window.removeEventListener('resize', onResizePreloader);
-
-
             //return
 
             //router = new jks.Router();
@@ -56,7 +51,7 @@ this.jks = this.jks || {};
 
             view = new jks.View(config, assets);
             view.s.onResize.add(viewOnResize)
-            view.s.onReady.addOnce(onViewReady)
+            view.s.onReady.add(onViewReady)
 
             pageHome = new jks.PageHome(config);
 
@@ -71,6 +66,13 @@ this.jks = this.jks || {};
             TweenLite.delayedCall(.1, view.resizeScreen);
 
 
+
+            // remove
+            dataHandler.s.onAssetsLoadingProgress.remove(onAssetsLoadingProgress);
+            dataHandler.s.onAssetsLoaded.remove(onAssetsLoaded);
+            window.removeEventListener('resize', onResizePreloader);
+
+
             //slideSwitch(1)
         }
 
@@ -83,6 +85,8 @@ this.jks = this.jks || {};
         function onViewReady() {
             pageHome.show();
             navigation.wakeUp();
+
+            view.s.onReady.remove(onViewReady)
         }
 
         function slideSwitch(id) {
