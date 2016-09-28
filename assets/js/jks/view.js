@@ -71,7 +71,7 @@ this.jks = this.jks || {};
          ~ DEV-STUFF
          --------------------------------------------*/
 
-        function initDevStuff() {
+        if (jks.Config.debug) {
             _stats = new Stats();
             _stats.setMode(0); // 0: fps, 1: ms
 
@@ -467,7 +467,6 @@ this.jks = this.jks || {};
         }
 
 
-        initDevStuff();
         initRenderer();
         initSlideImages();
         initTresholdFilter();

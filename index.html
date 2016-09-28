@@ -28,8 +28,9 @@
     <!--<script src="assets/js/gsap/TweenMax.min.js"></script>-->
     <script src="assets/js/gsap/easing/EasePack.min.js"></script>
     <script src="assets/js/gsap/plugins/ThrowPropsPlugin.min.js"></script>
-    <!--<script src="assets/js/gsap/utils/Draggable.min.js"></script>-->
+    <script src="assets/js/gsap/plugins/CSSPlugin.min.js"></script>
 
+    <!--<script src="assets/js/gsap/utils/Draggable.min.js"></script>-->
 
 
     <script src="assets/js/device.min.js"></script>
@@ -64,19 +65,15 @@
 
             -webkit-font-smoothing: antialiased;
 
-            font-family:"Linotype Feltpen W01 Medium" !important;
+            font-family: "Linotype Feltpen W01 Medium" !important;
         }
-
 
         /*https://www.onlinewebfonts.com/download/7e1ab87ac403849d49bb8a60bf578ee7*/
         /*<div>Font made from <a href="http://www.onlinewebfonts.com">oNline Web Fonts</a>is licensed by CC BY 3.0</div>*/
-        @font-face {font-family: "Linotype Feltpen W01 Medium";
+        @font-face {
+            font-family: "Linotype Feltpen W01 Medium";
             src: url("assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.eot"); /* IE9*/
-            src: url("assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
-            url("assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.woff2") format("woff2"), /* chrome、firefox */
-            url("assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.woff") format("woff"), /* chrome、firefox */
-            url("assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.ttf") format("truetype"), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
-            url("assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.svg#Linotype Feltpen W01 Medium") format("svg"); /* iOS 4.1- */
+            src: url("assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */ url("assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.woff2") format("woff2"), /* chrome、firefox */ url("assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.woff") format("woff"), /* chrome、firefox */ url("assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.ttf") format("truetype"), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/ url("assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.svg#Linotype Feltpen W01 Medium") format("svg"); /* iOS 4.1- */
         }
 
         #version {
@@ -103,25 +100,146 @@
             width: 0%;
             background-color: #408080;
         }
+
+        #logo {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            /*background-color: #326464;*/
+            /*opacity: .3;*/
+        }
+
+        #progressBar {
+            position: absolute;
+            overflow: hidden;
+            width: 0px;
+            height: 60px;
+            left: 200px;
+            top: 0px;
+            /*background-color: #326464;*/
+            /*opacity: .3;*/
+            display: none;
+        }
+
+        #jk {
+            position: absolute;
+            width: 120px;
+        }
+
+        #svg_logo {
+            position: absolute;
+            left: 50px;
+            width: 360px;
+            cursor: pointer;
+            opacity: 0;
+            display: none;
+        }
+
     </style>
 
 </head>
-<body>
+<body onload="init()">
 
 <div id="preload"></div>
 <div id="screen"></div>
+<svg id="svg_logo" version="1.1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px"
+	 viewBox="0 0 359.4 57.3" style="enable-background:new 0 0 359.4 57.3;" xml:space="preserve">
+<g id="jk">
+	<g>
+		<g>
+			<path style="fill:#408080;" d="M83.3,33.1c-4.9-2.1-6.7-4.6-6.7-9.3c0-6.7,5.8-11.2,13-11.2c3.2,0,5.8,0.3,6.9,0.3
+				c2.8,0,6.7-0.9,9.9-1.9l-1.4,6h-4.4c1.8,2,2.9,4.1,2.9,6.9c0,4-2.5,6.9-6,8.3c4,1.9,6.5,4.8,6.5,9.3c0,7.7-7.4,11.2-13.4,11.2
+				c-6.5,0-10.6-1.6-14.4-5.7l4.4-4.5c3,3.1,4.8,4.3,9.3,4.3c2.9,0,6.8-1.7,6.8-5.5c0-4.4-3.4-6.4-7.6-6.4c-2.5,0-4.8,0.9-6.9,2.1
+				L83.3,33.1z M90,29.7c3.2,0,6.3-2.5,6.3-5.9c0-3.4-3.1-5.9-6.3-5.9c-3.2,0-6.3,2.5-6.3,5.9C83.7,27.2,86.8,29.7,90,29.7z"/>
+			<path style="fill:#408080;" d="M123.3,12.6c8.4,0,15.8,6.5,15.8,15.1c0,8.6-7.4,15.1-15.8,15.1c-8.4,0-15.8-6.5-15.8-15.1
+				C107.5,19.1,114.9,12.6,123.3,12.6z M123.3,36.3c4.8,0,9.1-3.7,9.1-8.6c0-4.9-4.3-8.6-9.1-8.6c-4.8,0-9.1,3.8-9.1,8.6
+				C114.2,32.6,118.5,36.3,123.3,36.3z"/>
+			<path style="fill:#408080;" d="M143,42.4V3.5l7.1-0.9v39.3L143,42.4z"/>
+			<path style="fill:#408080;" d="M177.3,38.8c-3,3-4.9,4-8.8,4c-8.1,0-14-7.2-14-15.1c0-7.9,5.9-15.1,14-15.1c2.9,0,5.8,0.8,8.5,3
+				V3.5l7.1-0.9v39.3l-6.7,0.7V38.8z M169.4,36.3c4.8,0,8.2-4,8.2-8.6c0-4.6-3.5-8.6-8.2-8.6c-4.8,0-8.2,4-8.2,8.6
+				C161.2,32.3,164.6,36.3,169.4,36.3z"/>
+			<path style="fill:#408080;" d="M208.7,9.2c-1.5-0.1-3.1-0.1-4.6-0.1c-3.3,0-5.3,0.9-5.4,4.4h7.2v6.2h-7.2v22.3l-7.1,0.4V19.6
+				h-4.5l1.6-6.2h2.9c0.2-4,2.1-6.8,4.6-8.6c2.8-2,5.8-2.2,10-2.2L208.7,9.2z"/>
+			<path style="fill:#408080;" d="M214.8,18h0.1c2.5-4.4,5.7-5.3,10.6-5.4l-2.5,7.6c-5.4,0-7.8,3.2-7.8,8.1v13.7l-7.1,0.4V13.5
+				l6.7-0.7V18z"/>
+			<path style="fill:#408080;" d="M235.4,5.9l-4.8,4.8l-4.8-4.8l4.8-4.8L235.4,5.9z M226.9,13.5l7.1-0.7v29.1l-7.1,0.4V13.5z"/>
+			<path style="fill:#408080;" d="M242.1,33.9c1.8,2,3.7,3,6.4,3c2.3,0,4-1.5,4-2.9c0-5.1-14-1.8-14-12.6c0-5.8,5.2-8.7,10.4-8.7
+				c4,0,7.8,1.6,10.5,4.6l-4.6,4.1c-1.4-1.5-3.2-2.9-5.4-2.9c-2.1,0-3.4,0.8-3.4,3c0,4.6,14,1.5,14,11.9c0,6.5-5.9,9.4-11.6,9.4
+				c-4,0-8.1-1.5-10.7-4.6L242.1,33.9z"/>
+			<path style="fill:#408080;" d="M285.1,21.2c-1.8-1.1-3.9-2.1-6-2.1c-5.3,0-9.2,3.5-9.2,8.6c0,4.9,4.5,8.6,8.2,8.6
+				c2.9,0,4.5-0.7,6.8-2.2l3.9,5.1c-2.7,2.7-7,3.6-10.6,3.6c-7.3,0-15.4-5.8-15.4-15.3c0-8.6,7.3-14.9,15.6-14.9
+				c4.1,0,7.3,1.3,10.5,3.3L285.1,21.2z"/>
+			<path style="fill:#408080;" d="M292.4,3.5l7.1-0.9v13.5h0.1c2-2.7,4.4-3.6,8.3-3.6c5.9,0,9.8,3.8,9.8,9.8v19.5l-7.1,0.4V24.3
+				c0-3-1.4-5.5-4.6-5.5c-4.5,0-6.5,3.4-6.5,7v16.2l-7.1,0.4V3.5z"/>
+			<path style="fill:#408080;" d="M349.4,39.1c-3.5,2.4-7.7,3.7-11.9,3.7c-8.4,0-15.8-6.5-15.8-15.1c0-8.6,7.4-15.1,15.8-15.1
+				c5.9,0,11,3.5,13.5,8.8l-19.5,12.1c0.6,1.2,2.1,2.9,5.5,2.9c3.6,0,6.3-1.4,9.3-3.4L349.4,39.1z M342.1,20.4
+				c-1.3-1.3-3.1-1.8-5-1.8c-4.5,0-8.1,3.6-8.4,8c0,0.6,0,1.2,0.1,1.9L342.1,20.4z"/>
+		</g>
+		<g>
+			<path style="fill:#408080;" d="M65.7,17.8c-1.3-2.7-2.5-5.1-3.4-7.2c-3.5,7.4-9.5,12.3-18.1,14.7H44c0,0.2-0.1,0.3-0.4,0.2h-0.2
+				c-3.8,0.8-7.6,0.8-11.4,0h-0.4c-0.2,0.1-0.4,0-0.3-0.2h-0.4h-0.2c-0.3,0.1-0.5,0-0.4-0.2h-0.2c-0.3,0.1-0.5,0-0.6-0.2h-0.2
+				c-1.8-0.5-3.7-1.2-5.5-1.9h-0.2c-0.3,0.1-0.4,0-0.4-0.2h-0.2c-3.2-1.1-5.6-2.6-7.4-4.4l0.1-0.2l0.5-0.1h0.2
+				c0.9-0.2,1.9-0.3,2.9-0.3v-0.2l0.6-0.1h5.5v0.2h1.7V18h1.6v0.2h0.9v0.2h0.8v0.2h0.2c4.6,1.4,8.5,2.9,11.8,4.6
+				c-3.3-4.5-7.8-7.7-13.9-9.6h-0.2c-0.3,0.1-0.4,0-0.4-0.2h-0.2c-3.3-1-6.9-1.6-10.6-2C10.1,11.3,4.7,12.9,1,16.3v0.2
+				c0.6,0.7,1.2,1.5,1.9,2.3L3,19h0.3l0.2,0.2l0.1,0.2h0.2l0.2,0.2l0.1,0.2c3.9,3.6,9,6.2,15,7.8h0.7v0.2h0.8v0.2h0.8v0.2h0.6
+				c-0.1,0.2,0.1,0.2,0.4,0.2l0.2-0.1h0.7v0.2h1v0.2h1.2v0.2h1.1V29h1c0.3,0,0.7,0,1,0v0.2h3.1c0.7,0.2,1.5,0.2,2.4,0.2h0.2v-0.1
+				l1.3-0.1c0.5,0,0.8,0,1-0.2h1.2v-0.1l1.3-0.1c0-0.1,0-0.1,0.1-0.1l0.6-0.2h0.3l0.1-0.1l1.3-0.1v-0.1c0.3-0.1,0.5-0.2,0.8-0.2h0.2
+				l0,0l0.6-0.1h0.4V28l0.8-0.2c8.3-2.1,15.5-5.4,21.5-9.8L65.7,17.8z"/>
+			<path style="fill:#408080;" d="M55.5,28.1c-3.4,1.1-6.7,2.3-10.1,3.3c-5.6,1.9-11.5,3.1-17.6,3.7c-6.9,0.7-13.7,0.5-20.4-0.7
+				l-6.1,7.9c6.2,0.2,12.2-0.1,18.1-1c10.9-1.6,21.5-4.4,31.9-8.5l13.3,10.5L55.5,28.1z"/>
+		</g>
+	</g>
+</g>
+<g id="goldfrische">
+</g>
+</svg>
+<div id="progressBar">
+    <svg id="jk" version="1.1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px"
+	 viewBox="0 0 119.2 60.4" style="enable-background:new 0 0 119.2 60.4;" xml:space="preserve">
+<g>
+	<g>
+		<path style="fill:#408080;" d="M119.1,13.2c-2.4-5-4.7-9.5-6.3-13.2c-6.5,13.7-17.5,22.7-33.3,27.1h-0.3c0,0.4-0.1,0.6-0.7,0.4
+			h-0.3c-6.9,1.5-14,1.5-20.9,0h-0.8c-0.5,0.2-0.7,0-0.6-0.4h-0.8h-0.3c-0.6,0.2-0.9,0-0.8-0.3h-0.5c-0.6,0.2-0.9,0-1.1-0.5h-0.3
+			c-3.3-0.9-6.8-2.3-10.1-3.5h-0.4c-0.5,0.2-0.8,0-0.8-0.4h-0.3c-5.9-2.1-10.4-4.8-13.7-8.1l0.2-0.3l0.9-0.1h0.4
+			c1.7-0.3,3.5-0.6,5.4-0.6V13l1.1-0.2H45v0.4h3.2v0.3h3v0.3h1.7v0.4h1.5v0.3h0.3c8.4,2.6,15.7,5.4,21.7,8.4
+			c-6-8.3-14.4-14.2-25.6-17.8h-0.3c-0.6,0.2-0.7,0-0.7-0.3h-0.3c-6.2-1.8-12.6-2.9-19.6-3.6c-13.1-0.2-23,2.9-29.8,9v0.4
+			c1.1,1.4,2.3,2.7,3.5,4.2l0.1,0.3h0.6l0.3,0.3l0.2,0.5H5l0.3,0.3l0.1,0.3C12.7,23.3,22,28.2,33.1,31h1.4v0.5H36v0.3h1.5v0.5h1.1
+			c-0.2,0.3,0.2,0.4,0.8,0.3l0.3-0.2H41v0.4h1.8v0.3H45v0.5h2.1v0.3h1.8c0.6,0,1.2,0,1.8,0v0.5h5.7c1.2,0.3,2.7,0.5,4.4,0.3h0.5
+			v-0.2l2.4-0.2c0.9,0,1.5,0,1.8-0.5h2.3v-0.1l2.4-0.2c0-0.2,0-0.2,0.1-0.2l1.1-0.3H72l0.1-0.1l2.4-0.2v-0.1
+			c0.5-0.1,0.9-0.3,1.5-0.3h0.3l0,0l1.1-0.1h0.7v-0.3l1.5-0.3c15.4-3.9,28.5-9.9,39.6-18.1L119.1,13.2z"/>
+		<path style="fill:#408080;" d="M100.4,32.2c-6.2,2.1-12.4,4.2-18.7,6.2c-10.4,3.5-21.2,5.7-32.4,6.8c-12.8,1.4-25.3,0.9-37.6-1.2
+			L0.5,58.6c11.4,0.5,22.4-0.2,33.4-1.8c20-3,39.6-8.1,58.7-15.7l24.5,19.3L100.4,32.2z"/>
+	</g>
+</g>
+<g id="goldfrische">
+</g>
+</svg>
+</div>
 <div id="version"></div>
+
+</body>
 
 <script>
 
-    window.hideLog = function () {
-        window['console']['log'] = function () {
-        };
-    }
+    function init() {
 
-    new jks.Core();
+
+        window.hideLog = function () {
+            window['console']['log'] = function () {
+            };
+        }
+
+        TweenLite.to('#progressBar', 1, {delay: 2, width: 120})
+
+
+//        document.getElementById('progressBar').style.left = '200px';
+
+
+        new jks.Core();
+
+
+    }
 
 
 </script>
-</body>
 </html>

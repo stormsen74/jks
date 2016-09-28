@@ -85,9 +85,9 @@ this.jks = this.jks || {};
             // smart delay to get correct resize!
             TweenLite.delayedCall(.1, function () {
                 _scope.updateView();
-                TweenLite.to(_tresholdFilter.uniforms.offset, 1, {
+                TweenLite.to(_tresholdFilter.uniforms.offset, 1.3, {
                     x: 0,
-                    ease: Sine.easeOut
+                    ease: Sine.easeIn
                 })
             })
 

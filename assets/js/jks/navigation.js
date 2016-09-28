@@ -40,22 +40,37 @@ this.jks = this.jks || {};
         this.container.interactive = true;
         this.container.buttonMode = true;
 
-        var _logoColor = new PIXI.Sprite.fromImage(jks.View.getAssetByID('logo').src, false, PIXI.SCALE_MODES.NEAREST);
-        _logoColor.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
-        _logoColor.texture.baseTexture.mipmap = true;
-        _logoColor.mipmap = true;
-
-        _logo = new PIXI.Container();
-        _logo.interactive = true;
-        _logo.addChild(_logoColor);
-
-        _logo.x = 15;
-        _logo.y = 15;
-        _logo.on('mousedown', onTapHome).on('touchstart', onTapHome);
-
-        _scope.container.addChild(_logo);
-        _logo.scaleMode = PIXI.SCALE_MODES.NEAREST;
+        //var _logoColor = new PIXI.Sprite.fromImage(jks.View.getAssetByID('logo').src, false, PIXI.SCALE_MODES.NEAREST);
+        //_logoColor.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
+        //_logoColor.texture.baseTexture.mipmap = true;
+        //_logoColor.mipmap = true;
+        //
+        //_logo = new PIXI.Container();
+        //_logo.interactive = true;
+        //_logo.addChild(_logoColor);
+        //
+        //_logo.x = 15;
+        //_logo.y = 15;
+        //_logo.on('mousedown', onTapHome).on('touchstart', onTapHome);
+        //
+        //_scope.container.addChild(_logo);
+        //_logo.scaleMode = PIXI.SCALE_MODES.NEAREST;
         // _logo.scale.x = _logo.scale.y = .5;
+
+        _logo = document.getElementById('svg_logo');
+        _logo.addEventListener('mousedown', onTapHome);
+        TweenLite.set(_logo, {
+                left: 15,
+                top: 15
+            }
+        )
+
+        //_logo.style.width = '180px';
+
+        this.wakeUp = function () {
+            TweenLite.set(_logo, {display: 'block', opacity: 1})
+            //TweenLite.to(_logo, 1, { opacity: 1, ease: Sine.easeOut})
+        }
 
 
         function onTapHome() {
@@ -111,7 +126,7 @@ this.jks = this.jks || {};
 
         }
 
-        generateSlideNavigation();
+        //generateSlideNavigation();
 
         //TweenLite.to(navContainer, 2, {delay: 2, rotation: Math.PI * 2, ease: Sine.easeInOut})
 
@@ -127,20 +142,34 @@ this.jks = this.jks || {};
         //jks.View.addNavigationContainer(_scope.container);
 
         var w, s, o;
-        var minOffset = 20;
+        var minOffset = 10;
         var maxOffset = 30;
         this.updateView = function () {
-            // return
+            //return
             w = jks.View.getScreenWidth()
             if (w <= 768) {
                 s = mathUtils.convertToRange(w, [0, 768], [.4, .7]);
-                _logo.x = _logo.y = minOffset;
+                //_logo.x = _logo.y = minOffset;
+                TweenLite.set(_logo, {
+                        left: minOffset,
+                        top: minOffset
+                    }
+                )
             } else {
                 s = 1;
                 o = mathUtils.convertToRange(w, [728, 1200], [0, 1]);
-                _logo.x = _logo.y = minOffset + o * maxOffset;
+                //_logo.x = _logo.y = minOffset + o * maxOffset;
+                TweenLite.set(_logo, {
+                        left: minOffset + o * maxOffset,
+                        top: minOffset + o * maxOffset
+                    }
+                )
             }
-            _logo.scale.x = _logo.scale.y = s;
+            //_logo.scale.x = _logo.scale.y = s;
+            TweenLite.set(_logo, {
+                    width: s * 360
+                }
+            )
 
             //_scope.btn.y = _logo.y;
             //_scope.btn2.y = _scope.btn.y + 35 + _logo.y;

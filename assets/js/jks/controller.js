@@ -82,6 +82,7 @@ this.jks = this.jks || {};
 
         function onViewReady() {
             pageHome.show();
+            navigation.wakeUp();
         }
 
         function slideSwitch(id) {
