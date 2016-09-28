@@ -126,7 +126,7 @@ this.jks = this.jks || {};
 
         }
 
-        //generateSlideNavigation();
+        generateSlideNavigation();
 
         //TweenLite.to(navContainer, 2, {delay: 2, rotation: Math.PI * 2, ease: Sine.easeInOut})
 

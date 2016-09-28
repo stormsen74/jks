@@ -18,7 +18,7 @@ this.jks = this.jks || {};
 
         this.version = '0.5.2';
         this.device = '';
-        this.debug = false;
+        this.debug = true;
 
 
         _json = json;

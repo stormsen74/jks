@@ -70,8 +70,8 @@ this.jks = this.jks || {};
         /*--------------------------------------------
          ~ DEV-STUFF
          --------------------------------------------*/
-
-        if (jks.Config.debug) {
+        console.log(jks.Config.debug)
+        if (config.debug) {
             _stats = new Stats();
             _stats.setMode(0); // 0: fps, 1: ms
 
@@ -489,8 +489,8 @@ this.jks = this.jks || {};
 
 
         TweenLite.delayedCall(.5, function () {
-            onResize();
             _scope.s.onReady.dispatch();
+            onResize();
         });
 
 
