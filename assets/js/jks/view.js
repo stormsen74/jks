@@ -26,7 +26,7 @@ this.jks = this.jks || {};
     var _sideNavigation;
     var _textField;
     var _dragShape;
-
+    var _overlay;
     var _slideObject = {isActive: false, isCreated: false};
 
     var $imageWidth;
@@ -75,8 +75,6 @@ this.jks = this.jks || {};
             _stats = new Stats();
             _stats.setMode(0); // 0: fps, 1: ms
 
-            // Align top-left
-
             document.body.appendChild(_stats.domElement);
 
             _stats.domElement.style.position = 'absolute';
@@ -85,7 +83,6 @@ this.jks = this.jks || {};
 
             document.getElementById('version').style.display = 'block';
         }
-
 
         /*--------------------------------------------
          ~ LISTENER
@@ -99,7 +96,6 @@ this.jks = this.jks || {};
                 console.log('view :: orientationchange:', orientation)
             }, false);
         };
-
 
         /*--------------------------------------------
          ~ RENDERER
@@ -122,6 +118,7 @@ this.jks = this.jks || {};
 
             _stage = new PIXI.Container();
             _stage.interactive = true;
+
         }
 
         /*--------------------------------------------
@@ -139,7 +136,6 @@ this.jks = this.jks || {};
             _dragShape.interactive = true;
             _dragShape.buttonMode = true;
             _dragShape.defaultCursor = 'auto';
-            _stage.addChild(_dragShape);
 
 
             _dragShape
@@ -244,7 +240,7 @@ this.jks = this.jks || {};
         }
 
         /*--------------------------------------------
-         ~ FS-IMAGE
+         ~ SLIDE - IMAGES
          --------------------------------------------*/
 
         function initSlideImages() {
@@ -402,6 +398,23 @@ this.jks = this.jks || {};
         }
 
         /*--------------------------------------------
+         ~ SLIDE LOADER
+         --------------------------------------------*/
+
+        function initSlideLoader() {
+            _overlay = new PIXI.Graphics();
+
+            _overlay.beginFill(jks.Config.getColor('blue'));
+            _overlay.drawRect(0, 0, screenWidth(), screenHeight());
+            _overlay.endFill;
+
+            _overlay.alpha = .5;
+            _overlay.interactive = true;
+            _overlay.visible = false;
+            // _dragShape.defaultCursor = 'auto';
+        }
+
+        /*--------------------------------------------
          ~ RENDER LOOP
          --------------------------------------------*/
 
@@ -442,17 +455,63 @@ this.jks = this.jks || {};
 
             }
 
+            if (_overlay.visible) {
+
+                _overlay.width = screenWidth();
+                _overlay.height = screenHeight();
+
+            }
+
             _textField.updateView();
 
         }
 
 
+        initDevStuff();
+        initRenderer();
+        initSlideImages();
+        initTresholdFilter();
+        initDragShape();
+        initSlideLoader();
+
+        _stage.addChild(_scope.containerSlideImages);
+        _stage.addChild(_dragShape);
+        _stage.addChild(_scope.containerSlideNavigation);
+        _stage.addChild(_scope.containerPages);
+        _stage.addChild(_scope.containerNavigation);
+        _stage.addChild(_overlay);
+
+        _textField = new jks.TextField();
+        _scope.containerSlideImages.addChild(_textField.container);
+
+
+        initListener();
+        renderLoop();
+
+
+        TweenLite.delayedCall(.5, function () {
+            onResize();
+            _scope.s.onReady.dispatch();
+        });
+
+
+        /*--------------------------------------------
+         ~ PUBLIC METHODS
+         --------------------------------------------*/
+
+        function getAssetByID(id) {
+            return _assetLoader.getResult(id)
+        }
+
+        /*--------------------------------------------
+         ~ CORE RESIZE
+         --------------------------------------------*/
 
         this.resizeScreen = function () {
 
             console.log('resizeScreen')
 
-          updateContent();
+            updateContent();
 
             _screenWidth = screenWidth();
             _screenHeight = screenHeight();
@@ -482,40 +541,6 @@ this.jks = this.jks || {};
 
         };
 
-
-        initDevStuff();
-        initRenderer();
-        initSlideImages();
-        initTresholdFilter();
-
-        _stage.addChild(_scope.containerSlideImages);
-        initDragShape();
-        _stage.addChild(_scope.containerSlideNavigation);
-        _stage.addChild(_scope.containerPages);
-        _stage.addChild(_scope.containerNavigation);
-
-        _textField = new jks.TextField();
-        _scope.containerSlideImages.addChild(_textField.container);
-
-
-        initListener();
-        renderLoop();
-
-
-        TweenLite.delayedCall(.5, function () {
-            onResize();
-            _scope.s.onReady.dispatch();
-        });
-
-
-        /*--------------------------------------------
-         ~ PUBLIC METHODS
-         --------------------------------------------*/
-
-        function getAssetByID(id) {
-            return _assetLoader.getResult(id)
-        }
-
         this.initSlide = function (_config, _pageID) {
 
             console.log('initSlide:', _slideObject);
@@ -539,7 +564,6 @@ this.jks = this.jks || {};
                 _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_pageID].images[_slideObject.currentImage].src);
             }
             _slideObject.isCreated = true;
-
 
 
             _textField.setCategory(_slideObject.configData.pageData[_pageID].categoryText);

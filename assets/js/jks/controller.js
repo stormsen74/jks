@@ -84,20 +84,26 @@ this.jks = this.jks || {};
             pageHome.show();
         }
 
-        //TweenLite.delayedCall(5, slideSwitch, [0])
-        //TweenLite.delayedCall(6, slideSwitch, [1])
-
         function slideSwitch(id) {
             if (!config.pageData[id].contentLoaded) {
-                dataHandler.loadPage(id);
-                dataHandler.s.onContentLoaded.add(onContentLoaded);
+                dataHandler.loadSlide(id);
+                dataHandler.s.onSlideLoadingProgress.add(onSlideLoadingProgress);
+                dataHandler.s.onSlideLoaded.add(onSlideLoaded);
             } else {
                 switchSlide(id);
             }
         }
 
-        function onContentLoaded(pageID) {
-            console.log('content loaded', config.pageData[pageID].contentLoaded);
+
+        function onSlideLoadingProgress(progress) {
+            console.log('onSlideLoadingProgress', progress);
+            // document.getElementById('preload').style.width = progress * 100 + '%'
+        }
+
+        function onSlideLoaded(pageID) {
+            console.log('onSlideLoaded', config.pageData[pageID].contentLoaded);
+            dataHandler.s.onSlideLoadingProgress.remove(onSlideLoadingProgress);
+            dataHandler.s.onSlideLoaded.remove(onSlideLoaded);
             switchSlide(pageID);
         }
 

@@ -91,7 +91,6 @@ this.jks = this.jks || {};
                 })
             })
 
-            //_tresholdFilter.uniforms.offset.x =1;
         }
 
         function blendOut() {
@@ -103,7 +102,6 @@ this.jks = this.jks || {};
                 }
             })
 
-            //_tresholdFilter.uniforms.offset.x =1;
         }
 
 

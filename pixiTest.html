@@ -17,6 +17,8 @@
     <script src="assets/js/gsap/utils/Draggable.min.js"></script>
 
 
+
+
     <style>
         html, body {
             margin: 0;
@@ -37,13 +39,32 @@
         #screen {
             position: absolute;
         }
+
+        #loader {
+            position: absolute;
+            overflow: hidden;
+            width: 50px;
+            height: 100px;
+            left: 0px;
+            top: 0px;
+        }
+
+
     </style>
 </head>
 
 <body>
 <div id="screen"></div>
 
+<div id="loader">
+    <img id="svgImage" src="assets/img/vlight.svg" style="position: absolute; width: 80px">
+</div>
+
+
 <script>
+
+    document.getElementById('loader').style.left = '200px';
+
     /*--------------------------------------------
      ~ DEV-STUFF
      --------------------------------------------*/
@@ -232,6 +253,7 @@
 
         TweenLite.delayedCall(.1, onResize);
     }
+
 
     /*--------------------------------------------
      ~ PIXI TEXT

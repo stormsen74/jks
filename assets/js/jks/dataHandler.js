@@ -24,10 +24,11 @@ this.jks = this.jks || {};
         _scope = this;
 
         this.s = {
-            onContentLoaded: new signals.Signal(),
+            onDataHandlerReady: new signals.Signal(),
             onAssetsLoadingProgress: new signals.Signal(),
             onAssetsLoaded: new signals.Signal(),
-            onDataHandlerReady: new signals.Signal()
+            onSlideLoadingProgress: new signals.Signal(),
+            onSlideLoaded: new signals.Signal()
         };
 
 
@@ -81,17 +82,17 @@ this.jks = this.jks || {};
          ~ LOAD PAGES
          --------------------------------------------*/
 
-        this.loadPage = function (pageID) {
+        this.loadSlide = function (pageID) {
 
+            console.log('loadSlide',config.pageData[pageID]);
             _loader = new createjs.LoadQueue(false);
             _loader.addEventListener("progress", onLoadProgress);
             _loader.addEventListener("complete", onPageLoad);
             _loader.loadManifest(_loadingContent[pageID]);
 
-            //console.log('loadPage',config.pageData[pageID]);
 
             function onLoadProgress(e) {
-                console.log(e.loaded);
+                _scope.s.onSlideLoadingProgress.dispatch(e.loaded);
             }
 
             function onPageLoad() {
@@ -106,7 +107,7 @@ this.jks = this.jks || {};
                 console.log('pageLoaded!', pageID);
                 config.pageData[pageID].contentLoaded = true;
 
-                _scope.s.onContentLoaded.dispatch(pageID);
+                _scope.s.onSlideLoaded.dispatch(pageID);
 
             }
 
