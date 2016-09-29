@@ -118,6 +118,87 @@
             "description": "desription as html"
           }
         ]
+      },
+
+
+      {
+        "category": "meeresrauschen",
+        "categoryText": "Meeresrauschen",
+        "itemsLoaded": false,
+        "items": [
+          {
+            "img": {
+              "src": "assets/img/01_meeresrauschen/01.jpg",
+              "id": "img_meeresrauschen_01"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/01_meeresrauschen/02.jpg",
+              "id": "img_meeresrauschen_02"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/01_meeresrauschen/03.jpg",
+              "id": "img_meeresrauschen_03"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/01_meeresrauschen/04.jpg",
+              "id": "img_meeresrauschen_04"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/01_meeresrauschen/05.jpg",
+              "id": "img_meeresrauschen_05"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/01_meeresrauschen/06.jpg",
+              "id": "img_meeresrauschen_06"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/01_meeresrauschen/07.jpg",
+              "id": "img_meeresrauschen_07"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/01_meeresrauschen/08.jpg",
+              "id": "img_meeresrauschen_08"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/01_meeresrauschen/09.jpg",
+              "id": "img_meeresrauschen_09"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          }
+        ]
       }
     ]
   }

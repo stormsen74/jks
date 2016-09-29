@@ -43,6 +43,7 @@ this.jks = this.jks || {};
             for (var i = 0; i < config.numPages; i++) {
                 var mainfest = [];
                 for (var j = 0; j < config.pages[i].items.length; j++) {
+                    config.pages[i].items[j]['img'].src = config.pages[i].items[j]['img'].src + '?' + new Date().getTime();
                     mainfest.push(config.pages[i].items[j]['img']);
                 }
                 _loadingContent.push(mainfest);
@@ -60,7 +61,7 @@ this.jks = this.jks || {};
 
 
         this.loadAssets = function () {
-            var assetLoader= new createjs.LoadQueue(false);
+            var assetLoader = new createjs.LoadQueue(false);
             assetLoader.addEventListener("progress", onLoadAssets);
             assetLoader.addEventListener("complete", onAssetsLoaded);
             assetLoader.loadManifest(config.assets.manifest);
@@ -84,7 +85,7 @@ this.jks = this.jks || {};
 
         this.loadSlide = function (pageID) {
 
-            console.log('loadSlide',config.pageData[pageID]);
+            console.log('loadSlide', config.pageData[pageID]);
             _loader = new createjs.LoadQueue(false);
             _loader.addEventListener("progress", onLoadProgress);
             _loader.addEventListener("complete", onPageLoad);

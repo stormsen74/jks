@@ -120,6 +120,7 @@ this.jks = this.jks || {};
         function switchSlide(pageID) {
 
             pageHome.hide();
+            navigation.hide();
 
             view.initSlide(config, pageID);
             view.initThumbNavigation();
@@ -145,6 +146,7 @@ this.jks = this.jks || {};
         function onTapHome() {
             console.log('onTapHome')
             pageHome.show();
+            navigation.show();
         }
 
 

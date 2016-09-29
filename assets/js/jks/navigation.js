@@ -16,7 +16,7 @@ this.jks = this.jks || {};
 
     var _scope;
 
-    var _logo;
+    var logo;
 
 
     function Navigation(config) {
@@ -40,36 +40,18 @@ this.jks = this.jks || {};
         this.container.interactive = true;
         this.container.buttonMode = true;
 
-        //var _logoColor = new PIXI.Sprite.fromImage(jks.View.getAssetByID('logo').src, false, PIXI.SCALE_MODES.NEAREST);
-        //_logoColor.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
-        //_logoColor.texture.baseTexture.mipmap = true;
-        //_logoColor.mipmap = true;
-        //
-        //_logo = new PIXI.Container();
-        //_logo.interactive = true;
-        //_logo.addChild(_logoColor);
-        //
-        //_logo.x = 15;
-        //_logo.y = 15;
-        //_logo.on('mousedown', onTapHome).on('touchstart', onTapHome);
-        //
-        //_scope.container.addChild(_logo);
-        //_logo.scaleMode = PIXI.SCALE_MODES.NEAREST;
-        // _logo.scale.x = _logo.scale.y = .5;
 
-        // _logo = document.getElementById('svg_logo');
-        // console.log(_logo)
-        // _logo.addEventListener('mousedown', onTapHome);
-        // TweenLite.set(_logo, {
-        //         left: 15,
-        //        top: 15
-        //     }
-        // )
+        logo = document.getElementById('jk-logo');
+        logo.addEventListener('mousedown', onTapHome);
+        TweenLite.set(logo, {
+                left: 15,
+                top: 15
+            }
+        );
 
-        //_logo.style.width = '180px';
 
         this.wakeUp = function () {
-            // TweenLite.set(_logo, {display: 'block', opacity: 1})
+            TweenLite.set(logo, {display: 'block', opacity: 1})
             //TweenLite.to(_logo, 1, { opacity: 1, ease: Sine.easeOut})
         }
 
@@ -84,7 +66,7 @@ this.jks = this.jks || {};
         navContainer.pivot.x = 1;
         navContainer.pivot.y = .5;
         navContainer.x = jks.View.getScreenWidth() * .63;
-        navContainer.y = jks.View.getScreenHeight() * .1;
+        navContainer.y = jks.View.getScreenHeight() * .3;
         _scope.container.addChild(navContainer);
 
         var buttons = [];
@@ -108,8 +90,8 @@ this.jks = this.jks || {};
                 this['button_' + i].on('mousedown', onTapDown).on('touchstart', onTapDown);
                 this['button_' + i].pivot.x = .5;
                 this['button_' + i].pivot.y = .5;
-                this['button_' + i].x -= length;
-                this['button_' + i].y = size;
+                this['button_' + i].x -= size * .5;
+                this['button_' + i].y += length;
                 //this['button_' + i].y = -20;
                 this['button_' + i].selectionID = i;
 
@@ -130,6 +112,14 @@ this.jks = this.jks || {};
         generateSlideNavigation();
 
         //TweenLite.to(navContainer, 2, {delay: 2, rotation: Math.PI * 2, ease: Sine.easeInOut})
+
+        this.hide = function() {
+            navContainer.visible = false;
+        }
+
+        this.show = function() {
+            navContainer.visible = true;
+        }
 
 
         function onTapDown(e) {
@@ -152,7 +142,7 @@ this.jks = this.jks || {};
             if (w <= 768) {
                 s = mathUtils.convertToRange(w, [0, 768], [.4, .7]);
                 //_logo.x = _logo.y = minOffset;
-                TweenLite.set(_logo, {
+                TweenLite.set(logo, {
                         left: minOffset,
                         top: minOffset
                     }
@@ -161,14 +151,14 @@ this.jks = this.jks || {};
                 s = 1;
                 o = mathUtils.convertToRange(w, [728, 1200], [0, 1]);
                 //_logo.x = _logo.y = minOffset + o * maxOffset;
-                TweenLite.set(_logo, {
+                TweenLite.set(logo, {
                         left: minOffset + o * maxOffset,
                         top: minOffset + o * maxOffset
                     }
                 )
             }
             //_logo.scale.x = _logo.scale.y = s;
-            TweenLite.set(_logo, {
+            TweenLite.set(logo, {
                     width: s * 360
                 }
             )

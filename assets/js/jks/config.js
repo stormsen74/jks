@@ -16,9 +16,10 @@ this.jks = this.jks || {};
     function Config(json) {
         _scope = this;
 
-        this.version = '0.5.2';
+        this.version = '0.5.3';
         this.device = '';
-        this.debug = true;
+        this.debug = false;
+        this.log = false;
 
 
         _json = json;
@@ -36,7 +37,6 @@ this.jks = this.jks || {};
             width: 1200,
             height: 800
         }
-
 
 
         for (var i = 0; i < this.numPages; i++) {
@@ -61,10 +61,6 @@ this.jks = this.jks || {};
             {
                 "src": "assets/img/navigation/side_nav_arrow.png",
                 "id": "side_nav_arrow"
-            },
-            {
-                "src": "assets/img/logo.png",
-                "id": "logo"
             }
         ];
 
@@ -79,11 +75,17 @@ this.jks = this.jks || {};
 
         }
 
-        if (this.debug) {
+        if (this.debug || this.log) {
             document.getElementById('version').innerHTML = 'version: ' + this.version +
                 '<br/>' + 'device: ' + this.device +
                 '<br/>' + 'dpr: ' + jks.Config.getDeviceResolution() +
                 '<br/>' + 'webgl: ' + PIXI.utils.isWebGLSupported();
+
+            document.getElementById('version').style.display = 'block';
+
+            if (this.log) {
+                window.debugLog();
+            }
         } else {
             window.hideLog();
         }

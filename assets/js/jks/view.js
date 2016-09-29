@@ -77,10 +77,9 @@ this.jks = this.jks || {};
             document.body.appendChild(_stats.domElement);
 
             _stats.domElement.style.position = 'absolute';
+
             _stats.domElement.style.left = '0px';
             _stats.domElement.style.top = '50px';
-
-            document.getElementById('version').style.display = 'block';
         }
 
         /*--------------------------------------------
@@ -501,8 +500,6 @@ this.jks = this.jks || {};
         }
 
 
-        _textField = new jks.TextField();
-        _scope.containerSlideImages.addChild(_textField.container);
 
         initRenderer();
         initSlideImages();
@@ -517,6 +514,8 @@ this.jks = this.jks || {};
         _stage.addChild(_scope.containerNavigation);
         _stage.addChild(_overlay);
 
+        _textField = new jks.TextField();
+        _scope.containerSlideImages.addChild(_textField.container);
 
         initListener();
         renderLoop();
@@ -541,8 +540,6 @@ this.jks = this.jks || {};
          --------------------------------------------*/
 
         this.resizeScreen = function () {
-
-            console.log('resizeScreen')
 
             updateContent();
 
