@@ -26,7 +26,7 @@ this.jks = this.jks || {};
     var _sideNavigation;
     var _textField;
     var _dragShape;
-    var _overlay;
+    var _overlay, _progressBar;
     var _slideObject = {isActive: false, isCreated: false};
 
     var $imageWidth;
@@ -70,7 +70,6 @@ this.jks = this.jks || {};
         /*--------------------------------------------
          ~ DEV-STUFF
          --------------------------------------------*/
-        console.log(jks.Config.debug)
         if (config.debug) {
             _stats = new Stats();
             _stats.setMode(0); // 0: fps, 1: ms
@@ -404,14 +403,41 @@ this.jks = this.jks || {};
         function initSlideLoader() {
             _overlay = new PIXI.Graphics();
 
-            _overlay.beginFill(jks.Config.getColor('blue'));
+            // _overlay.beginFill(jks.Config.getColor('blue'));
+            _overlay.beginFill(0xffffff);
             _overlay.drawRect(0, 0, screenWidth(), screenHeight());
             _overlay.endFill;
 
             _overlay.alpha = .5;
             _overlay.interactive = true;
             _overlay.visible = false;
-            // _dragShape.defaultCursor = 'auto';
+
+            _progressBar = document.getElementById('progressBar');
+
+            updateSlideLoader();
+
+        }
+
+        this.showSlideLoadingProgress = function () {
+            _overlay.alpha = 0;
+            _overlay.visible = true;
+            updateSlideLoader();
+            TweenLite.to(_overlay, .2, {alpha: .5, ease: Sine.easeIn});
+            document.getElementById('progressBar').style.display = 'block';
+            document.getElementById('progressBar').style.width = '0px';
+        }
+
+        this.hideSlideLoadingProgress = function () {
+            document.getElementById('progressBar').style.display = 'none';
+            TweenLite.to(_overlay, .2, {
+                alpha: 0, ease: Sine.easeOut, onComplete: function () {
+                    _overlay.visible = false;
+                }
+            });
+        }
+
+        this.updateSlideLoadingProgress = function (progress) {
+            document.getElementById('progressBar').style.width = progress * 120 + 'px';
         }
 
         /*--------------------------------------------
@@ -443,6 +469,15 @@ this.jks = this.jks || {};
         }
 
 
+        function updateSlideLoader() {
+            _overlay.width = screenWidth();
+            _overlay.height = screenHeight();
+
+            document.getElementById('progressBar').style.left = screenWidth() * .5 - 60 + 'px';
+            document.getElementById('progressBar').style.top = screenHeight() * .5 - 30 + 'px';
+        }
+
+
         function updateContent() {
 
             if (_slideObject.isActive) {
@@ -457,15 +492,17 @@ this.jks = this.jks || {};
 
             if (_overlay.visible) {
 
-                _overlay.width = screenWidth();
-                _overlay.height = screenHeight();
+                updateSlideLoader();
 
             }
 
-            _textField.updateView();
+            // _textField.updateView();
 
         }
 
+
+        _textField = new jks.TextField();
+        _scope.containerSlideImages.addChild(_textField.container);
 
         initRenderer();
         initSlideImages();
@@ -479,9 +516,6 @@ this.jks = this.jks || {};
         _stage.addChild(_scope.containerPages);
         _stage.addChild(_scope.containerNavigation);
         _stage.addChild(_overlay);
-
-        _textField = new jks.TextField();
-        _scope.containerSlideImages.addChild(_textField.container);
 
 
         initListener();

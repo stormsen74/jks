@@ -102,9 +102,9 @@
         #progressBar {
             position: absolute;
             overflow: hidden;
-            width: 0px;
+            width: 120px;
             height: 60px;
-            left: 200px;
+            left: 0px;
             top: 0px;
             /*background-color: #326464;*/
             /*opacity: .3;*/
@@ -118,11 +118,12 @@
 
         #svg_logo {
             position: absolute;
-            left: 50px;
+            left: 0px;
+            top: 0px;
             width: 360px;
             cursor: pointer;
-            opacity: 0;
-            display: none;
+            opacity: 1;
+            display: block;
         }
 
     </style>
@@ -130,11 +131,13 @@
 </head>
 <body onload="init()">
 
+
 <div id="preload"></div>
 <div id="screen"></div>
+<!--https://css-tricks.com/gotchas-on-getting-svg-into-production/-->
 <svg id="svg_logo" version="1.1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px"
 	 viewBox="0 0 359.4 57.3" style="enable-background:new 0 0 359.4 57.3;" xml:space="preserve">
-<g id="jk">
+<g id="jk_logo">
 	<g>
 		<g>
 			<path style="fill:#408080;" d="M83.3,33.1c-4.9-2.1-6.7-4.6-6.7-9.3c0-6.7,5.8-11.2,13-11.2c3.2,0,5.8,0.3,6.9,0.3
@@ -219,13 +222,27 @@
             };
         }
 
-        TweenLite.to('#progressBar', 1, {delay: 2, width: 120})
+//        window.debugLog = function () {
+////            document.getElementById('version').style.backgroundColor = '#ff0000'
+//            window['console']['log'] = function (v) {
+//                document.getElementById('version').innerHTML += '<br/>' + v
+//            };
+//        }
 
+        var logo = document.getElementById('svg_logo');
+//        document.getElementById('svg_logo').style.left = '200px';
 
-//        document.getElementById('progressBar').style.left = '200px';
 
 
         new jks.Core();
+
+            TweenLite.set(logo, {
+                        left: 15,
+                        top: 15
+                    }
+            )
+
+
 
 
     }

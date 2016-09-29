@@ -19,6 +19,8 @@ this.jks = this.jks || {};
     var pageHome;
     var view, navigation
 
+    var isSlideLoader = false;
+
 
     function Controller(config, dataHandler) {
 
@@ -90,6 +92,8 @@ this.jks = this.jks || {};
                 dataHandler.loadSlide(id);
                 dataHandler.s.onSlideLoadingProgress.add(onSlideLoadingProgress);
                 dataHandler.s.onSlideLoaded.add(onSlideLoaded);
+                isSlideLoader = true;
+                view.showSlideLoadingProgress();
             } else {
                 switchSlide(id);
             }
@@ -97,15 +101,20 @@ this.jks = this.jks || {};
 
 
         function onSlideLoadingProgress(progress) {
-            console.log('onSlideLoadingProgress', progress);
-            // document.getElementById('preload').style.width = progress * 100 + '%'
+            view.updateSlideLoadingProgress(progress);
         }
 
         function onSlideLoaded(pageID) {
             console.log('onSlideLoaded', config.pageData[pageID].contentLoaded);
             dataHandler.s.onSlideLoadingProgress.remove(onSlideLoadingProgress);
             dataHandler.s.onSlideLoaded.remove(onSlideLoaded);
-            switchSlide(pageID);
+            if (isSlideLoader) {
+                view.hideSlideLoadingProgress();
+                isSlideLoader = false;
+            }
+
+            TweenLite.delayedCall(.2, switchSlide, [pageID])
+            // switchSlide(pageID);
         }
 
         function switchSlide(pageID) {

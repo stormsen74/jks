@@ -57,18 +57,19 @@ this.jks = this.jks || {};
         //_logo.scaleMode = PIXI.SCALE_MODES.NEAREST;
         // _logo.scale.x = _logo.scale.y = .5;
 
-        _logo = document.getElementById('svg_logo');
-        _logo.addEventListener('mousedown', onTapHome);
-        TweenLite.set(_logo, {
-                left: 15,
-                top: 15
-            }
-        )
+        // _logo = document.getElementById('svg_logo');
+        // console.log(_logo)
+        // _logo.addEventListener('mousedown', onTapHome);
+        // TweenLite.set(_logo, {
+        //         left: 15,
+        //        top: 15
+        //     }
+        // )
 
         //_logo.style.width = '180px';
 
         this.wakeUp = function () {
-            TweenLite.set(_logo, {display: 'block', opacity: 1})
+            // TweenLite.set(_logo, {display: 'block', opacity: 1})
             //TweenLite.to(_logo, 1, { opacity: 1, ease: Sine.easeOut})
         }
 
@@ -132,10 +133,11 @@ this.jks = this.jks || {};
 
 
         function onTapDown(e) {
-            console.log('tap', e.target.selectionID)
-            if (e.target.selectionID != currentSelectedID)
+            console.log('tap', e.target.selectionID);
+            if (e.target.selectionID != currentSelectedID) {
                 _scope.s.onNavSelect.dispatch(e.target.selectionID);
-            currentSelectedID = e.target.selectionID;
+                currentSelectedID = e.target.selectionID;
+            }
         }
 
 
