@@ -24,7 +24,7 @@ this.jks = this.jks || {};
     var $imageRatio;
 
 
-    function PageHome(config) {
+    function PageHome(config, shader) {
         _scope = this;
 
         console.log('init - PageHome', jks.Config.getDeviceType());
@@ -72,7 +72,7 @@ this.jks = this.jks || {};
 
             //console.log(jks.Config.shaders()['treshold'])
 
-            _tresholdFilter = new TresholdFilter(jks.Config.shaders()['treshold']);
+            _tresholdFilter = new TresholdFilter(shader);
             _tresholdFilter.padding = 0;
             _tresholdFilter.uniforms.offset.x = 1;
             _background.filters = [_tresholdFilter];

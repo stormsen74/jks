@@ -42,7 +42,7 @@ this.jks = this.jks || {};
             document.getElementById('preload').style.width = progress * 100 + '%'
         }
 
-        function onAssetsLoaded() {
+        function onAssetsLoaded(shader) {
 
             console.log('onAssetsLoaded');
 
@@ -56,24 +56,25 @@ this.jks = this.jks || {};
             //router = new jks.Router();
 
 
-            view = new jks.View(config);
+            pageHome = new jks.PageHome(config, shader);
+
+            view = new jks.View(config, shader);
             view.s.onResize.add(viewOnResize);
             view.s.onReady.addOnce(onViewReady);
-
-            pageHome = new jks.PageHome(config);
 
             navigation = new jks.Navigation(config);
             navigation.s.onKeyDownEvent.add(onKeyDown);
             navigation.s.onNavSelect.add(onNavSelect);
             navigation.s.onTapHome.add(onTapHome);
 
+            addToDisplay();
 
+        }
+
+        function addToDisplay() {
             view.containerPages.addChild(pageHome.container);
             view.containerNavigation.addChild(navigation.container)
             TweenLite.delayedCall(.1, view.resizeScreen);
-
-
-            //slideSwitch(1)
         }
 
 
@@ -83,10 +84,16 @@ this.jks = this.jks || {};
         }
 
         function onViewReady() {
+
             pageHome.show();
             navigation.wakeUp();
-            TweenLite.delayedCall(1.5, navigation.show)
+            TweenLite.delayedCall(1.5, function () {
+                navigation.show();
+            })
+
+
         }
+
 
         function slideSwitch(id) {
 

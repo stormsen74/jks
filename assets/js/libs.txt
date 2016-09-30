@@ -1,0 +1,29 @@
+uglifyjs --compress --mangle --output assets/js/bin/jks.min.js --
+    assets/js/jks/core.js
+    assets/js/jks/config.js
+    assets/js/jks/dataHandler.js
+    assets/js/jks/router.js
+    assets/js/jks/navigation.js
+    assets/js/jks/view.js
+    assets/js/jks/controller.js
+    assets/js/jks/thumb.js
+    assets/js/jks/thumbNavigation.js
+    assets/js/jks/sideNavigation.js
+    assets/js/jks/textField.js
+    assets/js/jks/pageHome.js
+    assets/js/utils/mathUtils.js
+
+
+
+uglifyjs --compress --mangle --output assets/js/bin/gsap.min.js --
+   assets/js/gsap/TweenLite.min.js
+   assets/js/gsap/TimelineLite.min.js
+   assets/js/gsap/easing/EasePack.min.js
+   assets/js/gsap/plugins/CSSPlugin.min.js
+   assets/js/gsap/plugins/ThrowPropsPlugin.min.js
+   
+   
+uglifyjs --compress --mangle --output assets/js/bin/device.min.js --
+   assets/js/device.min.js
+   assets/js/isMobile.js
+   assets/js/res.js

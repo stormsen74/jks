@@ -42,7 +42,7 @@ this.jks = this.jks || {};
     };
 
 
-    function View(config) {
+    function View(config, shader) {
         _scope = this;
 
         $imageWidth = config.backgroundImageSize.width;
@@ -271,20 +271,27 @@ this.jks = this.jks || {};
         TresholdFilter.prototype.constructor = TresholdFilter;
 
         function initTresholdFilter() {
+            console.log(':initFilter')
 
-            PIXI.loader.add('shader', 'assets/js/jks/filters/treshold.frag');
-            PIXI.loader.once('complete', onLoaded);
-            PIXI.loader.load();
+            //PIXI.loader.add('shader', 'assets/js/jks/filters/treshold.frag');
+            //PIXI.loader.once('complete', onLoaded);
+            //PIXI.loader.load();
+            //
+            //function onLoaded(loader, res) {
+            //    var fragmentSrc = res.shader.data;
+            //    jks.Config.shaders()['treshold'] = res.shader.data;
+            //    //console.log(jks.Config.shaders()['treshold'])
+            //    _tresholdFilter = new TresholdFilter(fragmentSrc);
+            //    _tresholdFilter.padding = 0;
+            //
+            //    initTransition();
+            //}
 
-            function onLoaded(loader, res) {
-                var fragmentSrc = res.shader.data;
-                jks.Config.shaders()['treshold'] = res.shader.data;
-                //console.log(jks.Config.shaders()['treshold'])
-                _tresholdFilter = new TresholdFilter(fragmentSrc);
-                _tresholdFilter.padding = 0;
+            console.log(shader)
+            _tresholdFilter = new TresholdFilter(shader);
+            _tresholdFilter.padding = 0;
 
-                initTransition();
-            }
+            initTransition();
         }
 
         function initTransition() {

@@ -45,7 +45,8 @@ this.jks = this.jks || {};
                 var mainfest = [];
                 for (var j = 0; j < config.pages[i].items.length; j++) {
                     // force reload ?!
-                    config.pages[i].items[j]['img'].src = config.pages[i].items[j]['img'].src + '?' + new Date().getTime();
+                    //config.pages[i].items[j]['img'].src = config.pages[i].items[j]['img'].src + '?' + new Date().getTime();
+                    config.pages[i].items[j]['img'].src = config.pages[i].items[j]['img'].src;
                     mainfest.push(config.pages[i].items[j]['img']);
                 }
                 _loadingContent.push(mainfest);
@@ -62,10 +63,9 @@ this.jks = this.jks || {};
          --------------------------------------------*/
 
 
-
         this.loadAssets = function () {
 
-        _assetLoader = new createjs.LoadQueue(false);
+            _assetLoader = new createjs.LoadQueue(false);
             _assetLoader.addEventListener("progress", onLoadAssets);
             _assetLoader.addEventListener("complete", onAssetsLoaded);
             _assetLoader.loadManifest(config.assets.manifest);
@@ -77,10 +77,20 @@ this.jks = this.jks || {};
             function onAssetsLoaded() {
                 console.log('assets loaded!')
 
-                _scope.s.onAssetsLoaded.dispatch();
-                //TweenLite.delayedCall(.3, _scope.s.onAssetsLoadingProgress.dispatch,[assetLoader])
-                //TODO - get Assets from Loader?
+                //_scope.s.onAssetsLoaded.dispatch();
+
+                loadShaderData();
             }
+        }
+
+        PIXI.loader.add('shader', 'assets/js/jks/filters/treshold.frag');
+        PIXI.loader.once('complete', onLoaded);
+        function loadShaderData() {
+            PIXI.loader.load();
+        }
+
+        function onLoaded(loader, res) {
+            _scope.s.onAssetsLoaded.dispatch(res.shader.data);
         }
 
         /*--------------------------------------------
@@ -129,6 +139,11 @@ this.jks = this.jks || {};
 
     jks.DataHandler.getAssetByID = function (id) {
         return _assetLoader.getResult(id);
+    }
+
+    jks.DataHandler.getShader = function (id) {
+        console.log(_scope.shaders[0])
+        return _scope.shaders[0];
     }
 
 }());
