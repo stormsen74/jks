@@ -60,6 +60,17 @@
             font-family: "Linotype Feltpen W01 Medium" !important;
         }
 
+        .disableSelect {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            -webkit-tap-highlight-color: transparent; /* For some Androids */
+            outline: 0;
+        }
+
         /*https://www.onlinewebfonts.com/download/7e1ab87ac403849d49bb8a60bf578ee7*/
         /*<div>Font made from <a href="http://www.onlinewebfonts.com">oNline Web Fonts</a>is licensed by CC BY 3.0</div>*/
         @font-face {
@@ -75,17 +86,14 @@
 
             position: absolute;
             width: 200px;
-            color: #224545;
+            color: #5fdfdf;
             font-size: 11px;
             margin-left: 0px;
-            background-color: rgba(100, 100, 100, .5);
+            padding: 3px;
+            background-color: rgba(34, 46, 68, 0.65);
             left: 0px;
             top: 0px;
             display: none;
-        }
-
-        #display {
-
         }
 
         #screen {
@@ -134,9 +142,8 @@
 
 <div id="preload"></div>
 <div id="screen"></div>
-<!--https://css-tricks.com/gotchas-on-getting-svg-into-production/-->
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px"
-	 viewBox="0 0 359.4 57.3" style="enable-background:new 0 0 359.4 57.3;" xml:space="preserve" id="jk-logo">
+<svg id="jk-logo" class="disableSelect"  version="1.1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px"
+	 viewBox="0 0 359.4 57.3" style="enable-background:new 0 0 359.4 57.3;" xml:space="preserve">
 		<g>
 			<path style="fill:#408080;" d="M83.3,33.1c-4.9-2.1-6.7-4.6-6.7-9.3c0-6.7,5.8-11.2,13-11.2c3.2,0,5.8,0.3,6.9,0.3
 				c2.8,0,6.7-0.9,9.9-1.9l-1.4,6h-4.4c1.8,2,2.9,4.1,2.9,6.9c0,4-2.5,6.9-6,8.3c4,1.9,6.5,4.8,6.5,9.3c0,7.7-7.4,11.2-13.4,11.2
@@ -180,8 +187,6 @@
 				l-6.1,7.9c6.2,0.2,12.2-0.1,18.1-1c10.9-1.6,21.5-4.4,31.9-8.5l13.3,10.5L55.5,28.1z"/>
 		</g>
 </svg>
-
-
 <div id="progressBar">
     <svg id="jk" version="1.1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px"
 	 viewBox="0 0 119.2 60.4" style="enable-background:new 0 0 119.2 60.4;" xml:space="preserve">
@@ -204,15 +209,15 @@
 </g>
 </svg>
 </div>
-<div id="display">
-    <div id="version"></div>
-</div>
+<div id="version"></div>
 
 </body>
 
 <script>
 
     function init() {
+
+        //TODO -disable forceLoad -checkFilter-load/init(bug?) -latestPixi -compress
 
 
         window.hideLog = function () {
@@ -221,7 +226,6 @@
         }
 
         window.debugLog = function () {
-//            document.getElementById('version').style.backgroundColor = '#ff0000'
             window['console']['log'] = function (v) {
                 document.getElementById('version').innerHTML += '<br/>' + v
             };

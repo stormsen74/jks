@@ -13,8 +13,6 @@ this.jks = this.jks || {};
     var _stage;
     var _stats;
 
-    var _assetLoader;
-
     var _fsImageContainerBack, _fsImageContainerFront;
     var _setTextures = false;
     var _imgSpriteBack, _imgSpriteFront;
@@ -44,14 +42,12 @@ this.jks = this.jks || {};
     };
 
 
-    function View(config, assets) {
+    function View(config) {
         _scope = this;
 
         $imageWidth = config.backgroundImageSize.width;
         $imageHeight = config.backgroundImageSize.height;
         $imageRatio = $imageWidth / $imageHeight;
-
-        _assetLoader = assets;
 
         console.log('init - View');
 
@@ -79,7 +75,7 @@ this.jks = this.jks || {};
             _stats.domElement.style.position = 'absolute';
 
             _stats.domElement.style.left = '0px';
-            _stats.domElement.style.top = '50px';
+            _stats.domElement.style.top = '60px';
         }
 
         /*--------------------------------------------
@@ -420,17 +416,21 @@ this.jks = this.jks || {};
         this.showSlideLoadingProgress = function () {
             _overlay.alpha = 0;
             _overlay.visible = true;
-            updateSlideLoader();
             TweenLite.to(_overlay, .2, {alpha: .5, ease: Sine.easeIn});
-            document.getElementById('progressBar').style.display = 'block';
-            document.getElementById('progressBar').style.width = '0px';
+            TweenLite.set(_progressBar, {
+                opacity: 1,
+                width: 0,
+                display: 'block'
+            })
+            updateSlideLoader();
         }
 
         this.hideSlideLoadingProgress = function () {
-            document.getElementById('progressBar').style.display = 'none';
+            TweenLite.to(_progressBar, .2, {opacity: 0})
             TweenLite.to(_overlay, .2, {
                 alpha: 0, ease: Sine.easeOut, onComplete: function () {
                     _overlay.visible = false;
+                    _progressBar.style.display = 'none';
                 }
             });
         }
@@ -472,8 +472,8 @@ this.jks = this.jks || {};
             _overlay.width = screenWidth();
             _overlay.height = screenHeight();
 
-            document.getElementById('progressBar').style.left = screenWidth() * .5 - 60 + 'px';
-            document.getElementById('progressBar').style.top = screenHeight() * .5 - 30 + 'px';
+            _progressBar.style.left = screenWidth() * .5 - 60 + 'px';
+            _progressBar.style.top = screenHeight() * .5 - 30 + 'px';
         }
 
 
@@ -490,15 +490,12 @@ this.jks = this.jks || {};
             }
 
             if (_overlay.visible) {
-
                 updateSlideLoader();
-
             }
 
-            // _textField.updateView();
+            _textField.updateView();
 
         }
-
 
 
         initRenderer();
@@ -530,10 +527,6 @@ this.jks = this.jks || {};
         /*--------------------------------------------
          ~ PUBLIC METHODS
          --------------------------------------------*/
-
-        function getAssetByID(id) {
-            return _assetLoader.getResult(id)
-        }
 
         /*--------------------------------------------
          ~ CORE RESIZE
@@ -719,10 +712,6 @@ this.jks = this.jks || {};
 
     jks.View.getScreenHeight = function () {
         return screenHeight();
-    }
-
-    jks.View.getAssetByID = function (id) {
-        return _assetLoader.getResult(id);
     }
 
     jks.View.forceResize = function () {

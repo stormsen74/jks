@@ -39,6 +39,8 @@ this.jks = this.jks || {};
         this.container = new PIXI.Container();
         this.container.interactive = true;
         this.container.buttonMode = true;
+        
+        
 
 
         logo = document.getElementById('jk-logo');
@@ -62,6 +64,7 @@ this.jks = this.jks || {};
         }
 
         var navContainer = new PIXI.Container();
+        navContainer.visible = false;
         //navContainer.width = jks.View.getScreenWidth();
         navContainer.pivot.x = 1;
         navContainer.pivot.y = .5;
@@ -113,11 +116,11 @@ this.jks = this.jks || {};
 
         //TweenLite.to(navContainer, 2, {delay: 2, rotation: Math.PI * 2, ease: Sine.easeInOut})
 
-        this.hide = function() {
+        this.hide = function () {
             navContainer.visible = false;
         }
 
-        this.show = function() {
+        this.show = function () {
             navContainer.visible = true;
         }
 

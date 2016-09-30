@@ -17,6 +17,7 @@ this.jks = this.jks || {};
     var _scope;
 
     var _loader;
+    var _assetLoader;
     var _loadingAssets = []
     var _loadingContent = []
 
@@ -43,6 +44,7 @@ this.jks = this.jks || {};
             for (var i = 0; i < config.numPages; i++) {
                 var mainfest = [];
                 for (var j = 0; j < config.pages[i].items.length; j++) {
+                    // force reload ?!
                     config.pages[i].items[j]['img'].src = config.pages[i].items[j]['img'].src + '?' + new Date().getTime();
                     mainfest.push(config.pages[i].items[j]['img']);
                 }
@@ -50,7 +52,7 @@ this.jks = this.jks || {};
             }
 
 
-            TweenLite.delayedCall(.01, function () {
+            TweenLite.delayedCall(.05, function () {
                 _scope.s.onDataHandlerReady.dispatch();
             });
         }
@@ -60,11 +62,13 @@ this.jks = this.jks || {};
          --------------------------------------------*/
 
 
+
         this.loadAssets = function () {
-            var assetLoader = new createjs.LoadQueue(false);
-            assetLoader.addEventListener("progress", onLoadAssets);
-            assetLoader.addEventListener("complete", onAssetsLoaded);
-            assetLoader.loadManifest(config.assets.manifest);
+
+        _assetLoader = new createjs.LoadQueue(false);
+            _assetLoader.addEventListener("progress", onLoadAssets);
+            _assetLoader.addEventListener("complete", onAssetsLoaded);
+            _assetLoader.loadManifest(config.assets.manifest);
 
             function onLoadAssets(e) {
                 _scope.s.onAssetsLoadingProgress.dispatch(e.loaded);
@@ -73,7 +77,7 @@ this.jks = this.jks || {};
             function onAssetsLoaded() {
                 console.log('assets loaded!')
 
-                _scope.s.onAssetsLoaded.dispatch(assetLoader);
+                _scope.s.onAssetsLoaded.dispatch();
                 //TweenLite.delayedCall(.3, _scope.s.onAssetsLoadingProgress.dispatch,[assetLoader])
                 //TODO - get Assets from Loader?
             }
@@ -108,7 +112,9 @@ this.jks = this.jks || {};
                 console.log('pageLoaded!', pageID);
                 config.pageData[pageID].contentLoaded = true;
 
-                _scope.s.onSlideLoaded.dispatch(pageID);
+                // delayed dispatch / maybe bugfix?
+                TweenLite.delayedCall(.1, _scope.s.onSlideLoaded.dispatch, [pageID])
+                // _scope.s.onSlideLoaded.dispatch(pageID);
 
             }
 
@@ -120,5 +126,9 @@ this.jks = this.jks || {};
     }
 
     jks.DataHandler = DataHandler;
+
+    jks.DataHandler.getAssetByID = function (id) {
+        return _assetLoader.getResult(id);
+    }
 
 }());

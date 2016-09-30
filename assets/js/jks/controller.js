@@ -42,7 +42,7 @@ this.jks = this.jks || {};
             document.getElementById('preload').style.width = progress * 100 + '%'
         }
 
-        function onAssetsLoaded(assets) {
+        function onAssetsLoaded() {
 
             console.log('onAssetsLoaded');
 
@@ -56,7 +56,7 @@ this.jks = this.jks || {};
             //router = new jks.Router();
 
 
-            view = new jks.View(config, assets);
+            view = new jks.View(config);
             view.s.onResize.add(viewOnResize);
             view.s.onReady.addOnce(onViewReady);
 
@@ -85,9 +85,13 @@ this.jks = this.jks || {};
         function onViewReady() {
             pageHome.show();
             navigation.wakeUp();
+            TweenLite.delayedCall(1.5, navigation.show)
         }
 
         function slideSwitch(id) {
+
+            navigation.hide();
+
             if (!config.pageData[id].contentLoaded) {
                 dataHandler.loadSlide(id);
                 dataHandler.s.onSlideLoadingProgress.add(onSlideLoadingProgress);
@@ -109,18 +113,21 @@ this.jks = this.jks || {};
             dataHandler.s.onSlideLoadingProgress.remove(onSlideLoadingProgress);
             dataHandler.s.onSlideLoaded.remove(onSlideLoaded);
             if (isSlideLoader) {
-                view.hideSlideLoadingProgress();
-                isSlideLoader = false;
+                // show loader for .3s when loaded ...
+                TweenLite.delayedCall(.2, function () {
+                    view.hideSlideLoadingProgress();
+                    isSlideLoader = false;
+                    switchSlide(pageID);
+                    // TweenLite.delayedCall(.2, switchSlide, [pageID]);
+                })
             }
 
-            TweenLite.delayedCall(.2, switchSlide, [pageID])
             // switchSlide(pageID);
         }
 
         function switchSlide(pageID) {
 
             pageHome.hide();
-            navigation.hide();
 
             view.initSlide(config, pageID);
             view.initThumbNavigation();
@@ -146,7 +153,7 @@ this.jks = this.jks || {};
         function onTapHome() {
             console.log('onTapHome')
             pageHome.show();
-            navigation.show();
+            TweenLite.delayedCall(1.5, navigation.show)
         }
 
 

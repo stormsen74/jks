@@ -46,7 +46,7 @@ this.jks = this.jks || {};
         _activeRight.y -= $HoverShapeHeight * .5;
         _activeRight.interactive = true;
 
-        _sideArrowRight = new PIXI.Sprite.fromImage(jks.View.getAssetByID('side_nav_arrow').src)
+        _sideArrowRight = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID('side_nav_arrow').src)
         _sideArrowRight.anchor.x = 1;
         _sideArrowRight.anchor.y = .5;
         _sideArrowRight.x = -$OffsetSide;
@@ -64,7 +64,7 @@ this.jks = this.jks || {};
         _activeLeft.y -= $HoverShapeHeight * .5;
         _activeLeft.interactive = true;
 
-        _sideArrowLeft = new PIXI.Sprite.fromImage(jks.View.getAssetByID('side_nav_arrow').src)
+        _sideArrowLeft = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID('side_nav_arrow').src)
         _sideArrowLeft.anchor.x = 1;
         _sideArrowLeft.anchor.y = .5;
         _sideArrowLeft.scale.x = -1;
@@ -74,7 +74,7 @@ this.jks = this.jks || {};
         this.sideArrowLeft.addChild(_sideArrowLeft);
         this.sideArrowLeft.addChild(_activeLeft);
 
-        $ArrowHeight = jks.View.getAssetByID('side_nav_arrow').height;
+        $ArrowHeight = jks.DataHandler.getAssetByID('side_nav_arrow').height;
 
         this.container.addChild(this.sideArrowRight);
         this.container.addChild(this.sideArrowLeft);

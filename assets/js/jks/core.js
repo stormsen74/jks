@@ -12,10 +12,7 @@ this.jks = this.jks || {};
     var _scope;
     var _config;
     var _dataHandler;
-    var _router;
-    var _navigation;
     var _controller;
-    var _view;
 
 
     function Core() {

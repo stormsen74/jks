@@ -1,0 +1,3 @@
+uglifyjs --compress --mangle --output assets/js/jks/jks.min.js -- 
+ assets/js/jks/config.js
+ assets/js/jks/core.js

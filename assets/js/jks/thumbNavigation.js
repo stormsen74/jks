@@ -150,7 +150,7 @@ this.jks = this.jks || {};
 
         function initDrag(_lastThumb, _numThumbs) {
 
-            console.log(_lastThumb.thumbSize.width);
+            // console.log(_lastThumb.thumbSize.width);
 
             _scope.tracker = VelocityTracker.track(_scope.container, "x,y");
 
@@ -204,7 +204,7 @@ this.jks = this.jks || {};
             dragData.isDragging = true;
             //_dragShape.defaultCursor = "none";
 
-            console.log('onStartDrag', dragData.startX);
+            // console.log('onStartDrag', dragData.startX);
         }
 
         function onDragMove(e) {
@@ -217,7 +217,7 @@ this.jks = this.jks || {};
         function onDragEnd(e) {
             // dragData.isDragging = false;
 
-            console.log('vel',_scope.tracker.getVelocity("x"));
+            // console.log('vel',_scope.tracker.getVelocity("x"));
 
              TweenLite.to(_scope.container, .5, {
                  throwProps: {
@@ -244,7 +244,7 @@ this.jks = this.jks || {};
             //    ease: Power3.easeOut
             //});
 
-            console.log('onDragEnd');
+            // console.log('onDragEnd');
             _scope.deactivateSlideDrag();
         }
 

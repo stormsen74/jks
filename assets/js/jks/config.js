@@ -18,7 +18,7 @@ this.jks = this.jks || {};
 
         this.version = '0.5.3';
         this.device = '';
-        this.debug = false;
+        this.debug = true;
         this.log = false;
 
 
@@ -82,6 +82,10 @@ this.jks = this.jks || {};
                 '<br/>' + 'webgl: ' + PIXI.utils.isWebGLSupported();
 
             document.getElementById('version').style.display = 'block';
+
+            if (this.debug) {
+                document.getElementById('version').style.width = '130px';
+            }
 
             if (this.log) {
                 window.debugLog();

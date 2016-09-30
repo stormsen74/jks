@@ -43,7 +43,7 @@ this.jks = this.jks || {};
         //this.container.buttonMode = true;
 
 
-        _background = new PIXI.Sprite.fromImage(jks.View.getAssetByID('bg_home').src);
+        _background = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID('bg_home').src);
         _background.visible = false;
         this.container.addChild(_background);
 
