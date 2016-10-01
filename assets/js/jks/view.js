@@ -52,9 +52,13 @@ this.jks = this.jks || {};
         console.log('init - View');
 
         this.s = {
+            onReady: new signals.Signal(),
             onResize: new signals.Signal(),
-            onReady: new signals.Signal()
+            switchMode: new signals.Signal()
         };
+
+
+        this.isMobile = false;
 
 
         this.containerPages = new PIXI.Container();
@@ -271,23 +275,7 @@ this.jks = this.jks || {};
         TresholdFilter.prototype.constructor = TresholdFilter;
 
         function initTresholdFilter() {
-            console.log(':initFilter')
 
-            //PIXI.loader.add('shader', 'assets/js/jks/filters/treshold.frag');
-            //PIXI.loader.once('complete', onLoaded);
-            //PIXI.loader.load();
-            //
-            //function onLoaded(loader, res) {
-            //    var fragmentSrc = res.shader.data;
-            //    jks.Config.shaders()['treshold'] = res.shader.data;
-            //    //console.log(jks.Config.shaders()['treshold'])
-            //    _tresholdFilter = new TresholdFilter(fragmentSrc);
-            //    _tresholdFilter.padding = 0;
-            //
-            //    initTransition();
-            //}
-
-            console.log(shader)
             _tresholdFilter = new TresholdFilter(shader);
             _tresholdFilter.padding = 0;
 
@@ -406,11 +394,11 @@ this.jks = this.jks || {};
             _overlay = new PIXI.Graphics();
 
             // _overlay.beginFill(jks.Config.getColor('blue'));
-            _overlay.beginFill(0xffffff);
+            _overlay.beginFill(jks.Config.getColor('overlay'));
             _overlay.drawRect(0, 0, screenWidth(), screenHeight());
             _overlay.endFill;
 
-            _overlay.alpha = .5;
+            _overlay.alpha = .6;
             _overlay.interactive = true;
             _overlay.visible = false;
 
@@ -470,6 +458,15 @@ this.jks = this.jks || {};
 
 
         function onResize(e) {
+
+            if (screenWidth() <= 600 && !_scope.isMobile) {
+                _scope.isMobile = true;
+                _scope.s.switchMode.dispatch(_scope.isMobile);
+            } else if (screenWidth() > 600 && _scope.isMobile) {
+                _scope.isMobile = false;
+                _scope.s.switchMode.dispatch(_scope.isMobile);
+            }
+
             _scope.resizeScreen();
             _scope.s.onResize.dispatch();
         }
@@ -515,11 +512,11 @@ this.jks = this.jks || {};
         _stage.addChild(_dragShape);
         _stage.addChild(_scope.containerSlideNavigation);
         _stage.addChild(_scope.containerPages);
-        _stage.addChild(_scope.containerNavigation);
         _stage.addChild(_overlay);
+        _stage.addChild(_scope.containerNavigation);
 
         _textField = new jks.TextField();
-        _scope.containerSlideImages.addChild(_textField.container);
+        //_scope.containerSlideImages.addChild(_textField.container);
 
         initListener();
         renderLoop();

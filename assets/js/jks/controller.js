@@ -59,8 +59,9 @@ this.jks = this.jks || {};
             pageHome = new jks.PageHome(config, shader);
 
             view = new jks.View(config, shader);
-            view.s.onResize.add(viewOnResize);
             view.s.onReady.addOnce(onViewReady);
+            view.s.onResize.add(viewOnResize);
+            view.s.switchMode.add(switchMode);
 
             navigation = new jks.Navigation(config);
             navigation.s.onKeyDownEvent.add(onKeyDown);
@@ -75,6 +76,11 @@ this.jks = this.jks || {};
             view.containerPages.addChild(pageHome.container);
             view.containerNavigation.addChild(navigation.container)
             TweenLite.delayedCall(.1, view.resizeScreen);
+        }
+
+
+        function switchMode(isMobile) {
+            navigation.switchMode(isMobile);
         }
 
 

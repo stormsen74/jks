@@ -18,7 +18,7 @@ this.jks = this.jks || {};
 
         this.version = '0.5.4';
         this.device = '';
-        this.debug = true;
+        this.debug = false;
         this.log = false;
 
 
@@ -27,8 +27,19 @@ this.jks = this.jks || {};
         this.pages = _json.pages;
         this.pageData = [];
 
+
+        this.navigationData = {
+            menue: [
+                {title: 'vita'},
+                {title: 'kontakt'},
+                {title: 'impressum'},
+                {title: 'aktuelles'}
+            ]
+        }
+
         this.colors = {
-            blue: 0x408080
+            blue: 0x408080,
+            overlay: 0xcaf0f0
         }
 
         this.shaders = [];

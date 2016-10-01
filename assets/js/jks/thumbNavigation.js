@@ -69,7 +69,7 @@ this.jks = this.jks || {};
         }
 
         this.showProgress = function (id, t) {
-            console.log('dp:', +id + '-' + t)
+            console.log('dp:', + id + '-' + t)
             _scope.thumbs[id].showProgress(t);
         }
 
@@ -219,17 +219,17 @@ this.jks = this.jks || {};
 
             // console.log('vel',_scope.tracker.getVelocity("x"));
 
-             TweenLite.to(_scope.container, .5, {
-                 throwProps: {
-                     x: {
-                         velocity: _scope.tracker.getVelocity("x"),
-                         max: 0,
-                         min: -_scope.shapeWidth + jks.View.getScreenWidth()
-                     }
-                 },
-                 onComplete:null,
-                 ease: Power2.easeOut
-             });
+            TweenLite.to(_scope.container, .5, {
+                throwProps: {
+                    x: {
+                        velocity: _scope.tracker.getVelocity("x"),
+                        max: 0,
+                        min: -_scope.shapeWidth + jks.View.getScreenWidth()
+                    }
+                },
+                onComplete: null,
+                ease: Power2.easeOut
+            });
 
             //ThrowPropsPlugin.to(_scope.container, {
             //    throwProps: {
