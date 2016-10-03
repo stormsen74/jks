@@ -72,6 +72,18 @@ this.jks = this.jks || {};
             {
                 "src": "assets/img/navigation/side_nav_arrow.png",
                 "id": "side_nav_arrow"
+            },
+            {
+                "src": "assets/img/navigation/01_meeresrauschen.png",
+                "id": "meeresrauschen"
+            },
+            {
+                "src": "assets/img/navigation/02_fragmente.png",
+                "id": "fragmente"
+            },
+            {
+                "src": "assets/img/navigation/03_entschaerft.png",
+                "id": "entschaerft"
             }
         ];
 
