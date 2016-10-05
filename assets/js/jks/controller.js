@@ -16,8 +16,8 @@ this.jks = this.jks || {};
 
     var _scope;
 
+    var view, navigation, router;
     var pageHome;
-    var view, navigation
 
     var isSlideLoader = false;
 
@@ -53,7 +53,7 @@ this.jks = this.jks || {};
 
             //return
 
-            //router = new jks.Router();
+            router = new jks.Router();
 
 
             pageHome = new jks.PageHome(config, shader);
