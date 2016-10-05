@@ -84,6 +84,10 @@ this.jks = this.jks || {};
             {
                 "src": "assets/img/navigation/03_entschaerft.png",
                 "id": "entschaerft"
+            },
+            {
+                "src": "assets/img/navigation/04_trauringe.png",
+                "id": "trauringe"
             }
         ];
 

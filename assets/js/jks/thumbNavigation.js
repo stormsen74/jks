@@ -69,7 +69,7 @@ this.jks = this.jks || {};
         }
 
         this.showProgress = function (id, t) {
-            console.log('dp:', + id + '-' + t)
+            console.log('dp:', +id + '-' + t)
             _scope.thumbs[id].showProgress(t);
         }
 
@@ -88,6 +88,7 @@ this.jks = this.jks || {};
          --------------------------------------------*/
         var thumbScaleMode = PIXI.SCALE_MODES.NEAREST;
         var thumbCrossOrigin = false;
+        var actDelay = .12;
 
         this.init = function (slideObject) {
             console.log('init - ThumbNavigation', jks.Core.isMobile());
@@ -118,7 +119,7 @@ this.jks = this.jks || {};
                 }
 
                 function onTapDown(event) {
-                    TweenLite.delayedCall(.2, enableDragSlide, [event])
+                    TweenLite.delayedCall(actDelay, enableDragSlide, [event])
                 }
 
                 function enableDragSlide(event) {
@@ -138,7 +139,7 @@ this.jks = this.jks || {};
             initDrag(thumb, slideObject.slideNumImages);
 
             // show container
-            TweenLite.delayedCall(.2, function () {
+            TweenLite.delayedCall(actDelay, function () {
                 _scope.container.visible = true;
             })
 
@@ -214,19 +215,44 @@ this.jks = this.jks || {};
             }
         }
 
-        function onDragEnd(e) {
-            // dragData.isDragging = false;
 
+        function isCentered() {
+            //console.log('c', _scope.shapeWidth, jks.View.getScreenWidth())
+            return _scope.shapeWidth <= jks.View.getScreenWidth() ? true : false;
+        }
+
+        function onDragEnd(e, force) {
+            var _force = force || false;
+
+            // dragData.isDragging = false;
             // console.log('vel',_scope.tracker.getVelocity("x"));
 
+            //console.log('>', _scope.dragShape.width - 2 <= jks.View.getScreenWidth())
+
+            console.log(_force)
+
+            var vel = _scope.tracker.getVelocity("x");
+
+            var throwCentered = {
+                x: {
+                    velocity: vel,
+                    max: jks.View.getScreenWidth() * .5 - _scope.shapeWidth * .5,
+                    min: jks.View.getScreenWidth() * .5 - _scope.shapeWidth * .5,
+                }
+            }
+
+            var throwDefault = {
+                x: {
+                    velocity: vel,
+                    max: 0,
+                    min: -_scope.shapeWidth + jks.View.getScreenWidth()
+                }
+            }
+
+
             TweenLite.to(_scope.container, .5, {
-                throwProps: {
-                    x: {
-                        velocity: _scope.tracker.getVelocity("x"),
-                        max: 0,
-                        min: -_scope.shapeWidth + jks.View.getScreenWidth()
-                    }
-                },
+
+                throwProps: isCentered() ? throwCentered : throwDefault,
                 onComplete: null,
                 ease: Power2.easeOut
             });
@@ -246,6 +272,10 @@ this.jks = this.jks || {};
 
             // console.log('onDragEnd');
             _scope.deactivateSlideDrag();
+        }
+
+        this.onOrientationChange = function (orientation) {
+            onDragEnd();
         }
 
 

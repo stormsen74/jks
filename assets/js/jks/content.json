@@ -119,8 +119,6 @@
           }
         ]
       },
-
-
       {
         "category": "entschaerft",
         "categoryText": "Entschärft",
@@ -166,6 +164,134 @@
             "type": "Orhänger",
             "description": "desription as html"
           }
+        ]
+      },
+      {
+        "category": "trauringe",
+        "categoryText": "Trauringe",
+        "itemsLoaded": false,
+        "items": [
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/01.jpg",
+              "id": "img_trauringe_01"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/02.jpg",
+              "id": "img_trauringe_02"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/03.jpg",
+              "id": "img_trauringe_03"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/04.jpg",
+              "id": "img_trauringe_04"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/05.jpg",
+              "id": "img_trauringe_05"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/06.jpg",
+              "id": "img_trauringe_06"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/07.jpg",
+              "id": "img_trauringe_07"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/08.jpg",
+              "id": "img_trauringe_08"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/09.jpg",
+              "id": "img_trauringe_09"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/10.jpg",
+              "id": "img_trauringe_10"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/11.jpg",
+              "id": "img_trauringe_11"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/12.jpg",
+              "id": "img_trauringe_12"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/13.jpg",
+              "id": "img_trauringe_13"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/14.jpg",
+              "id": "img_trauringe_14"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/15.jpg",
+              "id": "img_trauringe_15"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          }
+
         ]
       }
     ]

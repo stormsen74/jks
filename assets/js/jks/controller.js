@@ -61,6 +61,7 @@ this.jks = this.jks || {};
             view = new jks.View(config, shader);
             view.s.onReady.addOnce(onViewReady);
             view.s.onResize.add(viewOnResize);
+            view.s.onOrientationChange.add(onOrientationChange);
             view.s.switchMode.add(switchMode);
 
             navigation = new jks.Navigation(config);
@@ -79,16 +80,6 @@ this.jks = this.jks || {};
         }
 
 
-        function switchMode(isMobile) {
-            navigation.switchMode(isMobile);
-        }
-
-
-        function viewOnResize() {
-            navigation.updateView();
-            pageHome.updateView();
-        }
-
         function onViewReady() {
 
             pageHome.show();
@@ -98,6 +89,20 @@ this.jks = this.jks || {};
             })
 
 
+        }
+
+
+        function viewOnResize() {
+            navigation.updateView();
+            pageHome.updateView();
+        }
+
+        function onOrientationChange(orientation) {
+
+        }
+
+        function switchMode(isMobile) {
+            navigation.switchMode(isMobile);
         }
 
 

@@ -82,7 +82,7 @@ this.jks = this.jks || {};
         //navSlideContainer.y = jks.View.getScreenHeight() * 0;
         _scope.container.addChild(navSlideContainer);
 
-        var images = ['meeresrauschen', 'fragmente', 'entschaerft']
+        var images = ['meeresrauschen', 'fragmente', 'entschaerft', 'trauringe']
 
 
         var buttons = [];

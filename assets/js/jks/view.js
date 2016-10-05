@@ -54,6 +54,7 @@ this.jks = this.jks || {};
         this.s = {
             onReady: new signals.Signal(),
             onResize: new signals.Signal(),
+            onOrientationChange: new signals.Signal(),
             switchMode: new signals.Signal()
         };
 
@@ -92,6 +93,8 @@ this.jks = this.jks || {};
                 var orientation;
                 device.portrait() ? orientation = 'portrait' : orientation = 'landscape';
                 console.log('view :: orientationchange:', orientation)
+                _scope.s.onOrientationChange.dispatch(orientation);
+                onOrientationChange(orientation);
             }, false);
         };
 
@@ -447,6 +450,13 @@ this.jks = this.jks || {};
                 _stats.update();
             }
 
+        }
+
+
+        function onOrientationChange(orientation) {
+            if (_thumbNavigation.container) {
+                _thumbNavigation.onOrientationChange(orientation);
+            }
         }
 
         /*--------------------------------------------
