@@ -26,8 +26,8 @@ this.jks = this.jks || {};
         _scope = this;
 
         this.s = {
-            onClickNext: new signals.Signal(),
-            onClickPrev: new signals.Signal()
+            onTapNext: new signals.Signal(),
+            onTapPrev: new signals.Signal()
         };
 
 
@@ -82,11 +82,11 @@ this.jks = this.jks || {};
 
         _activeRight.on('mouseover', onHoverRight);
         _activeRight.on('mouseout', onHoverOutRight);
-        _activeRight.on('click', onClickNext);
+        _activeRight.on('mousedown', onTapNext).on('touchstart', onTapNext);
 
         _activeLeft.on('mouseover', onHoverLeft);
         _activeLeft.on('mouseout', onHoverOutLeft);
-        _activeLeft.on('click', onClickPrev);
+        _activeLeft.on('mousedown', onTapPrev).on('touchstart', onTapPrev);
 
 
         function onHoverRight() {
@@ -105,15 +105,15 @@ this.jks = this.jks || {};
             TweenLite.to(_sideArrowLeft, .4, {x: $OffsetSide, ease: $HoverOutEase})
         }
 
-        function onClickNext() {
+        function onTapNext() {
             if (!_scope.isLocked) {
-                _scope.s.onClickNext.dispatch();
+                _scope.s.onTapNext.dispatch();
             }
         }
 
-        function onClickPrev() {
+        function onTapPrev() {
             if (!_scope.isLocked) {
-                _scope.s.onClickPrev.dispatch();
+                _scope.s.onTapPrev.dispatch();
             }
         }
 

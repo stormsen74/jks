@@ -170,11 +170,13 @@ this.jks = this.jks || {};
             _scope.container.addChild(_scope.dragShape)
 
             _scope.dragShape
-                //.on('mousedown', onDragStart).on('touchstart', onDragStart)
+            //.on('mousedown', onDragStart).on('touchstart', onDragStart)
                 .on('mousemove', onDragMove).on('touchmove', onDragMove)
                 .on('mouseup', onDragEnd).on('mouseupoutside', onDragEnd)
-                .on('touchend', onDragEnd).on('touchendoutside', onDragEnd)
+                .on('touchend', onDragEnd).on('touchendoutside', onDragEnd);
 
+
+            _scope.onOrientationChange();
         }
 
 
@@ -221,15 +223,12 @@ this.jks = this.jks || {};
             return _scope.shapeWidth <= jks.View.getScreenWidth() ? true : false;
         }
 
-        function onDragEnd(e, force) {
-            var _force = force || false;
+        function onDragEnd(e) {
 
             // dragData.isDragging = false;
             // console.log('vel',_scope.tracker.getVelocity("x"));
 
             //console.log('>', _scope.dragShape.width - 2 <= jks.View.getScreenWidth())
-
-            console.log(_force)
 
             var vel = _scope.tracker.getVelocity("x");
 
@@ -275,7 +274,7 @@ this.jks = this.jks || {};
         }
 
         this.onOrientationChange = function (orientation) {
-            onDragEnd();
+            TweenLite.delayedCall(.2, onDragEnd)
         }
 
 

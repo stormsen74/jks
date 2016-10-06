@@ -9,11 +9,10 @@ this.jks = this.jks || {};
 ( function () {
 
     var _scope;
-    var _textSizeDefault = 16;
+    var _textSizeDefault = 20;
     var _textSizeMobile = 23;
     var _paddingSide = 10;
     var _paddingTop = 10;
-    var _textField;
 
     function TopNavButton(navPoint) {
         _scope = this;
@@ -38,13 +37,11 @@ this.jks = this.jks || {};
 
 
         this.shape = new PIXI.Graphics();
-        //this.shape.interactive = true;
-        //this.shape.buttonMode = true;
         //this.shape.lineStyle(1, 0xcc0000, 1);
         this.shape.beginFill(0x00dd00);
         this.shape.drawRect(0, 0, this.textField.width + _paddingSide * 2, this.textField.height + _paddingTop * 2);
         this.shape.endFill;
-        this.shape.alpha = 0;
+        this.shape.alpha = .2;
 
 
         this.container.addChild(this.shape);
@@ -65,12 +62,10 @@ this.jks = this.jks || {};
 
 
         this.switchMobile = function () {
-            console.log(_textSizeMobile)
             this.textField.style.fontSize = _textSizeMobile;
             this.textField.style.align = 'left';
-            this.shape.width = 150;
-            this.shape.x = (150 - this.textField.width) * .5;
-            this.shape.x = 30;
+            this.shape.width = 120;
+            this.shape.x = _paddingSide;
             this.shape.height = this.textField.height + _paddingTop * 2;
             this.setText();
         }

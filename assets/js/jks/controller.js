@@ -65,7 +65,6 @@ this.jks = this.jks || {};
             view.s.switchMode.add(switchMode);
 
             navigation = new jks.Navigation(config);
-            navigation.s.onKeyDownEvent.add(onKeyDown);
             navigation.s.onNavSelect.add(onNavSelect);
             navigation.s.onTapHome.add(onTapHome);
 
@@ -79,6 +78,9 @@ this.jks = this.jks || {};
             TweenLite.delayedCall(.1, view.resizeScreen);
         }
 
+        /*--------------------------------------------
+         ~ VIEW HANDLING
+         --------------------------------------------*/
 
         function onViewReady() {
 
@@ -88,9 +90,7 @@ this.jks = this.jks || {};
                 navigation.show();
             })
 
-
         }
-
 
         function viewOnResize() {
             navigation.updateView();
@@ -105,6 +105,29 @@ this.jks = this.jks || {};
             navigation.switchMode(isMobile);
         }
 
+
+        /*--------------------------------------------
+         ~ NAVIGATION HANDLING
+         --------------------------------------------*/
+
+        function onKeyDown(e) {
+            e == 'next' ? view.slideNext() : view.slidePrev();
+        }
+
+        function onNavSelect(id) {
+            console.log(id = id || 0, 'onNavSelect');
+            slideSwitch(id);
+        }
+
+        function onTapHome() {
+            pageHome.show();
+            TweenLite.delayedCall(1.5, navigation.show);
+            navigation.s.onKeyDownEvent.remove(onKeyDown);
+        }
+
+        /*--------------------------------------------
+         ~ SLIDE SWITCH
+         --------------------------------------------*/
 
         function slideSwitch(id) {
 
@@ -121,26 +144,24 @@ this.jks = this.jks || {};
             }
         }
 
-
         function onSlideLoadingProgress(progress) {
             view.updateSlideLoadingProgress(progress);
         }
 
         function onSlideLoaded(pageID) {
-            console.log('onSlideLoaded', config.pageData[pageID].contentLoaded);
+            // console.log('onSlideLoaded', config.pageData[pageID].contentLoaded);
             dataHandler.s.onSlideLoadingProgress.remove(onSlideLoadingProgress);
             dataHandler.s.onSlideLoaded.remove(onSlideLoaded);
+
             if (isSlideLoader) {
-                // show loader for .3s when loaded ...
+                // show loader for .2s when loaded ...
                 TweenLite.delayedCall(.2, function () {
                     view.hideSlideLoadingProgress();
                     isSlideLoader = false;
                     switchSlide(pageID);
-                    // TweenLite.delayedCall(.2, switchSlide, [pageID]);
                 })
             }
 
-            // switchSlide(pageID);
         }
 
         function switchSlide(pageID) {
@@ -152,26 +173,10 @@ this.jks = this.jks || {};
 
             if (!jks.Core.isMobile()) {
                 view.initSideNavigation();
+                navigation.s.onKeyDownEvent.add(onKeyDown);
             }
 
             TweenLite.delayedCall(.1, view.resizeScreen);
-        }
-
-
-        function onKeyDown(e) {
-            e == 'next' ? view.slideNext() : view.slidePrev();
-        }
-
-        function onNavSelect(id) {
-            console.log(id = id || 0, 'onNavSelect');
-            slideSwitch(id);
-            // pageHome.hide();
-        }
-
-        function onTapHome() {
-            console.log('onTapHome')
-            pageHome.show();
-            TweenLite.delayedCall(1.5, navigation.show)
         }
 
 

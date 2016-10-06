@@ -125,11 +125,9 @@ this.jks = this.jks || {};
         console.log('Config :: pageData created!');
 
         // console.log('config',this.pageData);
-
         // console.log('config :: version: ', this.version);
         // console.log('config :: debug: ', this.debug);
         // console.log('config :: json: ', _json);
-
         // console.log(_json.pages[0].items.length);
         // console.log(_json.pages);
 

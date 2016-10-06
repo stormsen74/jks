@@ -667,8 +667,8 @@ this.jks = this.jks || {};
             if (_sideNavigation.container) {
                 console.log('destroy side')
 
-                _sideNavigation.s.onClickNext.remove(onClickNext);
-                _sideNavigation.s.onClickPrev.remove(onClickPrev);
+                _sideNavigation.s.onTapNext.remove(onTapNext);
+                _sideNavigation.s.onTapPrev.remove(onTapPrev);
                 //_thumbNavigation.container.destroy();
                 _scope.containerSlideNavigation.removeChild(_sideNavigation.container);
                 _sideNavigation.container = null;
@@ -680,14 +680,14 @@ this.jks = this.jks || {};
             _scope.containerSlideNavigation.addChild(_sideNavigation.container);
 
 
-            _sideNavigation.s.onClickNext.add(onClickNext);
-            _sideNavigation.s.onClickPrev.add(onClickPrev);
+            _sideNavigation.s.onTapNext.add(onTapNext);
+            _sideNavigation.s.onTapPrev.add(onTapPrev);
 
-            function onClickNext() {
+            function onTapNext() {
                 _scope.slideNext();
             }
 
-            function onClickPrev() {
+            function onTapPrev() {
                 _scope.slidePrev();
             }
         }
@@ -709,9 +709,7 @@ this.jks = this.jks || {};
         this.slideTo = function (id) {
             _slideObject.previousImage = _slideObject.currentImage;
             _slideObject.currentImage = id;
-
             transition();
-
             console.log('slideTo ', _slideObject.currentImage);
         };
 

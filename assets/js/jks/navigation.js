@@ -27,8 +27,6 @@ this.jks = this.jks || {};
 
         console.log('init - Navigation', jks.Config.getDeviceType());
 
-        console.log(config);
-
 
         this.s = {
             onKeyDownEvent: new signals.Signal(),
@@ -47,6 +45,11 @@ this.jks = this.jks || {};
         this.container.buttonMode = true;
 
 
+        if (jks.Config.getDeviceType() == 'desktop') {
+            initKeyMode();
+        }
+
+
         /*--------------------------------------------
          ~ LOGO / HOME BUTTON
          --------------------------------------------*/
@@ -62,7 +65,7 @@ this.jks = this.jks || {};
         this.wakeUp = function () {
             TweenLite.set(logo, {display: 'block', opacity: 1})
             //TweenLite.to(_logo, 1, { opacity: 1, ease: Sine.easeOut})
-        }
+        };
 
         function onTapHome() {
             _scope.s.onTapHome.dispatch();
@@ -82,8 +85,6 @@ this.jks = this.jks || {};
         //navSlideContainer.y = jks.View.getScreenHeight() * 0;
         _scope.container.addChild(navSlideContainer);
 
-        var images = ['meeresrauschen', 'fragmente', 'entschaerft', 'trauringe']
-
 
         var buttons = [];
 
@@ -97,15 +98,15 @@ this.jks = this.jks || {};
             var sprite;
 
             for (var i = 0; i < config.numPages; i++) {
-                console.log('create Button!', i)
+                console.log('create Button!', i, config.pages[i].category)
 
                 this['button_' + i] = new PIXI.Graphics();
                 this['button_' + i].interactive = true;
                 this['button_' + i].buttonMode = true;
                 this['button_' + i].beginFill(0x00cc00);
-                //this['button_' + i].drawRect(0, 0, size, size);
+                this['button_' + i].drawRect(0, 0, size, size);
 
-                sprite = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID(images[i]).src)
+                sprite = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID(config.pages[i].category).src)
                 sprite.scale.x = sprite.scale.y = s;
                 //_sideArrowRight.anchor.x = 1;
                 //_sideArrowRight.anchor.y = .5;
@@ -149,6 +150,8 @@ this.jks = this.jks || {};
         /*--------------------------------------------
          ~ TOP NAVIGATION
          --------------------------------------------*/
+        var navVisible = false;
+
         navTopContainer = new PIXI.Container();
         //navTopContainer.visible = false;
         //navContainer.width = jks.View.getScreenWidth();
@@ -163,17 +166,13 @@ this.jks = this.jks || {};
             width: 0
         }
 
-        this.top = {}
         this.generateTopNavigtion = function () {
             var compWidth = 0;
-
-            console.log(config.navigationData.menue)
 
             for (var i = 0; i < config.navigationData.menue.length; i++) {
                 console.log('create Top!', i)
 
                 var topNavButton = new jks.TopNavButton(config.navigationData.menue[i]);
-                this.top[config.navigationData.menue[i].title] = new jks.TopNavButton(config.navigationData.menue[i]);
                 topNavButton.container.x = compWidth;
                 //compWidth += topNavButton.getWidth() + margin;
                 compWidth += topNavButton.container.width;
@@ -200,7 +199,6 @@ this.jks = this.jks || {};
             navToggleIcon.y = 10;
             //navToggleIcon.visible = false;
             navToggleIcon.on('mousedown', onToggleNav).on('touchstart', onToggleNav)
-            //this.mask.on('mouseup', onTapUp).on('touchend', onTapUp)
 
             var icon = new PIXI.Graphics();
             //this.shape.interactive = true;
@@ -219,28 +217,10 @@ this.jks = this.jks || {};
 
         }
 
-        var navVisible = false;
 
         function onToggleNav() {
-            console.log('onToggleNav')
-
-            if (!navVisible) {
-                showNav();
-            } else {
-                hideNav();
-            }
+            !navVisible ? showNav() : hideNav();
         }
-
-
-        //iconMobile = new PIXI.Graphics();
-        ////this.shape.interactive = true;
-        ////this.shape.buttonMode = true;
-        //closeShape.beginFill(0x00cc00);
-        //closeShape.drawRect(0, 0, 30, 30);
-        //closeShape.endFill;
-        //closeShape.x = navTopContainer.width - 30;
-        //closeShape.y = 10;
-        //navTopContainer.addChild(closeShape);
 
 
         function hideNav() {
@@ -252,7 +232,6 @@ this.jks = this.jks || {};
 
         function showNav() {
             navVisible = true;
-            //navTopContainer.visible = true;
             for (var i = 0; i < _scope.topNavButtons.length; i++) {
                 TweenLite.set(_scope.topNavButtons[i].container, {visible: true})
                 TweenLite.to(_scope.topNavButtons[i].container, .5, {alpha: 1, delay: i * .1})
@@ -266,13 +245,10 @@ this.jks = this.jks || {};
 
             var compHeight = 0;
             for (var i = 0; i < this.topNavButtons.length; i++) {
-                console.log(_scope.topNavButtons[i].id)
                 _scope.topNavButtons[i].switchMobile();
-                _scope.topNavButtons[i].container.x = 150;
+                _scope.topNavButtons[i].container.x = 230;
                 _scope.topNavButtons[i].container.y = 40 + compHeight;
                 compHeight += _scope.topNavButtons[i].container.height;
-
-
             }
         }
 
@@ -283,13 +259,10 @@ this.jks = this.jks || {};
 
             var compWidth = 0;
             for (var i = 0; i < this.topNavButtons.length; i++) {
-                console.log(_scope.topNavButtons[i].id)
                 _scope.topNavButtons[i].switchDefault();
                 _scope.topNavButtons[i].container.x = compWidth;
                 _scope.topNavButtons[i].container.y = 0;
                 compWidth += _scope.topNavButtons[i].container.width;
-
-
             }
         }
 
@@ -297,7 +270,7 @@ this.jks = this.jks || {};
         this.switchMode = function (isMobile) {
             console.log('navigation - switchMode', isMobile);
 
-            _scope.isMobile = isMobile
+            _scope.isMobile = isMobile;
 
             isMobile ? _scope.switchMobile() : this.switchDefault();
         }
@@ -372,20 +345,20 @@ this.jks = this.jks || {};
                             _scope.s.onKeyDownEvent.dispatch('next');
                             jks.SideNavigation.triggerArrow('next');
                         }
-                        //alert('right');
+                        //('right');
                         break;
                     case 37:
                         if (!jks.ThumbNavigation.isLocked()) {
                             _scope.s.onKeyDownEvent.dispatch('prev');
                             jks.SideNavigation.triggerArrow('prev');
                         }
-                        //alert('left');
+                        //('left');
                         break;
                     case 38:
-                        //alert('up');
+                        //('up');
                         break;
                     case 40:
-                        //alert('down');
+                        //('down');
                         break;
                 }
             };
