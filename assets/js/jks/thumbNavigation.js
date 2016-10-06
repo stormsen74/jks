@@ -88,7 +88,7 @@ this.jks = this.jks || {};
          --------------------------------------------*/
         var thumbScaleMode = PIXI.SCALE_MODES.NEAREST;
         var thumbCrossOrigin = false;
-        var actDelay = .12;
+        var actDelay = .18;
 
         this.init = function (slideObject) {
             console.log('init - ThumbNavigation', jks.Core.isMobile());

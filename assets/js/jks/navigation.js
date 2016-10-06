@@ -19,6 +19,7 @@ this.jks = this.jks || {};
     var logo;
     var navTopContainer;
     var navToggleIcon;
+    var navSelectIcon;
     var navSlideContainer;
 
 
@@ -79,8 +80,8 @@ this.jks = this.jks || {};
         navSlideContainer = new PIXI.Container();
         navSlideContainer.visible = false;
         //navContainer.width = jks.View.getScreenWidth();
-        //navSlideContainer.pivot.x = .5;
-        //navSlideContainer.pivot.y = .5;
+        navSlideContainer.pivot.x = .5;
+        navSlideContainer.pivot.y = .5;
         //navSlideContainer.x = jks.View.getScreenWidth() * 0;
         //navSlideContainer.y = jks.View.getScreenHeight() * 0;
         _scope.container.addChild(navSlideContainer);
@@ -88,62 +89,79 @@ this.jks = this.jks || {};
 
         var buttons = [];
 
-        var s = .37;
+        //var s = .37;
 
-        function generateSlideNavigation() {
-            var size = 180 * s;
-            var margin = size * .12;
-            var length = size + margin;
+        function generateSelectNavigation() {
+            //var size = 180 * s;
+            //var margin = size * .12;
+            //var length = size + margin;
 
-            var sprite;
+            //var sprite;
+
 
             for (var i = 0; i < config.numPages; i++) {
-                console.log('create Button!', i, config.pages[i].category)
+                console.log('create Button!', i, config.pages[i].categoryText)
 
-                this['button_' + i] = new PIXI.Graphics();
-                this['button_' + i].interactive = true;
-                this['button_' + i].buttonMode = true;
-                this['button_' + i].beginFill(0x00cc00);
-                this['button_' + i].drawRect(0, 0, size, size);
+                //this['button_' + i] = new PIXI.Graphics();
+                //this['button_' + i].interactive = true;
+                //this['button_' + i].buttonMode = true;
+                //this['button_' + i].beginFill(0x00cc00);
+                //this['button_' + i].drawRect(0, 0, size, size);
+                //
+                //sprite = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID(config.pages[i].category).src)
+                //sprite.scale.x = sprite.scale.y = s;
+                ////_sideArrowRight.anchor.x = 1;
+                ////_sideArrowRight.anchor.y = .5;
+                //
+                //this['button_' + i].addChild(sprite)
+                //
+                //this['button_' + i].endFill;
+                //this['button_' + i].alpha = 1;
+                //this['button_' + i].on('mousedown', onTapDown).on('touchstart', onTapDown);
+                //this['button_' + i].pivot.x = .5;
+                //this['button_' + i].pivot.y = .5;
+                //this['button_' + i].x -= size * .5;
+                //this['button_' + i].y += length;
+                ////this['button_' + i].y = -20;
+                //this['button_' + i].selectionID = i;
+                //
+                //length += size + margin;
 
-                sprite = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID(config.pages[i].category).src)
-                sprite.scale.x = sprite.scale.y = s;
-                //_sideArrowRight.anchor.x = 1;
-                //_sideArrowRight.anchor.y = .5;
+                //navSlideContainer.addChild(this['button_' + i]);
+                //buttons.push(this['button_' + i]);
 
-                this['button_' + i].addChild(sprite)
+                var btn = new jks.SelectNavButton(jks.DataHandler.getAssetByID(config.pages[i].category).src, config.pages[i].categoryText, i)
+                //length += size + margin;
 
-                this['button_' + i].endFill;
-                this['button_' + i].alpha = 1;
-                this['button_' + i].on('mousedown', onTapDown).on('touchstart', onTapDown);
-                this['button_' + i].pivot.x = .5;
-                this['button_' + i].pivot.y = .5;
-                this['button_' + i].x -= size * .5;
-                this['button_' + i].y += length;
+                btn.container.alpha = 1;
+                btn.s.onTapSelect.add(onTapSelect);
+                //btn.container.pivot.x = .5;
+                //btn.container.pivot.y = .5;
+                //btn.container.x = 0;
+                //btn.container.y += length;
+                //console.log(btn.container.y)
                 //this['button_' + i].y = -20;
-                this['button_' + i].selectionID = i;
 
-                length += size + margin;
 
-                navSlideContainer.addChild(this['button_' + i]);
-                buttons.push(this['button_' + i]);
+                navSlideContainer.addChild(btn.container);
+                buttons.push(btn);
 
             }
 
-            for (var i = 0; i < buttons.length; i++) {
-                buttons[i].y -= length * .5 - margin * .5;
-            }
+            //for (var i = 0; i < buttons.length; i++) {
+            //    buttons[i].container.y -= length * .5 - margin * .5;
+            //}
 
 
         }
 
         //TweenLite.to(navContainer, 2, {delay: 2, rotation: Math.PI * 2, ease: Sine.easeInOut})
 
-        function onTapDown(e) {
-            console.log('tap', e.target.selectionID);
-            if (e.target.selectionID != currentSelectedID) {
-                _scope.s.onNavSelect.dispatch(e.target.selectionID);
-                currentSelectedID = e.target.selectionID;
+        function onTapSelect(selectionID) {
+            console.log('onTapSelect', selectionID);
+            if (selectionID != currentSelectedID) {
+                _scope.s.onNavSelect.dispatch(selectionID);
+                currentSelectedID = selectionID;
             }
         }
 
@@ -153,8 +171,6 @@ this.jks = this.jks || {};
         var navVisible = false;
 
         navTopContainer = new PIXI.Container();
-        //navTopContainer.visible = false;
-        //navContainer.width = jks.View.getScreenWidth();
         //navTopContainer.pivot.x = 0;
         //navTopContainer.pivot.y = 0;
         //navTopContainer.x = jks.View.getScreenWidth();
@@ -186,7 +202,8 @@ this.jks = this.jks || {};
             }
 
 
-            initMobileNavToogle()
+            initMobileNavToogle();
+            initSelectButton();
 
 
         }
@@ -214,7 +231,35 @@ this.jks = this.jks || {};
             navToggleIcon.addChild(icon);
             navTopContainer.addChild(navToggleIcon);
 
+        }
 
+        function initSelectButton() {
+            navSelectIcon = new PIXI.Container();
+            navSelectIcon.interactive = true;
+            navSelectIcon.buttonMode = true;
+            navSelectIcon.x = -30;
+            navSelectIcon.y = 10;
+            //navSelectIcon.visible = false;
+            navSelectIcon.on('mousedown', onToggleSelection).on('touchstart', onToggleSelection)
+
+            var icon = new PIXI.Graphics();
+            //this.shape.interactive = true;
+            ////this.shape.buttonMode = true;
+            icon.beginFill(0xcc0000);
+            icon.drawRect(0, 0, 30, 30);
+            icon.endFill;
+            icon.alpha = .3;
+            //icon.x = navTopContainer.width;
+            //icon.y = 10;
+
+
+            navSelectIcon.addChild(icon);
+            navTopContainer.addChild(navSelectIcon);
+
+        }
+
+        function onToggleSelection() {
+            console.log('onToggleSelection');
         }
 
 
@@ -250,6 +295,8 @@ this.jks = this.jks || {};
                 _scope.topNavButtons[i].container.y = 40 + compHeight;
                 compHeight += _scope.topNavButtons[i].container.height;
             }
+
+            navSelectIcon.x = 280;
         }
 
 
@@ -264,6 +311,8 @@ this.jks = this.jks || {};
                 _scope.topNavButtons[i].container.y = 0;
                 compWidth += _scope.topNavButtons[i].container.width;
             }
+
+            navSelectIcon.x = -30;
         }
 
 
@@ -320,16 +369,23 @@ this.jks = this.jks || {};
             )
 
             if (!_scope.isMobile) {
+
                 navTopContainer.x = jks.View.getScreenWidth() - navTop.width;
                 navTopContainer.y = 0;
+
+                navSlideContainer.x = navTopContainer.x;
+                navSlideContainer.y = jks.View.getScreenHeight() * .3;
+
             } else {
+
                 navTopContainer.x = jks.View.getScreenWidth() - navTop.width - 50;
                 navTopContainer.y = 0;
+
+                navSlideContainer.x = jks.View.getScreenWidth() * .5;
+                navSlideContainer.y = jks.View.getScreenHeight() * .2;
+
             }
 
-
-            navSlideContainer.x = jks.View.getScreenWidth() * .5;
-            navSlideContainer.y = jks.View.getScreenHeight() * .3;
 
         }
 
@@ -366,7 +422,7 @@ this.jks = this.jks || {};
         }
 
 
-        generateSlideNavigation();
+        generateSelectNavigation();
         this.generateTopNavigtion();
 
 

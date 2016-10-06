@@ -39,6 +39,8 @@ this.jks = this.jks || {};
 
         this.colors = {
             blue: 0x408080,
+            light_blue: 0x71abab,
+            white: 0xffffff,
             overlay: 0xcaf0f0
         }
 
