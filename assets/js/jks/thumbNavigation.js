@@ -88,7 +88,7 @@ this.jks = this.jks || {};
          --------------------------------------------*/
         var thumbScaleMode = PIXI.SCALE_MODES.NEAREST;
         var thumbCrossOrigin = false;
-        var actDelay = .15;
+        var actDelay = .17;
 
         this.init = function (slideObject) {
             console.log('init - ThumbNavigation');
@@ -99,7 +99,8 @@ this.jks = this.jks || {};
             // hide container!
             _scope.container.visible = false;
 
-            if (jks.Config.getDeviceType() == "mobile" || jks.Config.getDeviceType() == "tablet") {
+            //if (jks.Config.getDeviceType() == "mobile" || jks.Config.getDeviceType() == "tablet") {
+            if (jks.Config.getDeviceType() == "mobile") {
                 $ThumbOffsetX = 0;
                 $OffsetBottom = 0;
             }

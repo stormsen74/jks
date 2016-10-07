@@ -165,7 +165,7 @@ this.jks = this.jks || {};
             navToggleIcon.buttonMode = true;
             navToggleIcon.x = navTopContainer.width;
             navToggleIcon.y = 10;
-            //navToggleIcon.visible = false;
+            navToggleIcon.visible = true;
             navToggleIcon.on('mousedown', onToggleNav).on('touchstart', onToggleNav)
 
             var icon = new PIXI.Graphics();
@@ -184,13 +184,14 @@ this.jks = this.jks || {};
 
         }
 
+
         function initSelectButton() {
             navSelectIcon = new PIXI.Container();
             navSelectIcon.interactive = true;
             navSelectIcon.buttonMode = true;
             navSelectIcon.x = -30;
             navSelectIcon.y = 10;
-            //navSelectIcon.visible = false;
+            navSelectIcon.visible = true;
             navSelectIcon.on('mousedown', onToggleSelection).on('touchstart', onToggleSelection)
 
             var icon = new PIXI.Graphics();
@@ -209,8 +210,36 @@ this.jks = this.jks || {};
 
         }
 
+        var selectionVisible = true;
+
         function onToggleSelection() {
             console.log('onToggleSelection');
+
+            !selectionVisible ? showSelection() : hideSelection();
+        }
+
+        function hideSelection() {
+            selectionVisible = false;
+            var t = .05;
+            var l = (selectButtons.length - 1) * t;
+            for (var i = 0; i < selectButtons.length; i++) {
+                TweenLite.to(selectButtons[i].container, .2, {
+                    delay: l - i * t, alpha: 0, ease: Expo.easeIn
+                })
+            }
+            TweenLite.set(navSelectContainer, {delay: l + t, visible: false})
+        }
+
+        hideSelection();
+
+
+        function showSelection() {
+            selectionVisible = true;
+            navSelectContainer.visible = true;
+            for (var i = 0; i < selectButtons.length; i++) {
+                TweenLite.set(selectButtons[i].container, {visible: true})
+                TweenLite.to(selectButtons[i].container, .2, {delay: i * .07, alpha: 1, ease: Expo.easeOut})
+            }
         }
 
 
@@ -242,12 +271,13 @@ this.jks = this.jks || {};
             var compHeight = 0;
             for (var i = 0; i < this.topNavButtons.length; i++) {
                 _scope.topNavButtons[i].switchMobile();
-                _scope.topNavButtons[i].container.x = 230;
+                _scope.topNavButtons[i].container.x = 180;
                 _scope.topNavButtons[i].container.y = 40 + compHeight;
                 compHeight += _scope.topNavButtons[i].container.height;
             }
 
-            navSelectIcon.x = 280;
+            navSelectIcon.x = 240;
+            navToggleIcon.x = 280;
         }
 
 
@@ -264,6 +294,7 @@ this.jks = this.jks || {};
             }
 
             navSelectIcon.x = -30;
+            navToggleIcon.x = navTopContainer.width;
         }
 
 
@@ -277,11 +308,13 @@ this.jks = this.jks || {};
 
 
         this.hide = function () {
-            navSelectContainer.visible = false;
+            //navSelectContainer.visible = false;
+            hideSelection();
         }
 
         this.show = function () {
-            navSelectContainer.visible = true;
+            //navSelectContainer.visible = true;
+            showSelection();
         }
 
 
@@ -319,21 +352,21 @@ this.jks = this.jks || {};
                 }
             )
 
-            if (!_scope.isMobile) {
-
-                navTopContainer.x = jks.View.getScreenWidth() - navTop.width;
-                navTopContainer.y = 0;
-
-                navSelectContainer.x = navTopContainer.x;
-                navSelectContainer.y = jks.View.getScreenHeight() * .3;
-
-            } else {
+            if (jks.Config.getDeviceType() == 'mobile') {
 
                 navTopContainer.x = jks.View.getScreenWidth() - navTop.width - 50;
                 navTopContainer.y = 0;
 
                 navSelectContainer.x = jks.View.getScreenWidth() * .5;
                 navSelectContainer.y = jks.View.getScreenHeight() * .2;
+
+            } else {
+
+                navTopContainer.x = jks.View.getScreenWidth() - navTop.width;
+                navTopContainer.y = 0;
+
+                navSelectContainer.x = navTopContainer.x;
+                navSelectContainer.y = jks.View.getScreenHeight() * .15;
 
             }
 

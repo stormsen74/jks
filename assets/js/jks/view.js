@@ -526,7 +526,7 @@ this.jks = this.jks || {};
         _stage.addChild(_scope.containerNavigation);
 
         _textField = new jks.TextField();
-        //_scope.containerSlideImages.addChild(_textField.container);
+        _scope.containerSlideImages.addChild(_textField.container);
 
         initListener();
         renderLoop();

@@ -22,7 +22,7 @@ this.jks = this.jks || {};
     function TextField() {
         _scope = this;
 
-        console.log('init - Navigation');
+        console.log('init - TextField');
 
         this.s = {
             onKeyDownEvent: new signals.Signal()
