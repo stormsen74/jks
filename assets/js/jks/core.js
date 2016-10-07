@@ -49,9 +49,9 @@ this.jks = this.jks || {};
 
     jks.Core = Core;
 
-    jks.Core.isMobile = function () {
+    // jks.Core.isMobile = function () {
         //http://matthewhudson.me/projects/device.js/
-        return device.mobile();
-    }
+        // return device.mobile();
+    // }
 
 }());

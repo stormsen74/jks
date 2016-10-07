@@ -25,7 +25,6 @@ this.jks = this.jks || {};
         };
 
         this.isLocked = false;
-        this.isMobile = jks.Core.isMobile();
         this.thumbs = [];
         this.selectedThumb = null;
 
@@ -37,6 +36,7 @@ this.jks = this.jks || {};
 
 
         var _compWidth = 0;
+
         this.container = new PIXI.Container();
 
 
@@ -88,11 +88,13 @@ this.jks = this.jks || {};
          --------------------------------------------*/
         var thumbScaleMode = PIXI.SCALE_MODES.NEAREST;
         var thumbCrossOrigin = false;
-        var actDelay = .18;
+        var actDelay = .15;
 
         this.init = function (slideObject) {
-            console.log('init - ThumbNavigation', jks.Core.isMobile());
+            console.log('init - ThumbNavigation');
             //console.log(slideObject.slideNumImages);
+
+            _compWidth = 0;
 
             // hide container!
             _scope.container.visible = false;
@@ -110,6 +112,9 @@ this.jks = this.jks || {};
                 thumb.s.onTapUp.add(onTapUp);
 
                 function onTapUp(id) {
+
+                    // TODO disable on MoveOut
+                    console.log('onTapUp')
 
                     TweenLite.killDelayedCallsTo(enableDragSlide)
 
@@ -136,7 +141,7 @@ this.jks = this.jks || {};
 
             _scope.thumbs[0].select();
 
-            initDrag(thumb, slideObject.slideNumImages);
+            initDrag(thumb);
 
             // show container
             TweenLite.delayedCall(actDelay, function () {
@@ -149,15 +154,11 @@ this.jks = this.jks || {};
          ~ DRAGGING
          --------------------------------------------*/
 
-        function initDrag(_lastThumb, _numThumbs) {
 
-            // console.log(_lastThumb.thumbSize.width);
+        function initDrag(_lastThumb) {
 
             _scope.tracker = VelocityTracker.track(_scope.container, "x,y");
-
-            _scope.shapeWidth = _lastThumb.thumbSize.width * _numThumbs;
-            //console.log(_scope.shapeWidth)
-
+            _scope.shapeWidth = _compWidth;
 
             _scope.dragShape.beginFill(0x408080);
             _scope.dragShape.drawRect(0, 0, _scope.shapeWidth, _lastThumb.thumbSize.height);
@@ -191,6 +192,7 @@ this.jks = this.jks || {};
         this.deactivateSlideDrag = function () {
             _scope.dragShape.visible = false;
             _scope.dragShape.interactive = false;
+            dragData.isDragging = false;
         }
 
 
@@ -202,18 +204,28 @@ this.jks = this.jks || {};
         };
 
         function onDragStart(event) {
+            // console.log('onDragStart', dragData.startX);
             TweenLite.killTweensOf(_scope.container);
             dragData.startX = event.data.global.x - _scope.container.x;
             dragData.isDragging = true;
             //_dragShape.defaultCursor = "none";
 
-            // console.log('onStartDrag', dragData.startX);
         }
 
         function onDragMove(e) {
             if (dragData.isDragging) {
-                //console.log(e.data)
+                // console.log('onDragMove', _scope.container.y, e.data.global.y)
                 _scope.container.x = e.data.global.x - dragData.startX;
+
+                if (
+                    e.data.global.x < 0 ||
+                    e.data.global.x > jks.View.getScreenWidth() ||
+                    e.data.global.y < _scope.container.y ||
+                    e.data.global.y > _scope.container.y + _scope.dragShape.height
+                ) {
+                    onDragEnd();
+                    return;
+                }
             }
         }
 
@@ -225,12 +237,12 @@ this.jks = this.jks || {};
 
         function onDragEnd(e) {
 
-            // dragData.isDragging = false;
-            // console.log('vel',_scope.tracker.getVelocity("x"));
-
-            //console.log('>', _scope.dragShape.width - 2 <= jks.View.getScreenWidth())
+            // console.log('onDragEnd', dragData.isDragging)
 
             var vel = _scope.tracker.getVelocity("x");
+
+            // console.log('>', isCentered(), vel);
+
 
             var throwCentered = {
                 x: {
@@ -248,13 +260,39 @@ this.jks = this.jks || {};
                 }
             }
 
+            if (isCentered()) {
+                TweenLite.to(_scope.container, .5, {
+                    throwProps: throwCentered,
+                    onComplete: null,
+                    ease: Power2.easeOut
+                });
+            } else {
+                if (vel != 0) {
+                    TweenLite.to(_scope.container, .5, {
+                        throwProps: throwDefault,
+                        onComplete: null,
+                        ease: Power2.easeOut
+                    });
+                } else {
+                    if (!dragData.isDragging) {
+                        TweenLite.to(_scope.container, .5, {
+                            x: 0,
+                            onComplete: null,
+                            ease: Power2.easeOut
+                        });
+                    }
+                }
 
-            TweenLite.to(_scope.container, .5, {
 
-                throwProps: isCentered() ? throwCentered : throwDefault,
-                onComplete: null,
-                ease: Power2.easeOut
-            });
+            }
+
+            _scope.deactivateSlideDrag();
+
+            // TweenLite.to(_scope.container, .5, {
+            //     throwProps: isCentered() ? throwCentered : throwDefault,
+            //     onComplete: null,
+            //     ease: Power2.easeOut
+            // });
 
             //ThrowPropsPlugin.to(_scope.container, {
             //    throwProps: {
@@ -270,18 +308,24 @@ this.jks = this.jks || {};
             //});
 
             // console.log('onDragEnd');
-            _scope.deactivateSlideDrag();
+
         }
 
         this.onOrientationChange = function (orientation) {
+            console.log('onOrientationChange', orientation)
             TweenLite.delayedCall(.2, onDragEnd)
         }
 
 
         this.updateView = function () {
-            if (!_scope.isMobile) {
-                _scope.container.x = jks.View.getScreenWidth() * .5 - _scope.container.getWidth() * .5;
+
+
+            if (jks.Config.getDeviceType() == 'desktop') {
+                // _scope.container.x = jks.View.getScreenWidth() * .5 - _scope.container.getWidth() * .5;
+                TweenLite.killDelayedCallsTo(onDragEnd);
+                TweenLite.delayedCall(.2, onDragEnd);
             }
+
             _scope.container.y = jks.View.getScreenHeight() - _scope.container.getHeight() - $OffsetBottom;
         }
 

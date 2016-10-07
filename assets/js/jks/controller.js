@@ -171,7 +171,7 @@ this.jks = this.jks || {};
             view.initSlide(config, pageID);
             view.initThumbNavigation();
 
-            if (!jks.Core.isMobile()) {
+            if (jks.Config.getDeviceType() != 'mobile') {
                 view.initSideNavigation();
                 navigation.s.onKeyDownEvent.add(onKeyDown);
             }

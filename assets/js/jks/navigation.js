@@ -20,7 +20,7 @@ this.jks = this.jks || {};
     var navTopContainer;
     var navToggleIcon;
     var navSelectIcon;
-    var navSlideContainer;
+    var navSelectContainer;
 
 
     function Navigation(config) {
@@ -74,88 +74,39 @@ this.jks = this.jks || {};
         }
 
         /*--------------------------------------------
-         ~SLIDE NAVIGATION
+         ~SELECT/SLIDE NAVIGATION
          --------------------------------------------*/
 
-        navSlideContainer = new PIXI.Container();
-        navSlideContainer.visible = false;
-        //navContainer.width = jks.View.getScreenWidth();
-        navSlideContainer.pivot.x = .5;
-        navSlideContainer.pivot.y = .5;
-        //navSlideContainer.x = jks.View.getScreenWidth() * 0;
-        //navSlideContainer.y = jks.View.getScreenHeight() * 0;
-        _scope.container.addChild(navSlideContainer);
+        navSelectContainer = new PIXI.Container();
+        navSelectContainer.visible = false;
+        navSelectContainer.pivot.x = .5;
+        navSelectContainer.pivot.y = .5;
+        _scope.container.addChild(navSelectContainer);
 
-
-        var buttons = [];
-
-        //var s = .37;
+        var selectButtons = [];
 
         function generateSelectNavigation() {
-            //var size = 180 * s;
-            //var margin = size * .12;
-            //var length = size + margin;
-
-            //var sprite;
-
 
             for (var i = 0; i < config.numPages; i++) {
                 console.log('create Button!', i, config.pages[i].categoryText)
 
-                //this['button_' + i] = new PIXI.Graphics();
-                //this['button_' + i].interactive = true;
-                //this['button_' + i].buttonMode = true;
-                //this['button_' + i].beginFill(0x00cc00);
-                //this['button_' + i].drawRect(0, 0, size, size);
-                //
-                //sprite = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID(config.pages[i].category).src)
-                //sprite.scale.x = sprite.scale.y = s;
-                ////_sideArrowRight.anchor.x = 1;
-                ////_sideArrowRight.anchor.y = .5;
-                //
-                //this['button_' + i].addChild(sprite)
-                //
-                //this['button_' + i].endFill;
-                //this['button_' + i].alpha = 1;
-                //this['button_' + i].on('mousedown', onTapDown).on('touchstart', onTapDown);
-                //this['button_' + i].pivot.x = .5;
-                //this['button_' + i].pivot.y = .5;
-                //this['button_' + i].x -= size * .5;
-                //this['button_' + i].y += length;
-                ////this['button_' + i].y = -20;
-                //this['button_' + i].selectionID = i;
-                //
-                //length += size + margin;
+                var select_btn = new jks.SelectNavButton(jks.DataHandler.getAssetByID(config.pages[i].category).src, config.pages[i].categoryText, i)
 
-                //navSlideContainer.addChild(this['button_' + i]);
-                //buttons.push(this['button_' + i]);
+                select_btn.container.alpha = 1;
+                select_btn.s.onTapSelect.add(onTapSelect);
 
-                var btn = new jks.SelectNavButton(jks.DataHandler.getAssetByID(config.pages[i].category).src, config.pages[i].categoryText, i)
-                //length += size + margin;
-
-                btn.container.alpha = 1;
-                btn.s.onTapSelect.add(onTapSelect);
-                //btn.container.pivot.x = .5;
-                //btn.container.pivot.y = .5;
-                //btn.container.x = 0;
-                //btn.container.y += length;
-                //console.log(btn.container.y)
-                //this['button_' + i].y = -20;
-
-
-                navSlideContainer.addChild(btn.container);
-                buttons.push(btn);
+                navSelectContainer.addChild(select_btn.container);
+                selectButtons.push(select_btn);
 
             }
 
-            //for (var i = 0; i < buttons.length; i++) {
-            //    buttons[i].container.y -= length * .5 - margin * .5;
+            //for (var i = 0; i < selectButtons.length; i++) {
+            //    selectButtons[i].y -= length * .5 - margin * .5;
             //}
 
 
         }
 
-        //TweenLite.to(navContainer, 2, {delay: 2, rotation: Math.PI * 2, ease: Sine.easeInOut})
 
         function onTapSelect(selectionID) {
             console.log('onTapSelect', selectionID);
@@ -317,7 +268,7 @@ this.jks = this.jks || {};
 
 
         this.switchMode = function (isMobile) {
-            console.log('navigation - switchMode', isMobile);
+            // console.log('navigation - switchMode', isMobile);
 
             _scope.isMobile = isMobile;
 
@@ -326,11 +277,11 @@ this.jks = this.jks || {};
 
 
         this.hide = function () {
-            navSlideContainer.visible = false;
+            navSelectContainer.visible = false;
         }
 
         this.show = function () {
-            navSlideContainer.visible = true;
+            navSelectContainer.visible = true;
         }
 
 
@@ -373,16 +324,16 @@ this.jks = this.jks || {};
                 navTopContainer.x = jks.View.getScreenWidth() - navTop.width;
                 navTopContainer.y = 0;
 
-                navSlideContainer.x = navTopContainer.x;
-                navSlideContainer.y = jks.View.getScreenHeight() * .3;
+                navSelectContainer.x = navTopContainer.x;
+                navSelectContainer.y = jks.View.getScreenHeight() * .3;
 
             } else {
 
                 navTopContainer.x = jks.View.getScreenWidth() - navTop.width - 50;
                 navTopContainer.y = 0;
 
-                navSlideContainer.x = jks.View.getScreenWidth() * .5;
-                navSlideContainer.y = jks.View.getScreenHeight() * .2;
+                navSelectContainer.x = jks.View.getScreenWidth() * .5;
+                navSelectContainer.y = jks.View.getScreenHeight() * .2;
 
             }
 
