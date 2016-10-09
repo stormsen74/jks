@@ -38,6 +38,7 @@ this.jks = this.jks || {};
         this.container.buttonMode = true;
 
 
+
         this.container.on('mousedown', onTapSelect).on('touchstart', onTapSelect);
 
 
@@ -49,11 +50,11 @@ this.jks = this.jks || {};
         this.textField = new PIXI.Text(category, {
             fontFamily: 'Linotype Feltpen W01 Medium',
             fontSize: _textSizeDefault,
-            fill: jks.Config.getColor('light_blue'),
+            fill: jks.Config.getColor('blue'),
             align: 'left'
         });
         this.textField.x = getRealImgWidth() + _paddingSide;
-        this.textField.y = 10;
+        this.textField.y = getRealImgWidth() * .5 - this.textField.height * .5;
         console.log('°', getRealImgWidth())
 
 
@@ -75,7 +76,7 @@ this.jks = this.jks || {};
         this.container.addChild(this.textField);
 
 
-        this.container.x -= getRealImgWidth() * .5;
+        this.container.x -= getRealImgWidth() ;
         this.container.y = selectionID * (getRealImgWidth() + _paddingTop);
 
 

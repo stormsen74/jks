@@ -491,6 +491,8 @@ this.jks = this.jks || {};
         }
 
 
+
+
         function updateContent() {
 
             if (_slideObject.isActive) {
@@ -507,7 +509,8 @@ this.jks = this.jks || {};
                 updateSlideLoader();
             }
 
-            _textField.updateView();
+
+                _textField.updateView();
 
         }
 
@@ -533,8 +536,8 @@ this.jks = this.jks || {};
 
 
         TweenLite.delayedCall(.5, function () {
-            _scope.s.onReady.dispatch();
             onResize();
+            _scope.s.onReady.dispatch();
         });
 
 
@@ -604,6 +607,7 @@ this.jks = this.jks || {};
 
 
             _textField.setCategory(_slideObject.configData.pageData[_pageID].categoryText);
+            _textField.show();
             setText(_slideObject.currentImage)
 
         }
@@ -728,6 +732,24 @@ this.jks = this.jks || {};
 
     jks.View.forceResize = function () {
         _scope.resizeScreen()
+    }
+
+    jks.View.showOverlay = function () {
+        _overlay.alpha = 0;
+        _overlay.visible = true;
+        _overlay.width = screenWidth();
+        _overlay.height = screenHeight();
+        _textField.hide();
+        TweenLite.to(_overlay, .3, {alpha: .5, ease: Sine.easeOut})
+    }
+
+    jks.View.hideOverlay = function () {
+        TweenLite.to(_overlay, .3, {
+            alpha: 0, ease: Sine.easeIn, onComplete: function () {
+                _overlay.visible = false;
+                _textField.show();
+            }
+        })
     }
 
 

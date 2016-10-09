@@ -44,7 +44,7 @@ this.jks = this.jks || {};
                 if (jks.Config.getDeviceType() == "mobile") {
                     device.portrait() ? _width = Math.round(jks.View.getScreenWidth() * .25) : _width = Math.round(jks.View.getScreenHeight() * .25);
                 } else if (jks.Config.getDeviceType() == "tablet") {
-                    device.portrait() ? _width = Math.round(jks.View.getScreenWidth() * .2) : _width = Math.round(jks.View.getScreenHeight() * .2);
+                    device.portrait() ? _width = Math.round(jks.View.getScreenWidth() / 6) : _width = Math.round(jks.View.getScreenHeight() /6);
                 } else {
                     _width = 75;
                 }
@@ -64,7 +64,7 @@ this.jks = this.jks || {};
 
             this.o = {saturation: -.5};
             this.container = new PIXI.Container();
-            this.color =  jks.Config.getColor('blue'); //0x506995
+            this.color = jks.Config.getColor('blue'); //0x506995
 
             _thumb = new PIXI.Sprite(_texture);
             _thumb.width = thumbImageWidth;

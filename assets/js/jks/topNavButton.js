@@ -9,7 +9,7 @@ this.jks = this.jks || {};
 ( function () {
 
     var _scope;
-    var _textSizeDefault = 20;
+    var _textSizeDefault = 16;
     var _textSizeMobile = 23;
     var _paddingSide = 10;
     var _paddingTop = 10;
@@ -41,7 +41,7 @@ this.jks = this.jks || {};
         this.shape.beginFill(0x00dd00);
         this.shape.drawRect(0, 0, this.textField.width + _paddingSide * 2, this.textField.height + _paddingTop * 2);
         this.shape.endFill;
-        this.shape.alpha = .2;
+        this.shape.alpha = 0;
 
 
         this.container.addChild(this.shape);

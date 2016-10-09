@@ -41,6 +41,8 @@ this.jks = this.jks || {};
             align: 'left'
         });
 
+        //this.fieldCategory.x = 100;
+
         this.fieldType = new PIXI.Text('', {
             fontFamily: 'Linotype Feltpen W01 Medium',
             fontWeight: 'bold',
@@ -60,15 +62,34 @@ this.jks = this.jks || {};
 
         this.text = new PIXI.Container();
 
+
         this.text.addChild(this.fieldCategory)
         this.text.addChild(this.fieldType)
         this.text.addChild(this.fieldDescription)
 
+        var tfLocked = true;
+        TweenLite.delayedCall(1, function () {
+            tfLocked = false;
+        })
 
         this.updateView = function () {
             //_logo.x = jks.View.getScreenWidth();
-            _scope.text.x = jks.View.getScreenWidth() - this.text.width - 20;
-            _scope.text.y = 30;
+            //console.log(this.text.width)
+
+            // TODO || navigation_isMobile
+            if (jks.Config.getDeviceType() == 'mobile') {
+                _scope.text.x = 15;
+                _scope.text.y = 50;
+            } else {
+                if (!tfLocked) {
+                    _scope.text.x = jks.Navigation.getTopNavPosition().x -45;
+                    _scope.text.y = 50;
+                }
+            }
+
+
+            //_scope.text.x = jks.View.getScreenWidth() - this.text.width - 10;
+            //_scope.text.y = 50;
         }
         //this.text.x = 200;
         //this.text.y = 200;
@@ -98,10 +119,24 @@ this.jks = this.jks || {};
             _scope.fieldType.setText(item.type)
             _scope.fieldDescription.setText(item.description);
 
+            // align right
+            //this.fieldDescription.style.align = 'right'
+            //this.fieldType.x = this.fieldCategory.width - this.fieldType.width;
+            //this.fieldDescription.x = this.fieldCategory.width - this.fieldDescription.width;
+
             _scope.updateView();
 
             //initKeyMode();
             //TweenLite.delayedCall(2, initGFX)
+        }
+
+
+        this.hide = function () {
+            _scope.container.visible = false;
+        }
+
+        this.show = function () {
+            _scope.container.visible = true;
         }
 
         //init();

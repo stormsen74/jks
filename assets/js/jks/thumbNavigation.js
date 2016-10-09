@@ -100,7 +100,7 @@ this.jks = this.jks || {};
             _scope.container.visible = false;
 
             //if (jks.Config.getDeviceType() == "mobile" || jks.Config.getDeviceType() == "tablet") {
-            if (jks.Config.getDeviceType() == "mobile") {
+            if (jks.Config.getDeviceType() == "mobile" || jks.Config.getDeviceType() == "tablet" ) {
                 $ThumbOffsetX = 0;
                 $OffsetBottom = 0;
             }

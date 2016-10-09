@@ -16,11 +16,14 @@ this.jks = this.jks || {};
 
     var _scope;
 
-    var logo;
+    var logo, logo_text;
     var navTopContainer;
-    var navToggleIcon;
-    var navSelectIcon;
+    var navToggleIcon, mobileNavToggleIcon, mobileNavCloseIcon;
+    var navSelectIcon, selectNavToggleIconClosed, selectNavToggleIconOpen;
     var navSelectContainer;
+    var isSwitching;
+
+    var currentSelectedPage = 'home';
 
 
     function Navigation(config) {
@@ -46,6 +49,8 @@ this.jks = this.jks || {};
         this.container.buttonMode = true;
 
 
+
+
         if (jks.Config.getDeviceType() == 'desktop') {
             initKeyMode();
         }
@@ -56,6 +61,7 @@ this.jks = this.jks || {};
          --------------------------------------------*/
 
         logo = document.getElementById('jk-logo');
+        logo_text = document.getElementById('svg_logo_text');
         logo.addEventListener('mousedown', onTapHome);
         TweenLite.set(logo, {
                 left: 15,
@@ -68,9 +74,17 @@ this.jks = this.jks || {};
             //TweenLite.to(_logo, 1, { opacity: 1, ease: Sine.easeOut})
         };
 
+
         function onTapHome() {
-            _scope.s.onTapHome.dispatch();
-            currentSelectedID = null;
+            if (currentSelectedPage != 'home') {
+                _scope.s.onTapHome.dispatch();
+                if (_scope.isMobile) {
+                    hideNav();
+                }
+                hideSelection();
+                currentSelectedPage = 'home';
+                currentSelectedID = null;
+            }
         }
 
         /*--------------------------------------------
@@ -110,6 +124,7 @@ this.jks = this.jks || {};
 
         function onTapSelect(selectionID) {
             console.log('onTapSelect', selectionID);
+            currentSelectedPage = 'slides';
             if (selectionID != currentSelectedID) {
                 _scope.s.onNavSelect.dispatch(selectionID);
                 currentSelectedID = selectionID;
@@ -128,12 +143,14 @@ this.jks = this.jks || {};
         //navTopContainer.y = jks.View.getScreenHeight() + 30;
         _scope.container.addChild(navTopContainer);
 
+        console.log(navTopContainer.position)
+
 
         var navTop = {
             width: 0
         }
 
-        this.generateTopNavigtion = function () {
+        function generateTopNavigtion() {
             var compWidth = 0;
 
             for (var i = 0; i < config.navigationData.menue.length; i++) {
@@ -149,7 +166,7 @@ this.jks = this.jks || {};
                 }
 
                 navTopContainer.addChild(topNavButton.container);
-                this.topNavButtons.push(topNavButton);
+                _scope.topNavButtons.push(topNavButton);
             }
 
 
@@ -159,87 +176,38 @@ this.jks = this.jks || {};
 
         }
 
+
+        /*--------------------------------------------
+         ~ MOBILE NAV TOGGLE
+         --------------------------------------------*/
+
         function initMobileNavToogle() {
             navToggleIcon = new PIXI.Container();
             navToggleIcon.interactive = true;
             navToggleIcon.buttonMode = true;
-            navToggleIcon.x = navTopContainer.width;
+            navToggleIcon.x = navTopContainer.width + 100;
             navToggleIcon.y = 10;
             navToggleIcon.visible = true;
             navToggleIcon.on('mousedown', onToggleNav).on('touchstart', onToggleNav)
 
             var icon = new PIXI.Graphics();
-            //this.shape.interactive = true;
-            ////this.shape.buttonMode = true;
             icon.beginFill(0x00cc00);
-            icon.drawRect(0, 0, 30, 30);
+            icon.drawRect(0, 0, 35, 35);
             icon.endFill;
-            icon.alpha = .3;
+            icon.alpha = 0;
             //icon.x = navTopContainer.width;
             //icon.y = 10;
+
+            mobileNavToggleIcon = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID('mobileNavToggleIcon').src);
+            mobileNavCloseIcon = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID('mobileNavCloseIcon').src);
+            mobileNavCloseIcon.visible = false;
 
 
             navToggleIcon.addChild(icon);
+            navToggleIcon.addChild(mobileNavToggleIcon);
+            navToggleIcon.addChild(mobileNavCloseIcon);
             navTopContainer.addChild(navToggleIcon);
 
-        }
-
-
-        function initSelectButton() {
-            navSelectIcon = new PIXI.Container();
-            navSelectIcon.interactive = true;
-            navSelectIcon.buttonMode = true;
-            navSelectIcon.x = -30;
-            navSelectIcon.y = 10;
-            navSelectIcon.visible = true;
-            navSelectIcon.on('mousedown', onToggleSelection).on('touchstart', onToggleSelection)
-
-            var icon = new PIXI.Graphics();
-            //this.shape.interactive = true;
-            ////this.shape.buttonMode = true;
-            icon.beginFill(0xcc0000);
-            icon.drawRect(0, 0, 30, 30);
-            icon.endFill;
-            icon.alpha = .3;
-            //icon.x = navTopContainer.width;
-            //icon.y = 10;
-
-
-            navSelectIcon.addChild(icon);
-            navTopContainer.addChild(navSelectIcon);
-
-        }
-
-        var selectionVisible = true;
-
-        function onToggleSelection() {
-            console.log('onToggleSelection');
-
-            !selectionVisible ? showSelection() : hideSelection();
-        }
-
-        function hideSelection() {
-            selectionVisible = false;
-            var t = .05;
-            var l = (selectButtons.length - 1) * t;
-            for (var i = 0; i < selectButtons.length; i++) {
-                TweenLite.to(selectButtons[i].container, .2, {
-                    delay: l - i * t, alpha: 0, ease: Expo.easeIn
-                })
-            }
-            TweenLite.set(navSelectContainer, {delay: l + t, visible: false})
-        }
-
-        hideSelection();
-
-
-        function showSelection() {
-            selectionVisible = true;
-            navSelectContainer.visible = true;
-            for (var i = 0; i < selectButtons.length; i++) {
-                TweenLite.set(selectButtons[i].container, {visible: true})
-                TweenLite.to(selectButtons[i].container, .2, {delay: i * .07, alpha: 1, ease: Expo.easeOut})
-            }
         }
 
 
@@ -249,17 +217,108 @@ this.jks = this.jks || {};
 
 
         function hideNav() {
+            jks.View.hideOverlay();
             navVisible = false;
+            mobileNavCloseIcon.visible = false;
+            mobileNavToggleIcon.visible = true;
             for (var i = 0; i < _scope.topNavButtons.length; i++) {
+                TweenLite.killTweensOf(_scope.topNavButtons[i].container);
                 TweenLite.set(_scope.topNavButtons[i].container, {alpha: 0, visible: false})
             }
         }
 
         function showNav() {
+            hideSelection();
+            if (!isSwitching) {
+                jks.View.showOverlay();
+            }
             navVisible = true;
+            mobileNavToggleIcon.visible = false;
+            mobileNavCloseIcon.visible = true;
             for (var i = 0; i < _scope.topNavButtons.length; i++) {
-                TweenLite.set(_scope.topNavButtons[i].container, {visible: true})
-                TweenLite.to(_scope.topNavButtons[i].container, .5, {alpha: 1, delay: i * .1})
+                TweenLite.killTweensOf(_scope.topNavButtons[i].container);
+                TweenLite.set(_scope.topNavButtons[i].container, {visible: true});
+                TweenLite.to(_scope.topNavButtons[i].container, .5, {alpha: 1, delay: i * .1});
+            }
+        }
+
+        /*--------------------------------------------
+         ~ SELECT BUTTON
+         --------------------------------------------*/
+
+        var selectionVisible = true;
+
+        function initSelectButton() {
+            navSelectIcon = new PIXI.Container();
+            navSelectIcon.interactive = true;
+            navSelectIcon.buttonMode = true;
+            navSelectIcon.x = -50;
+            navSelectIcon.y = 3;
+            navSelectIcon.visible = true;
+            navSelectIcon.on('mousedown', onToggleSelection).on('touchstart', onToggleSelection)
+
+            var icon = new PIXI.Graphics();
+            icon.beginFill(0xcc0000);
+            icon.drawRect(0, 0, 45, 35);
+            icon.endFill;
+            icon.alpha = 0;
+            //icon.x = navTopContainer.width;
+            //icon.y = 10;
+
+            selectNavToggleIconClosed = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID('selectNavToggleIconClosed').src);
+            selectNavToggleIconOpen = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID('selectNavToggleIconOpen').src);
+            selectNavToggleIconClosed.x = selectNavToggleIconOpen.x = 5;
+            //selectNavToggleIconClosed.visible = false;
+            selectNavToggleIconOpen.visible = false;
+
+
+            navSelectIcon.addChild(icon);
+            navSelectIcon.addChild(selectNavToggleIconClosed);
+            navSelectIcon.addChild(selectNavToggleIconOpen);
+            navTopContainer.addChild(navSelectIcon);
+
+            console.log('-',navTopContainer.position)
+
+        }
+
+
+        function onToggleSelection() {
+            console.log('onToggleSelection');
+
+            !selectionVisible ? showSelection() : hideSelection();
+        }
+
+        function hideSelection() {
+            jks.View.hideOverlay();
+            selectionVisible = false;
+            selectNavToggleIconOpen.visible = false;
+            selectNavToggleIconClosed.visible = true;
+
+            var t = .03;
+            var l = (selectButtons.length - 1) * t;
+            for (var i = 0; i < selectButtons.length; i++) {
+                TweenLite.to(selectButtons[i].container, .2, {
+                    delay: (l - i) * t, alpha: 0, ease: Expo.easeIn
+                })
+            }
+            TweenLite.set(navSelectContainer, {delay: l + t, visible: false})
+        }
+
+
+        function showSelection() {
+            if (_scope.isMobile) {
+                hideNav();
+            }
+            if (currentSelectedPage != 'home') {
+                jks.View.showOverlay();
+            }
+            selectionVisible = true;
+            selectNavToggleIconClosed.visible = false;
+            selectNavToggleIconOpen.visible = true;
+            navSelectContainer.visible = true;
+            for (var i = 0; i < selectButtons.length; i++) {
+                TweenLite.set(selectButtons[i].container, {visible: true})
+                TweenLite.to(selectButtons[i].container, .2, {delay: i * .07, alpha: 1, ease: Expo.easeOut})
             }
         }
 
@@ -267,23 +326,30 @@ this.jks = this.jks || {};
         this.switchMobile = function () {
 
             hideNav();
+            TweenLite.set(logo_text, {display: 'none'});
 
             var compHeight = 0;
             for (var i = 0; i < this.topNavButtons.length; i++) {
                 _scope.topNavButtons[i].switchMobile();
-                _scope.topNavButtons[i].container.x = 180;
+                _scope.topNavButtons[i].container.x = 140;
                 _scope.topNavButtons[i].container.y = 40 + compHeight;
                 compHeight += _scope.topNavButtons[i].container.height;
             }
 
-            navSelectIcon.x = 240;
-            navToggleIcon.x = 280;
+            navSelectIcon.x = 180;
+            navSelectIcon.y = 10;
+            navToggleIcon.x = 235;
+
+            isSwitching = false;
         }
 
 
         this.switchDefault = function () {
 
             showNav();
+            if (jks.Config.getDeviceType() != 'mobile') {
+                TweenLite.set(logo_text, {display: 'block'});
+            }
 
             var compWidth = 0;
             for (var i = 0; i < this.topNavButtons.length; i++) {
@@ -293,8 +359,11 @@ this.jks = this.jks || {};
                 compWidth += _scope.topNavButtons[i].container.width;
             }
 
-            navSelectIcon.x = -30;
-            navToggleIcon.x = navTopContainer.width;
+            navSelectIcon.x = -50;
+            navSelectIcon.y = 3;
+            navToggleIcon.x = navTopContainer.width + 100;
+
+            isSwitching = false;
         }
 
 
@@ -302,6 +371,8 @@ this.jks = this.jks || {};
             // console.log('navigation - switchMode', isMobile);
 
             _scope.isMobile = isMobile;
+
+            isSwitching = true;
 
             isMobile ? _scope.switchMobile() : this.switchDefault();
         }
@@ -323,7 +394,7 @@ this.jks = this.jks || {};
          --------------------------------------------*/
 
         var w, s, o;
-        var minOffset = 10;
+        var minOffset = 15;
         var maxOffset = 30;
         this.updateView = function () {
             //return
@@ -354,16 +425,16 @@ this.jks = this.jks || {};
 
             if (jks.Config.getDeviceType() == 'mobile') {
 
-                navTopContainer.x = jks.View.getScreenWidth() - navTop.width - 50;
-                navTopContainer.y = 0;
+                navTopContainer.x = jks.View.getScreenWidth() - navTop.width - 10;
+                navTopContainer.y = 5;
 
                 navSelectContainer.x = jks.View.getScreenWidth() * .5;
                 navSelectContainer.y = jks.View.getScreenHeight() * .2;
 
             } else {
 
-                navTopContainer.x = jks.View.getScreenWidth() - navTop.width;
-                navTopContainer.y = 0;
+                navTopContainer.x = jks.View.getScreenWidth() - navTop.width - 10;
+                navTopContainer.y = 5;
 
                 navSelectContainer.x = navTopContainer.x;
                 navSelectContainer.y = jks.View.getScreenHeight() * .15;
@@ -406,12 +477,18 @@ this.jks = this.jks || {};
         }
 
 
+        generateTopNavigtion();
         generateSelectNavigation();
-        this.generateTopNavigtion();
+        hideSelection();
 
 
     }
 
     jks.Navigation = Navigation;
+
+
+    jks.Navigation.getTopNavPosition = function() {
+        return navTopContainer.position;
+    }
 
 }());

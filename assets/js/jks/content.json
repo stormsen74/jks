@@ -293,6 +293,77 @@
           }
 
         ]
+      },
+      {
+        "category": "zeitlos",
+        "categoryText": "Zeitlos",
+        "itemsLoaded": false,
+        "items": [
+          {
+            "img": {
+              "src": "assets/img/05_zeitlos/01.jpg",
+              "id": "img_zeitlos_01"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/05_zeitlos/02.jpg",
+              "id": "img_zeitlos_02"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/05_zeitlos/03.jpg",
+              "id": "img_zeitlos_03"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/05_zeitlos/04.jpg",
+              "id": "img_zeitlos_04"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/05_zeitlos/05.jpg",
+              "id": "img_zeitlos_05"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/05_zeitlos/06.jpg",
+              "id": "img_zeitlos_06"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/05_zeitlos/07.jpg",
+              "id": "img_zeitlos_07"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          },
+          {
+            "img": {
+              "src": "assets/img/05_zeitlos/08.jpg",
+              "id": "img_zeitlos_08"
+            },
+            "type": "Orhänger",
+            "description": "desription as html"
+          }
+        ]
       }
     ]
   }

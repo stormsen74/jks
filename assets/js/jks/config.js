@@ -76,6 +76,22 @@ this.jks = this.jks || {};
                 "id": "side_nav_arrow"
             },
             {
+                "src": "assets/img/navigation/mobileNavToggleIcon.png",
+                "id": "mobileNavToggleIcon"
+            },
+            {
+                "src": "assets/img/navigation/mobileNavCloseIcon.png",
+                "id": "mobileNavCloseIcon"
+            },
+            {
+                "src": "assets/img/navigation/selectNavToggleIconClosed.png",
+                "id": "selectNavToggleIconClosed"
+            },
+            {
+                "src": "assets/img/navigation/selectNavToggleIconOpen.png",
+                "id": "selectNavToggleIconOpen"
+            },
+            {
                 "src": "assets/img/navigation/01_meeresrauschen.png",
                 "id": "meeresrauschen"
             },
@@ -90,6 +106,10 @@ this.jks = this.jks || {};
             {
                 "src": "assets/img/navigation/04_trauringe.png",
                 "id": "trauringe"
+            },
+            {
+                "src": "assets/img/navigation/05_zeitlos.png",
+                "id": "zeitlos"
             }
         ];
 
