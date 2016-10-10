@@ -287,6 +287,19 @@ this.jks = this.jks || {};
             !selectionVisible ? showSelection() : hideSelection();
         }
 
+        function lockSelection() {
+            console.log('lockSelection')
+            navSelectContainer.buttonMode = false;
+            navSelectContainer.interactive = false;
+            navSelectContainer.visible = false;
+        }
+
+        function unlockSelection() {
+            navSelectContainer.buttonMode = true;
+            navSelectContainer.interactive = true;
+            navSelectContainer.visible = true;
+        }
+
         function hideSelection() {
             jks.View.hideOverlay();
 
@@ -294,28 +307,26 @@ this.jks = this.jks || {};
             selectNavToggleIconOpen.visible = false;
             selectNavToggleIconClosed.visible = true;
 
-            function lock() {
-                navSelectContainer.buttonMode = false;
-                navSelectContainer.interactive = false;
-                navSelectContainer.visible = false;
-            }
+
 
             var t = .03;
             var l = (selectButtons.length - 1) * t;
             for (var i = 0; i < selectButtons.length; i++) {
-
-
                 TweenLite.to(selectButtons[i].container, .2, {
                     delay: (l - i) * t,
                     alpha: 0,
                     ease: Expo.easeIn
                 })
             }
-            TweenLite.delayedCall(1, lock)
+
+            TweenLite.killDelayedCallsTo(lockSelection);
+            TweenLite.delayedCall(.3, lockSelection)
         }
 
 
         function showSelection() {
+
+
             if (_scope.isMobile) {
                 hideNav();
             }
@@ -325,12 +336,15 @@ this.jks = this.jks || {};
             selectionVisible = true;
             selectNavToggleIconClosed.visible = false;
             selectNavToggleIconOpen.visible = true;
-            navSelectContainer.visible = true;
+
             for (var i = 0; i < selectButtons.length; i++) {
-                selectButtons[i].reactivate();
+                //selectButtons[i].reactivate();
                 TweenLite.set(selectButtons[i].container, {visible: true})
                 TweenLite.to(selectButtons[i].container, .2, {delay: i * .07, alpha: 1, ease: Expo.easeOut})
             }
+
+            TweenLite.killDelayedCallsTo(lockSelection);
+            unlockSelection();
         }
 
 
