@@ -37,6 +37,18 @@ this.jks = this.jks || {};
         this.container.interactive = true;
         this.container.buttonMode = true;
 
+        this.deactivate = function() {
+            _scope.container.interactive = false;
+            _scope.container.buttonMode = false;
+            _scope.container.visible = false;
+        }
+
+        this.reactivate = function() {
+            _scope.container.interactive = true;
+            _scope.container.buttonMode = true;
+            _scope.container.visible = true;
+        }
+
 
 
         this.container.on('mousedown', onTapSelect).on('touchstart', onTapSelect);

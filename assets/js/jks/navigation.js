@@ -22,6 +22,7 @@ this.jks = this.jks || {};
     var navSelectIcon, selectNavToggleIconClosed, selectNavToggleIconOpen;
     var navSelectContainer;
     var isSwitching;
+    var isMobile;
 
     var currentSelectedPage = 'home';
 
@@ -47,8 +48,6 @@ this.jks = this.jks || {};
         this.container = new PIXI.Container();
         this.container.interactive = true;
         this.container.buttonMode = true;
-
-
 
 
         if (jks.Config.getDeviceType() == 'desktop') {
@@ -277,7 +276,7 @@ this.jks = this.jks || {};
             navSelectIcon.addChild(selectNavToggleIconOpen);
             navTopContainer.addChild(navSelectIcon);
 
-            console.log('-',navTopContainer.position)
+            console.log('-', navTopContainer.position)
 
         }
 
@@ -290,18 +289,29 @@ this.jks = this.jks || {};
 
         function hideSelection() {
             jks.View.hideOverlay();
+
             selectionVisible = false;
             selectNavToggleIconOpen.visible = false;
             selectNavToggleIconClosed.visible = true;
 
+            function lock() {
+                navSelectContainer.buttonMode = false;
+                navSelectContainer.interactive = false;
+                navSelectContainer.visible = false;
+            }
+
             var t = .03;
             var l = (selectButtons.length - 1) * t;
             for (var i = 0; i < selectButtons.length; i++) {
+
+
                 TweenLite.to(selectButtons[i].container, .2, {
-                    delay: (l - i) * t, alpha: 0, ease: Expo.easeIn
+                    delay: (l - i) * t,
+                    alpha: 0,
+                    ease: Expo.easeIn
                 })
             }
-            TweenLite.set(navSelectContainer, {delay: l + t, visible: false})
+            TweenLite.delayedCall(1, lock)
         }
 
 
@@ -317,6 +327,7 @@ this.jks = this.jks || {};
             selectNavToggleIconOpen.visible = true;
             navSelectContainer.visible = true;
             for (var i = 0; i < selectButtons.length; i++) {
+                selectButtons[i].reactivate();
                 TweenLite.set(selectButtons[i].container, {visible: true})
                 TweenLite.to(selectButtons[i].container, .2, {delay: i * .07, alpha: 1, ease: Expo.easeOut})
             }
@@ -341,6 +352,7 @@ this.jks = this.jks || {};
             navToggleIcon.x = 235;
 
             isSwitching = false;
+            isMobile = true;
         }
 
 
@@ -364,6 +376,7 @@ this.jks = this.jks || {};
             navToggleIcon.x = navTopContainer.width + 100;
 
             isSwitching = false;
+            isMobile = false;
         }
 
 
@@ -487,8 +500,12 @@ this.jks = this.jks || {};
     jks.Navigation = Navigation;
 
 
-    jks.Navigation.getTopNavPosition = function() {
+    jks.Navigation.getTopNavPosition = function () {
         return navTopContainer.position;
+    }
+
+    jks.Navigation.isMobile = function () {
+        return isMobile;
     }
 
 }());

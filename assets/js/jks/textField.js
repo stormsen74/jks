@@ -72,31 +72,33 @@ this.jks = this.jks || {};
             tfLocked = false;
         })
 
-        this.updateView = function () {
-            //_logo.x = jks.View.getScreenWidth();
-            //console.log(this.text.width)
+        function posText() {
+            TweenLite.to(_scope.text, .6, {
+                x: jks.Navigation.getTopNavPosition().x - 45,
+                ease: Cubic.easeOut
+            })
+        }
 
-            // TODO || navigation_isMobile
-            if (jks.Config.getDeviceType() == 'mobile') {
+        this.updateView = function () {
+
+            if (jks.Config.getDeviceType() == 'mobile' || jks.Navigation.isMobile()) {
+                TweenLite.killTweensOf(_scope.text);
                 _scope.text.x = 15;
                 _scope.text.y = 50;
             } else {
                 if (!tfLocked) {
-                    _scope.text.x = jks.Navigation.getTopNavPosition().x -45;
+                    TweenLite.killDelayedCallsTo(posText);
+                    TweenLite.delayedCall(.05, posText);
+                    //_scope.text.x = jks.Navigation.getTopNavPosition().x - 45;
                     _scope.text.y = 50;
                 }
             }
 
 
-            //_scope.text.x = jks.View.getScreenWidth() - this.text.width - 10;
-            //_scope.text.y = 50;
         }
-        //this.text.x = 200;
-        //this.text.y = 200;
+
         _scope.container.addChild(this.text);
         _scope.updateView();
-
-        //jks.View.addNavigationContainer(_scope.container);
 
 
         this.setCategory = function (text) {
@@ -104,12 +106,9 @@ this.jks = this.jks || {};
             //console.log('setCategory', text)
 
             _scope.fieldCategory.setText(text)
-            //_scope.fieldDescription.setText(item.description);
 
             _scope.updateView();
 
-            //initKeyMode();
-            //TweenLite.delayedCall(2, initGFX)
         }
 
         this.setText = function (item) {
@@ -126,8 +125,6 @@ this.jks = this.jks || {};
 
             _scope.updateView();
 
-            //initKeyMode();
-            //TweenLite.delayedCall(2, initGFX)
         }
 
 
