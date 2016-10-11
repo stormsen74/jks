@@ -300,13 +300,13 @@ this.jks = this.jks || {};
             navSelectContainer.visible = true;
         }
 
+
         function hideSelection() {
             jks.View.hideOverlay();
 
             selectionVisible = false;
             selectNavToggleIconOpen.visible = false;
             selectNavToggleIconClosed.visible = true;
-
 
 
             var t = .03;
@@ -322,7 +322,6 @@ this.jks = this.jks || {};
             TweenLite.killDelayedCallsTo(lockSelection);
             TweenLite.delayedCall(.3, lockSelection)
         }
-
 
         function showSelection() {
 
@@ -348,6 +347,13 @@ this.jks = this.jks || {};
         }
 
 
+        function changeSelectionMode() {
+            for (var i = 0; i < selectButtons.length; i++) {
+                selectButtons[i].changeSelectionMode('mode');
+            }
+        }
+
+
         this.switchMobile = function () {
 
             hideNav();
@@ -359,6 +365,10 @@ this.jks = this.jks || {};
                 _scope.topNavButtons[i].container.x = 140;
                 _scope.topNavButtons[i].container.y = 40 + compHeight;
                 compHeight += _scope.topNavButtons[i].container.height;
+            }
+
+            for (var i = 0; i < selectButtons.length; i++) {
+                selectButtons[i].switchMobile();
             }
 
             navSelectIcon.x = 180;
@@ -383,6 +393,10 @@ this.jks = this.jks || {};
                 _scope.topNavButtons[i].container.x = compWidth;
                 _scope.topNavButtons[i].container.y = 0;
                 compWidth += _scope.topNavButtons[i].container.width;
+            }
+
+            for (var i = 0; i < selectButtons.length; i++) {
+                selectButtons[i].switchDefault();
             }
 
             navSelectIcon.x = -50;
@@ -450,13 +464,14 @@ this.jks = this.jks || {};
                 }
             )
 
+
             if (jks.Config.getDeviceType() == 'mobile') {
 
                 navTopContainer.x = jks.View.getScreenWidth() - navTop.width - 10;
                 navTopContainer.y = 5;
 
                 navSelectContainer.x = jks.View.getScreenWidth() * .5;
-                navSelectContainer.y = jks.View.getScreenHeight() * .2;
+                navSelectContainer.y = jks.View.getScreenHeight() * .15;
 
             } else {
 
@@ -469,6 +484,16 @@ this.jks = this.jks || {};
             }
 
 
+            //updateSelectButtons(mathUtils.convertToRange(w, [0, 768], [.5, 1]))
+
+
+        }
+
+
+        function updateSelectButtons(s) {
+            for (var i = 0; i < selectButtons.length; i++) {
+                selectButtons[i].update(s);
+            }
         }
 
 

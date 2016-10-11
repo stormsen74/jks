@@ -37,18 +37,17 @@ this.jks = this.jks || {};
         this.container.interactive = true;
         this.container.buttonMode = true;
 
-        this.deactivate = function() {
+        this.deactivate = function () {
             _scope.container.interactive = false;
             _scope.container.buttonMode = false;
             _scope.container.visible = false;
         }
 
-        this.reactivate = function() {
+        this.reactivate = function () {
             _scope.container.interactive = true;
             _scope.container.buttonMode = true;
             _scope.container.visible = true;
         }
-
 
 
         this.container.on('mousedown', onTapSelect).on('touchstart', onTapSelect);
@@ -62,7 +61,7 @@ this.jks = this.jks || {};
         this.textField = new PIXI.Text(category, {
             fontFamily: 'Linotype Feltpen W01 Medium',
             fontSize: _textSizeDefault,
-            fill: jks.Config.getColor('blue'),
+            fill: jks.Config.getColor('light_blue'),
             align: 'left'
         });
         this.textField.x = getRealImgWidth() + _paddingSide;
@@ -70,14 +69,16 @@ this.jks = this.jks || {};
         console.log('°', getRealImgWidth())
 
 
-        var sprite = new PIXI.Sprite.fromImage(imgSrc)
+        var sprite = new PIXI.Sprite.fromImage(imgSrc);
+        //sprite.pivot.x = .5;
+        //sprite.pivot.y = .5;
         sprite.scale.x = sprite.scale.y = _scale;
 
 
         this.shape = new PIXI.Graphics();
         //this.shape.lineStyle(1, 0xcc0000, 1);
         this.shape.beginFill(0x00dd00);
-        this.shape.drawRect(0, 0, this.textField.width + _paddingSide * 2, this.textField.height + _paddingTop * 2);
+        this.shape.drawRect(0, 0, getRealImgWidth() + this.textField.width + _paddingSide * 2, getRealImgWidth());
         this.shape.endFill;
         this.shape.alpha = 0;
         this.shape.x = 0;
@@ -88,7 +89,7 @@ this.jks = this.jks || {};
         this.container.addChild(this.textField);
 
 
-        this.container.x -= getRealImgWidth() ;
+        this.container.x -= getRealImgWidth();
         this.container.y = selectionID * (getRealImgWidth() + _paddingTop);
 
 
@@ -102,25 +103,45 @@ this.jks = this.jks || {};
             this.textField.y = this.shape.height * .5 - this.textField.height * .5;
         }
 
+        this.setLeft = function () {
+            this.textField.x -= getRealImgWidth() + _paddingSide * 2 + this.textField.width;
+            this.textField.y = this.shape.height * .5 - this.textField.height * .5;
+            this.shape.x -= this.textField.width + _paddingSide * 2;
+            //this.textField.style.fill = jks.Config.getColor('light_blue');
+        }
 
-        //this.centerText();
+
+        //this.setLeft();
 
 
         this.switchMobile = function () {
-            this.textField.style.fontSize = _textSizeMobile;
-            this.textField.style.align = 'left';
-            this.shape.width = 120;
-            this.shape.x = _paddingSide;
-            this.shape.height = this.textField.height + _paddingTop * 2;
-            this.setText();
+            sprite.scale.x = sprite.scale.y = _scale * .8;
+            this.container.y = selectionID * .8 * (getRealImgWidth() + _paddingTop);
+            //this.textField.style.fontSize = _textSizeMobile;
+            //this.container.y -= 15;
+            //this.textField.style.align = 'left';
+            //this.shape.width = 120;
+            //this.shape.x = _paddingSide;
+            //this.shape.height = this.textField.height + _paddingTop * 2;
+            //this.setText();
+            //this.setLeft();
         }
 
+
         this.switchDefault = function () {
-            this.textField.style.fontSize = _textSizeDefault;
-            this.shape.width = this.textField.width + _paddingSide * 2;
-            this.shape.height = this.textField.height + _paddingTop * 2;
-            this.shape.x = 0;
-            this.centerText();
+            sprite.scale.x = sprite.scale.y = _scale;
+            this.container.y = selectionID * (getRealImgWidth() + _paddingTop);
+            //this.textField.style.fontSize = _textSizeDefault;
+            //this.shape.width = this.textField.width + _paddingSide * 2;
+            //this.shape.height = this.textField.height + _paddingTop * 2;
+            //this.shape.x = 0;
+            //this.centerText();
+        }
+
+
+        this.update = function (_s) {
+            sprite.scale.x = sprite.scale.y = _s * _scale;
+            //sprite.scale.y = Math.min(_s, _scale);
         }
 
 
