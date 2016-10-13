@@ -21,6 +21,7 @@ this.jks = this.jks || {};
     var navToggleIcon, mobileNavToggleIcon, mobileNavCloseIcon;
     var navSelectIcon, selectNavToggleIconClosed, selectNavToggleIconOpen;
     var navSelectContainer;
+    var selectNavigation;
     var isSwitching;
     var isMobile;
 
@@ -90,33 +91,13 @@ this.jks = this.jks || {};
          ~SELECT/SLIDE NAVIGATION
          --------------------------------------------*/
 
-        navSelectContainer = new PIXI.Container();
-        navSelectContainer.visible = false;
-        navSelectContainer.pivot.x = .5;
-        navSelectContainer.pivot.y = .5;
-        _scope.container.addChild(navSelectContainer);
-
         var selectButtons = [];
 
         function generateSelectNavigation() {
 
-            for (var i = 0; i < config.numPages; i++) {
-                console.log('create Button!', i, config.pages[i].categoryText)
-
-                var select_btn = new jks.SelectNavButton(jks.DataHandler.getAssetByID(config.pages[i].category).src, config.pages[i].categoryText, i)
-
-                select_btn.container.alpha = 1;
-                select_btn.s.onTapSelect.add(onTapSelect);
-
-                navSelectContainer.addChild(select_btn.container);
-                selectButtons.push(select_btn);
-
-            }
-
-            //for (var i = 0; i < selectButtons.length; i++) {
-            //    selectButtons[i].y -= length * .5 - margin * .5;
-            //}
-
+            selectNavigation = new jks.SelectNavigation(config, navSelectContainer);
+            selectNavigation.s.onTap.add(onTapSelect);
+            _scope.container.addChild(selectNavigation.container);
 
         }
 
@@ -170,7 +151,7 @@ this.jks = this.jks || {};
 
 
             initMobileNavToogle();
-            initSelectButton();
+            initSelectionToggleButton();
 
 
         }
@@ -209,11 +190,9 @@ this.jks = this.jks || {};
 
         }
 
-
         function onToggleNav() {
             !navVisible ? showNav() : hideNav();
         }
-
 
         function hideNav() {
             jks.View.hideOverlay();
@@ -247,7 +226,7 @@ this.jks = this.jks || {};
 
         var selectionVisible = true;
 
-        function initSelectButton() {
+        function initSelectionToggleButton() {
             navSelectIcon = new PIXI.Container();
             navSelectIcon.interactive = true;
             navSelectIcon.buttonMode = true;
@@ -280,25 +259,12 @@ this.jks = this.jks || {};
 
         }
 
-
         function onToggleSelection() {
             console.log('onToggleSelection');
 
             !selectionVisible ? showSelection() : hideSelection();
         }
 
-        function lockSelection() {
-            console.log('lockSelection')
-            navSelectContainer.buttonMode = false;
-            navSelectContainer.interactive = false;
-            navSelectContainer.visible = false;
-        }
-
-        function unlockSelection() {
-            navSelectContainer.buttonMode = true;
-            navSelectContainer.interactive = true;
-            navSelectContainer.visible = true;
-        }
 
 
         function hideSelection() {
@@ -308,19 +274,8 @@ this.jks = this.jks || {};
             selectNavToggleIconOpen.visible = false;
             selectNavToggleIconClosed.visible = true;
 
+            selectNavigation.hide();
 
-            var t = .03;
-            var l = (selectButtons.length - 1) * t;
-            for (var i = 0; i < selectButtons.length; i++) {
-                TweenLite.to(selectButtons[i].container, .2, {
-                    delay: (l - i) * t,
-                    alpha: 0,
-                    ease: Expo.easeIn
-                })
-            }
-
-            TweenLite.killDelayedCallsTo(lockSelection);
-            TweenLite.delayedCall(.3, lockSelection)
         }
 
         function showSelection() {
@@ -332,22 +287,18 @@ this.jks = this.jks || {};
             if (currentSelectedPage != 'home') {
                 jks.View.showOverlay();
             }
+
             selectionVisible = true;
             selectNavToggleIconClosed.visible = false;
             selectNavToggleIconOpen.visible = true;
 
-            for (var i = 0; i < selectButtons.length; i++) {
-                //selectButtons[i].reactivate();
-                TweenLite.set(selectButtons[i].container, {visible: true})
-                TweenLite.to(selectButtons[i].container, .2, {delay: i * .07, alpha: 1, ease: Expo.easeOut})
-            }
+            selectNavigation.show();
 
-            TweenLite.killDelayedCallsTo(lockSelection);
-            unlockSelection();
         }
 
 
         function changeSelectionMode() {
+            console.log('changeSelectionMode')
             for (var i = 0; i < selectButtons.length; i++) {
                 selectButtons[i].changeSelectionMode('mode');
             }
@@ -367,9 +318,11 @@ this.jks = this.jks || {};
                 compHeight += _scope.topNavButtons[i].container.height;
             }
 
-            for (var i = 0; i < selectButtons.length; i++) {
-                selectButtons[i].switchMobile();
-            }
+            selectNavigation.switchMobile();
+
+            //for (var i = 0; i < selectButtons.length; i++) {
+            //    selectButtons[i].switchMobile();
+            //}
 
             navSelectIcon.x = 180;
             navSelectIcon.y = 10;
@@ -395,9 +348,11 @@ this.jks = this.jks || {};
                 compWidth += _scope.topNavButtons[i].container.width;
             }
 
-            for (var i = 0; i < selectButtons.length; i++) {
-                selectButtons[i].switchDefault();
-            }
+            //for (var i = 0; i < selectButtons.length; i++) {
+            //    selectButtons[i].switchDefault();
+            //}
+
+            selectNavigation.switchDefault();
 
             navSelectIcon.x = -50;
             navSelectIcon.y = 3;
@@ -416,6 +371,10 @@ this.jks = this.jks || {};
             isSwitching = true;
 
             isMobile ? _scope.switchMobile() : this.switchDefault();
+        }
+
+        this.onOrientationChange = function (o) {
+            console.log('nav', o)
         }
 
 
@@ -470,31 +429,17 @@ this.jks = this.jks || {};
                 navTopContainer.x = jks.View.getScreenWidth() - navTop.width - 10;
                 navTopContainer.y = 5;
 
-                navSelectContainer.x = jks.View.getScreenWidth() * .5;
-                navSelectContainer.y = jks.View.getScreenHeight() * .15;
-
             } else {
 
                 navTopContainer.x = jks.View.getScreenWidth() - navTop.width - 10;
                 navTopContainer.y = 5;
 
-                navSelectContainer.x = navTopContainer.x;
-                navSelectContainer.y = jks.View.getScreenHeight() * .15;
-
             }
 
-
-            //updateSelectButtons(mathUtils.convertToRange(w, [0, 768], [.5, 1]))
-
+            selectNavigation.updateView(navTopContainer.x);
 
         }
 
-
-        function updateSelectButtons(s) {
-            for (var i = 0; i < selectButtons.length; i++) {
-                selectButtons[i].update(s);
-            }
-        }
 
 
         function initKeyMode() {

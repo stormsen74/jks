@@ -98,7 +98,7 @@ this.jks = this.jks || {};
         }
 
         function onOrientationChange(orientation) {
-
+            navigation.onOrientationChange(orientation);
         }
 
         function switchMode(isMobile) {

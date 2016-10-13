@@ -37,18 +37,6 @@ this.jks = this.jks || {};
         this.container.interactive = true;
         this.container.buttonMode = true;
 
-        this.deactivate = function () {
-            _scope.container.interactive = false;
-            _scope.container.buttonMode = false;
-            _scope.container.visible = false;
-        }
-
-        this.reactivate = function () {
-            _scope.container.interactive = true;
-            _scope.container.buttonMode = true;
-            _scope.container.visible = true;
-        }
-
 
         this.container.on('mousedown', onTapSelect).on('touchstart', onTapSelect);
 
@@ -70,17 +58,15 @@ this.jks = this.jks || {};
 
 
         var sprite = new PIXI.Sprite.fromImage(imgSrc);
-        //sprite.pivot.x = .5;
-        //sprite.pivot.y = .5;
         sprite.scale.x = sprite.scale.y = _scale;
 
 
         this.shape = new PIXI.Graphics();
         //this.shape.lineStyle(1, 0xcc0000, 1);
-        this.shape.beginFill(0x00dd00);
+        this.shape.beginFill(0x834198);
         this.shape.drawRect(0, 0, getRealImgWidth() + this.textField.width + _paddingSide * 2, getRealImgWidth());
         this.shape.endFill;
-        this.shape.alpha = 0;
+        this.shape.alpha = .1;
         this.shape.x = 0;
 
 
