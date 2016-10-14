@@ -52,13 +52,12 @@ this.jks = this.jks || {};
             fill: jks.Config.getColor('light_blue'),
             align: 'left'
         });
-        this.textField.x = getRealImgWidth() + _paddingSide;
-        this.textField.y = getRealImgWidth() * .5 - this.textField.height * .5;
-        console.log('°', getRealImgWidth())
+        // this.textField.x = getRealImgWidth() + _paddingSide;
+        // this.textField.y = getRealImgWidth() * .5 - this.textField.height * .5;
 
 
         var sprite = new PIXI.Sprite.fromImage(imgSrc);
-        sprite.scale.x = sprite.scale.y = _scale;
+        // sprite.scale.x = sprite.scale.y = _scale;
 
 
         this.shape = new PIXI.Graphics();
@@ -75,34 +74,55 @@ this.jks = this.jks || {};
         this.container.addChild(this.textField);
 
 
-        this.container.x -= getRealImgWidth();
-        this.container.y = selectionID * (getRealImgWidth() + _paddingTop);
+        // this.container.x -= getRealImgWidth();
+        // this.container.y = selectionID * (getRealImgWidth() + _paddingTop);
 
 
-        this.centerText = function () {
-            this.textField.x = this.shape.width * .5 - this.textField.width * .5;
-            this.textField.y = this.shape.height * .5 - this.textField.height * .5;
-        }
-
-        this.setText = function () {
-            this.textField.x = this.shape.width - this.textField.width;
-            this.textField.y = this.shape.height * .5 - this.textField.height * .5;
-        }
+        // this.centerText = function () {
+        //     this.textField.x = this.shape.width * .5 - this.textField.width * .5;
+        //     this.textField.y = this.shape.height * .5 - this.textField.height * .5;
+        // }
+        //
+        // this.setText = function () {
+        //     this.textField.x = this.shape.width - this.textField.width;
+        //     this.textField.y = this.shape.height * .5 - this.textField.height * .5;
+        // }
 
         this.setLeft = function () {
-            this.textField.x -= getRealImgWidth() + _paddingSide * 2 + this.textField.width;
+            console.log('setLeft')
+            this.textField.x = -this.textField.width - _paddingSide;
             this.textField.y = this.shape.height * .5 - this.textField.height * .5;
-            this.shape.x -= this.textField.width + _paddingSide * 2;
+            this.shape.width = getRealImgWidth() + this.textField.width + _paddingSide;
+            this.shape.height = getRealImgWidth();
+            this.shape.x = -this.textField.width - _paddingSide;
             //this.textField.style.fill = jks.Config.getColor('light_blue');
         }
 
+
+        this.setRight = function () {
+            this.textField.x = getRealImgWidth() + _paddingSide;
+            this.textField.y = getRealImgWidth() * .5 - this.textField.height * .5;
+            //this.textField.style.fill = jks.Config.getColor('light_blue');
+        }
+
+        this.setBottom = function () {
+            _scope.textField.x = getRealImgWidth() * .5 - _scope.textField.width * .5;
+            _scope.textField.y = getRealImgWidth();
+            _scope.shape.width = _scope.textField.width;
+            _scope.shape.height = getRealImgWidth() + _scope.textField.height;
+            _scope.shape.x = _scope.textField.x;
+            console.log('setBottom', _scope.textField.y);
+            //this.textField.style.fill = jks.Config.getColor('light_blue');
+        }
 
         //this.setLeft();
 
 
         this.switchMobile = function () {
-            sprite.scale.x = sprite.scale.y = _scale * .8;
-            this.container.y = selectionID * .8 * (getRealImgWidth() + _paddingTop);
+            console.log('switchMobile')
+            _scale = .37;
+            sprite.scale.x = sprite.scale.y = _scale;
+            // this.container.y = selectionID * .8 * (getRealImgWidth() + _paddingTop);
             //this.textField.style.fontSize = _textSizeMobile;
             //this.container.y -= 15;
             //this.textField.style.align = 'left';
@@ -110,18 +130,54 @@ this.jks = this.jks || {};
             //this.shape.x = _paddingSide;
             //this.shape.height = this.textField.height + _paddingTop * 2;
             //this.setText();
-            //this.setLeft();
+            // device.portrait() ? _scope.portraitMode() : _scope.landscapeMode();
+
         }
 
 
         this.switchDefault = function () {
+            console.log('switchDefault')
+            _scale = .45;
             sprite.scale.x = sprite.scale.y = _scale;
-            this.container.y = selectionID * (getRealImgWidth() + _paddingTop);
+            // this.container.y = selectionID * (getRealImgWidth() + _paddingTop);
             //this.textField.style.fontSize = _textSizeDefault;
             //this.shape.width = this.textField.width + _paddingSide * 2;
             //this.shape.height = this.textField.height + _paddingTop * 2;
             //this.shape.x = 0;
             //this.centerText();
+            // device.portrait() ? _scope.portraitMode() : _scope.landscapeMode();
+        }
+
+
+        this.portraitMode = function () {
+            // jks.Config.getDeviceType() == 'mobile' ? _scope.setLeft() : _scope.setRight();
+
+            if(jks.Config.getDeviceType() == 'mobile') {
+                this.textField.x = -this.textField.width - _paddingSide;
+                this.textField.y = this.shape.height * .5 - this.textField.height * .5;
+                this.shape.width = getRealImgWidth() + this.textField.width + _paddingSide;
+                this.shape.height = getRealImgWidth();
+                this.shape.x = -this.textField.width - _paddingSide;
+            }
+
+            // this.textField.x = getRealImgWidth() + _paddingSide;
+            // this.textField.y = getRealImgWidth() * .5 - this.textField.height * .5;
+            // this.shape.width = getRealImgWidth() + this.textField.width;
+            // this.shape.height = getRealImgWidth();
+            // this.shape.x = 0;
+        }
+
+        this.landscapeMode = function () {
+            TweenLite.delayedCall(1, _scope.setBottom )
+            // _scope.setBottom();
+
+            // TODO funzt ...
+            // this.textField.x = getRealImgWidth() * .5 - this.textField.width * .5;
+            // this.textField.y = getRealImgWidth();
+            // this.shape.width = this.textField.width;
+            // this.shape.height = getRealImgWidth() + this.textField.height;
+            // this.shape.x = this.textField.x;
+
         }
 
 
@@ -130,9 +186,20 @@ this.jks = this.jks || {};
             //sprite.scale.y = Math.min(_s, _scale);
         }
 
+        // jks.Config.getDeviceType() == 'mobile' ? _scope.switchMobile() : _scope.switchDefault();
+        // device.portrait() ? _scope.portraitMode() : _scope.landscapeMode();
+
+
+        this.getRealImgWidth = function () {
+            return getRealImgWidth();
+        }
 
         this.getWidth = function () {
             return _scope.shape.width;
+        }
+
+        this.getHeight = function () {
+            return _scope.shape.height;
         }
 
 

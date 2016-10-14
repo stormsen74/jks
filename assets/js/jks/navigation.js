@@ -255,8 +255,6 @@ this.jks = this.jks || {};
             navSelectIcon.addChild(selectNavToggleIconOpen);
             navTopContainer.addChild(navSelectIcon);
 
-            console.log('-', navTopContainer.position)
-
         }
 
         function onToggleSelection() {
@@ -264,7 +262,6 @@ this.jks = this.jks || {};
 
             !selectionVisible ? showSelection() : hideSelection();
         }
-
 
 
         function hideSelection() {
@@ -318,7 +315,7 @@ this.jks = this.jks || {};
                 compHeight += _scope.topNavButtons[i].container.height;
             }
 
-            selectNavigation.switchMobile();
+            // selectNavigation.switchMobile();
 
             //for (var i = 0; i < selectButtons.length; i++) {
             //    selectButtons[i].switchMobile();
@@ -348,11 +345,7 @@ this.jks = this.jks || {};
                 compWidth += _scope.topNavButtons[i].container.width;
             }
 
-            //for (var i = 0; i < selectButtons.length; i++) {
-            //    selectButtons[i].switchDefault();
-            //}
-
-            selectNavigation.switchDefault();
+            // selectNavigation.switchDefault();
 
             navSelectIcon.x = -50;
             navSelectIcon.y = 3;
@@ -373,8 +366,8 @@ this.jks = this.jks || {};
             isMobile ? _scope.switchMobile() : this.switchDefault();
         }
 
-        this.onOrientationChange = function (o) {
-            console.log('nav', o)
+        this.onOrientationChange = function () {
+            TweenLite.delayedCall(.1, selectNavigation.onOrientationChange)
         }
 
 
@@ -439,7 +432,6 @@ this.jks = this.jks || {};
             selectNavigation.updateView(navTopContainer.x);
 
         }
-
 
 
         function initKeyMode() {
