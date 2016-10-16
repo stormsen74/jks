@@ -123,8 +123,8 @@ this.jks = this.jks || {};
                 config.pageData[pageID].contentLoaded = true;
 
                 // delayed dispatch / maybe bugfix?
-                TweenLite.delayedCall(.1, _scope.s.onSlideLoaded.dispatch, [pageID])
-                // _scope.s.onSlideLoaded.dispatch(pageID);
+                //TweenLite.delayedCall(.1, _scope.s.onSlideLoaded.dispatch, [pageID])
+                 _scope.s.onSlideLoaded.dispatch(pageID);
 
             }
 

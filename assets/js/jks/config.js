@@ -16,7 +16,7 @@ this.jks = this.jks || {};
     function Config(json) {
         _scope = this;
 
-        this.version = '0.6.1';
+        this.version = '0.6.3';
         this.device = '';
         this.debug = false;
         this.log = false;
@@ -40,6 +40,7 @@ this.jks = this.jks || {};
         this.colors = {
             blue: 0x408080,
             light_blue: 0x71abab,
+            lighter_blue: 0x98c7c7,
             white: 0xffffff,
             overlay: 0xcaf0f0
         }
@@ -50,6 +51,8 @@ this.jks = this.jks || {};
             width: 1200,
             height: 800
         }
+
+        this.mobileSwitchWidth = 600;
 
 
         for (var i = 0; i < this.numPages; i++) {
@@ -110,6 +113,10 @@ this.jks = this.jks || {};
             {
                 "src": "assets/img/navigation/05_zeitlos.png",
                 "id": "zeitlos"
+            },
+            {
+                "src": "assets/img/navigation/navSelectBackground.png",
+                "id": "navSelectBackground"
             }
         ];
 
@@ -174,6 +181,10 @@ this.jks = this.jks || {};
 
     jks.Config.backgroundImageSize = function () {
         return _scope.backgroundImageSize;
+    }
+
+    jks.Config.mobileSwitchWidth = function () {
+        return _scope.mobileSwitchWidth;
     }
 
     jks.Config.shaders = function () {

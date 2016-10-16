@@ -93,8 +93,10 @@ this.jks = this.jks || {};
         }
 
         function viewOnResize() {
+
             navigation.updateView();
             pageHome.updateView();
+
         }
 
         function onOrientationChange(orientation) {

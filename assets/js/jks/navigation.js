@@ -82,6 +82,7 @@ this.jks = this.jks || {};
                     hideNav();
                 }
                 hideSelection();
+                selectNavigation.reset();
                 currentSelectedPage = 'home';
                 currentSelectedID = null;
             }
@@ -180,6 +181,8 @@ this.jks = this.jks || {};
 
             mobileNavToggleIcon = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID('mobileNavToggleIcon').src);
             mobileNavCloseIcon = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID('mobileNavCloseIcon').src);
+            mobileNavToggleIcon.scale.x = mobileNavToggleIcon.scale.y = .5
+            mobileNavCloseIcon.scale.x = mobileNavCloseIcon.scale.y = .5
             mobileNavCloseIcon.visible = false;
 
 
@@ -227,6 +230,7 @@ this.jks = this.jks || {};
         var selectionVisible = true;
 
         function initSelectionToggleButton() {
+
             navSelectIcon = new PIXI.Container();
             navSelectIcon.interactive = true;
             navSelectIcon.buttonMode = true;
@@ -245,6 +249,8 @@ this.jks = this.jks || {};
 
             selectNavToggleIconClosed = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID('selectNavToggleIconClosed').src);
             selectNavToggleIconOpen = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID('selectNavToggleIconOpen').src);
+            selectNavToggleIconClosed.scale.x = selectNavToggleIconClosed.scale.y = .5;
+            selectNavToggleIconOpen.scale.x = selectNavToggleIconOpen.scale.y = .5;
             selectNavToggleIconClosed.x = selectNavToggleIconOpen.x = 5;
             //selectNavToggleIconClosed.visible = false;
             selectNavToggleIconOpen.visible = false;
@@ -263,15 +269,15 @@ this.jks = this.jks || {};
             !selectionVisible ? showSelection() : hideSelection();
         }
 
-
-        function hideSelection() {
+        function hideSelection(_fast) {
+            _fast = _fast || false;
             jks.View.hideOverlay();
 
             selectionVisible = false;
             selectNavToggleIconOpen.visible = false;
             selectNavToggleIconClosed.visible = true;
 
-            selectNavigation.hide();
+            selectNavigation.hide(_fast);
 
         }
 
@@ -311,15 +317,11 @@ this.jks = this.jks || {};
             for (var i = 0; i < this.topNavButtons.length; i++) {
                 _scope.topNavButtons[i].switchMobile();
                 _scope.topNavButtons[i].container.x = 140;
-                _scope.topNavButtons[i].container.y = 40 + compHeight;
+                _scope.topNavButtons[i].container.y = 50 + compHeight;
                 compHeight += _scope.topNavButtons[i].container.height;
             }
 
-            // selectNavigation.switchMobile();
-
-            //for (var i = 0; i < selectButtons.length; i++) {
-            //    selectButtons[i].switchMobile();
-            //}
+            selectNavigation.switchMobile();
 
             navSelectIcon.x = 180;
             navSelectIcon.y = 10;
@@ -345,7 +347,7 @@ this.jks = this.jks || {};
                 compWidth += _scope.topNavButtons[i].container.width;
             }
 
-            // selectNavigation.switchDefault();
+            selectNavigation.switchDefault();
 
             navSelectIcon.x = -50;
             navSelectIcon.y = 3;
@@ -357,17 +359,20 @@ this.jks = this.jks || {};
 
 
         this.switchMode = function (isMobile) {
-            // console.log('navigation - switchMode', isMobile);
+            console.log('navigation - switchMode', isMobile);
 
             _scope.isMobile = isMobile;
 
             isSwitching = true;
 
-            isMobile ? _scope.switchMobile() : this.switchDefault();
+            isMobile ? _scope.switchMobile() : _scope.switchDefault();
         }
 
         this.onOrientationChange = function () {
-            TweenLite.delayedCall(.1, selectNavigation.onOrientationChange)
+            if (jks.Config.getDeviceType() == 'mobile') {
+                hideSelection(true);
+                TweenLite.delayedCall(.1, selectNavigation.onOrientationChange);
+            }
         }
 
 
@@ -429,7 +434,10 @@ this.jks = this.jks || {};
 
             }
 
-            selectNavigation.updateView(navTopContainer.x);
+            if (selectNavigation) {
+                selectNavigation.updateView(navTopContainer.x);
+            }
+
 
         }
 

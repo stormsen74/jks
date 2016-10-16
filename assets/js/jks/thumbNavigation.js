@@ -100,7 +100,7 @@ this.jks = this.jks || {};
             _scope.container.visible = false;
 
             //if (jks.Config.getDeviceType() == "mobile" || jks.Config.getDeviceType() == "tablet") {
-            if (jks.Config.getDeviceType() == "mobile" || jks.Config.getDeviceType() == "tablet" ) {
+            if (jks.Config.getDeviceType() == "mobile" || jks.Config.getDeviceType() == "tablet") {
                 $ThumbOffsetX = 0;
                 $OffsetBottom = 0;
             }
@@ -172,7 +172,7 @@ this.jks = this.jks || {};
             _scope.container.addChild(_scope.dragShape)
 
             _scope.dragShape
-            //.on('mousedown', onDragStart).on('touchstart', onDragStart)
+                //.on('mousedown', onDragStart).on('touchstart', onDragStart)
                 .on('mousemove', onDragMove).on('touchmove', onDragMove)
                 .on('mouseup', onDragEnd).on('mouseupoutside', onDragEnd)
                 .on('touchend', onDragEnd).on('touchendoutside', onDragEnd);
@@ -312,9 +312,50 @@ this.jks = this.jks || {};
 
         }
 
-        this.onOrientationChange = function (orientation) {
-            console.log('onOrientationChange', orientation)
-            TweenLite.delayedCall(.2, onDragEnd)
+        this.onOrientationChange = function () {
+            console.log('thumbNavigation - onOrientationChange')
+            TweenLite.delayedCall(.2, onDragEnd);
+            if (jks.Config.getDeviceType() == 'mobile') {
+
+                if (!device.portrait()) {
+                    TweenLite.delayedCall(.5, hideThumbNavigation);
+                } else {
+                    TweenLite.delayedCall(.5, showThumbNavigation);
+                }
+
+            }
+        }
+
+        function hideThumbNavigation() {
+            console.log('hideThumbNavigation');
+
+
+            for (var i = 0; i < _scope.thumbs.length; i++) {
+                TweenLite.to(_scope.thumbs[i].container, .3, {
+                    delay: i * .02,
+                    y: 100,
+                    ease: Circ.easeIn,
+                    onComplete: function () {
+                        _scope.container.visible = false;
+                    }
+                });
+                //_scope.thumbs[i].container.y = 100;
+            }
+        }
+
+        function showThumbNavigation() {
+            console.log('showThumbNavigation');
+            _scope.container.visible = true;
+
+            for (var i = 0; i < _scope.thumbs.length; i++) {
+                TweenLite.to(_scope.thumbs[i].container, .3, {
+                    delay: i * .02,
+                    y: 0,
+                    ease: Circ.easeOut
+
+                });
+                //_scope.thumbs[i].container.y = 100;
+            }
         }
 
 

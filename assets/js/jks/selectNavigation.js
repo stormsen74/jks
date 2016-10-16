@@ -10,6 +10,8 @@ this.jks = this.jks || {};
 ( function () {
 
     var _scope;
+    var _compWidth = 0;
+    var _compHeight = 0;
 
 
     function SelectNavigation(config) {
@@ -21,8 +23,6 @@ this.jks = this.jks || {};
             onTap: new signals.Signal()
         };
 
-        this.orientationMode;
-
 
         this.container = new PIXI.Container();
         this.container.interactive = true;
@@ -32,15 +32,18 @@ this.jks = this.jks || {};
 
 
         for (var i = 0; i < config.numPages; i++) {
-            console.log('create Button!', i, config.pages[i].categoryText)
 
             var select_btn = new jks.SelectNavButton(jks.DataHandler.getAssetByID(config.pages[i].category).src, config.pages[i].categoryText, i)
+            console.log('create Button!-', i, config.pages[i].categoryText)
 
             select_btn.container.alpha = 1;
             select_btn.s.onTapSelect.add(onTap);
 
             // select_btn.container.x -= select_btn.getRealImgWidth();
             // select_btn.container.y = i * (select_btn.getRealImgWidth() + 10);
+
+             select_btn.container.x -= select_btn.getRealImgWidth();
+             select_btn.container.y = i * (select_btn.getRealImgWidth() + 10);
 
             _scope.container.addChild(select_btn.container);
             _scope.buttons.push(select_btn);
@@ -50,6 +53,17 @@ this.jks = this.jks || {};
 
         function onTap(selectionID) {
             _scope.s.onTap.dispatch(selectionID);
+            for (var i = 0; i < _scope.buttons.length; i++) {
+                _scope.buttons[i].unselect();
+            }
+            _scope.buttons[selectionID].select();
+        }
+
+
+        this.reset = function() {
+            for (var i = 0; i < _scope.buttons.length; i++) {
+                _scope.buttons[i].unselect();
+            }
         }
 
 
@@ -57,13 +71,24 @@ this.jks = this.jks || {};
 
             if (jks.Config.getDeviceType() == 'mobile') {
 
-                _scope.container.x = jks.View.getScreenWidth() * .5;
-                _scope.container.y = jks.View.getScreenHeight() * .15;
+                if (device.portrait()) {
+                    _scope.container.x = jks.View.getScreenWidth() * .6;
+                    _scope.container.y = jks.View.getScreenHeight() * .15;
+                } else {
+                    _scope.container.x = (jks.View.getScreenWidth() * .5 - _compWidth * .5) + 25;
+                    _scope.container.y = jks.View.getScreenHeight() * .5 - _compHeight * .5;
+                }
 
             } else {
 
-                _scope.container.x = navTopContainerX;
-                _scope.container.y = jks.View.getScreenHeight() * .15;
+                if (jks.View.getScreenWidth() < jks.Config.mobileSwitchWidth()) {
+                    _scope.container.x = jks.View.getScreenWidth() * .6;
+                    _scope.container.y = jks.View.getScreenHeight() * .15;
+                } else {
+                    _scope.container.x = navTopContainerX - 45;
+                    _scope.container.y = jks.View.getScreenHeight() * .15;
+                }
+
 
             }
 
@@ -76,11 +101,16 @@ this.jks = this.jks || {};
             for (var i = 0; i < _scope.buttons.length; i++) {
                 _scope.buttons[i].switchMobile();
             }
+            if (jks.Config.getDeviceType() == 'mobile') {
+                device.portrait() ? portraitMode() : landscapeMode();
+            }
         }
 
         this.switchDefault = function () {
             for (var i = 0; i < _scope.buttons.length; i++) {
                 _scope.buttons[i].switchDefault();
+                _scope.buttons[i].container.x = 0;
+                _scope.buttons[i].container.y = i * (_scope.buttons[i].getRealImgWidth() + 10);
             }
         }
 
@@ -90,23 +120,33 @@ this.jks = this.jks || {};
                 _scope.buttons[i].container.x = 0;
                 _scope.buttons[i].container.y = i * (_scope.buttons[i].getRealImgWidth() + 10);
             }
-            _scope.orientationMode = 'portrait';
+
+            _scope.updateView();
         }
 
         function landscapeMode() {
-            var compWidth = 0;
+            _compWidth = 0;
+            _compHeight = 0;
+            console.log('landscapeMode');
             for (var i = 0; i < _scope.buttons.length; i++) {
                 _scope.buttons[i].landscapeMode();
-                _scope.buttons[i].container.x = compWidth;
+                _scope.buttons[i].container.x = _compWidth;
+                if (i == 1) {
+                    _scope.buttons[i].container.x -= 10;
+                }
                 _scope.buttons[i].container.y = 0;
-                compWidth += _scope.buttons[i].getWidth();
+                _compWidth += _scope.buttons[i].container.width * .95 + 15;
+                //compWidth += 10;
             }
+            _compHeight = _scope.buttons[0].getHeight();
 
-            _scope.orientationMode = 'landscpae';
+
+            _scope.updateView();
         }
 
         this.onOrientationChange = function () {
             device.portrait() ? portraitMode() : landscapeMode();
+
         }
 
 
@@ -123,12 +163,14 @@ this.jks = this.jks || {};
         }
 
 
-        this.hide = function () {
+        this.hide = function (_fast) {
+            _fast = _fast || false;
             //_scope.container.visible = false;
 
-            console.log('SelectNavigation - hide')
+            console.log('SelectNavigation - hide', _fast)
 
-            var t = .03;
+            var t = _fast ? t = 0 : t = .03;
+            //var t = .03;
             var l = (_scope.buttons.length - 1) * t;
             for (var i = 0; i < _scope.buttons.length; i++) {
                 TweenLite.to(_scope.buttons[i].container, .2, {
@@ -138,8 +180,12 @@ this.jks = this.jks || {};
                 })
             }
 
-            TweenLite.killDelayedCallsTo(_scope.lock);
-            TweenLite.delayedCall(.3, _scope.lock)
+            if (!_fast) {
+                TweenLite.killDelayedCallsTo(_scope.lock);
+                TweenLite.delayedCall(.3, _scope.lock)
+            } else {
+                _scope.lock()
+            }
 
         }
 
@@ -147,7 +193,7 @@ this.jks = this.jks || {};
             //_scope.container.visible = true;
             for (var i = 0; i < _scope.buttons.length; i++) {
                 //selectButtons[i].reactivate();
-                TweenLite.set(_scope.buttons[i].container, {visible: true})
+                TweenLite.set(_scope.buttons[i].container, {visible: true, alpha: 0})
                 TweenLite.to(_scope.buttons[i].container, .2, {delay: i * .07, alpha: 1, ease: Expo.easeOut})
             }
 
@@ -156,8 +202,12 @@ this.jks = this.jks || {};
 
         }
 
-        jks.Config.getDeviceType() == 'mobile' ? _scope.switchMobile() : _scope.switchDefault();
-        device.portrait() ? portraitMode() : landscapeMode();
+        if (jks.Config.getDeviceType() == 'mobile') {
+            _scope.switchMobile();
+            device.portrait() ? portraitMode() : landscapeMode();
+        } else {
+            _scope.switchDefault();
+        }
 
         //init();
 

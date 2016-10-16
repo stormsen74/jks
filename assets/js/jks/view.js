@@ -220,6 +220,7 @@ this.jks = this.jks || {};
                             _setTextures = false;
                             _thumbNavigation.isLocked = false;
                             dragData.startTransition = false;
+                            _tresholdFilter.uniforms.offset.x = 1;
                         }
                     })
                 } else {
@@ -233,6 +234,7 @@ this.jks = this.jks || {};
                             _setTextures = false;
                             _thumbNavigation.isLocked = false;
                             dragData.startTransition = false;
+                            _tresholdFilter.uniforms.offset.x = 1;
                         }
                     })
                 }
@@ -469,10 +471,10 @@ this.jks = this.jks || {};
 
         function onResize(e) {
 
-            if (screenWidth() <= 600 && !_scope.isMobile) {
+            if (screenWidth() <= jks.Config.mobileSwitchWidth() && !_scope.isMobile) {
                 _scope.isMobile = true;
                 _scope.s.switchMode.dispatch(_scope.isMobile);
-            } else if (screenWidth() > 600 && _scope.isMobile) {
+            } else if (screenWidth() > jks.Config.mobileSwitchWidth() && _scope.isMobile) {
                 _scope.isMobile = false;
                 _scope.s.switchMode.dispatch(_scope.isMobile);
             }
@@ -489,8 +491,6 @@ this.jks = this.jks || {};
             _progressBar.style.left = screenWidth() * .5 - 60 + 'px';
             _progressBar.style.top = screenHeight() * .5 - 30 + 'px';
         }
-
-
 
 
         function updateContent() {
@@ -510,7 +510,7 @@ this.jks = this.jks || {};
             }
 
 
-                _textField.updateView();
+            _textField.updateView();
 
         }
 
@@ -740,7 +740,7 @@ this.jks = this.jks || {};
         _overlay.width = screenWidth();
         _overlay.height = screenHeight();
         _textField.hide();
-        TweenLite.to(_overlay, .3, {alpha: .5, ease: Sine.easeOut})
+        TweenLite.to(_overlay, .3, {alpha: .6, ease: Sine.easeOut})
     }
 
     jks.View.hideOverlay = function () {
