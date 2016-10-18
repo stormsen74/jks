@@ -67,6 +67,7 @@ this.jks = this.jks || {};
             navigation = new jks.Navigation(config);
             navigation.s.onNavSelect.add(onNavSelect);
             navigation.s.onTapHome.add(onTapHome);
+            navigation.s.onToggleThumbNav.add(onToggleThumbNav);
 
             addToDisplay();
 
@@ -125,6 +126,10 @@ this.jks = this.jks || {};
             pageHome.show();
             TweenLite.delayedCall(1.5, navigation.show);
             navigation.s.onKeyDownEvent.remove(onKeyDown);
+        }
+
+        function onToggleThumbNav(activated) {
+            view.thumbNavToggle(activated);
         }
 
         /*--------------------------------------------

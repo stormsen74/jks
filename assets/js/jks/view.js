@@ -645,7 +645,7 @@ this.jks = this.jks || {};
             }
 
             _thumbNavigation = new jks.ThumbNavigation($imageRatio);
-            _thumbNavigation.s.onClickThumb.add(onThumbClick)
+            _thumbNavigation.s.onClickThumb.add(onThumbClick);
             _scope.containerSlideNavigation.addChild(_thumbNavigation.container);
             _thumbNavigation.init(_slideObject);
 
@@ -655,6 +655,12 @@ this.jks = this.jks || {};
                     _scope.slideTo(id);
                 }
             }
+        }
+
+
+        this.thumbNavToggle = function (activated) {
+            console.log('***', activated);
+            activated ? _thumbNavigation.show() : _thumbNavigation.hide();
         }
 
         /*--------------------------------------------

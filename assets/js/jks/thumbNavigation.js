@@ -315,10 +315,11 @@ this.jks = this.jks || {};
         this.onOrientationChange = function () {
             console.log('thumbNavigation - onOrientationChange')
             TweenLite.delayedCall(.2, onDragEnd);
+
             if (jks.Config.getDeviceType() == 'mobile') {
 
                 if (!device.portrait()) {
-                    TweenLite.delayedCall(.5, hideThumbNavigation);
+                    TweenLite.delayedCall(1, hideThumbNavigation);
                 } else {
                     TweenLite.delayedCall(.5, showThumbNavigation);
                 }
@@ -329,18 +330,19 @@ this.jks = this.jks || {};
         function hideThumbNavigation() {
             console.log('hideThumbNavigation');
 
-
             for (var i = 0; i < _scope.thumbs.length; i++) {
                 TweenLite.to(_scope.thumbs[i].container, .3, {
-                    delay: i * .02,
+                    delay: i * .04,
                     y: 100,
-                    ease: Circ.easeIn,
+                    alpha: 0,
+                    ease: Cubic.easeIn,
                     onComplete: function () {
                         _scope.container.visible = false;
                     }
                 });
                 //_scope.thumbs[i].container.y = 100;
             }
+
         }
 
         function showThumbNavigation() {
@@ -351,11 +353,21 @@ this.jks = this.jks || {};
                 TweenLite.to(_scope.thumbs[i].container, .3, {
                     delay: i * .02,
                     y: 0,
+                    alpha: 1,
                     ease: Circ.easeOut
 
                 });
                 //_scope.thumbs[i].container.y = 100;
             }
+        }
+
+
+        this.show = function () {
+            showThumbNavigation();
+        }
+
+        this.hide = function () {
+            hideThumbNavigation();
         }
 
 
