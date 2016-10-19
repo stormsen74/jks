@@ -21,7 +21,8 @@ this.jks = this.jks || {};
         _scope = this;
 
         this.s = {
-            onClickThumb: new signals.Signal()
+            onClickThumb: new signals.Signal(),
+            onThumbNavigationShow: new signals.Signal(),
         };
 
         this.isLocked = false;
@@ -99,7 +100,6 @@ this.jks = this.jks || {};
             // hide container!
             _scope.container.visible = false;
 
-            //if (jks.Config.getDeviceType() == "mobile" || jks.Config.getDeviceType() == "tablet") {
             if (jks.Config.getDeviceType() == "mobile" || jks.Config.getDeviceType() == "tablet") {
                 $ThumbOffsetX = 0;
                 $OffsetBottom = 0;
@@ -172,7 +172,7 @@ this.jks = this.jks || {};
             _scope.container.addChild(_scope.dragShape)
 
             _scope.dragShape
-                //.on('mousedown', onDragStart).on('touchstart', onDragStart)
+            //.on('mousedown', onDragStart).on('touchstart', onDragStart)
                 .on('mousemove', onDragMove).on('touchmove', onDragMove)
                 .on('mouseup', onDragEnd).on('mouseupoutside', onDragEnd)
                 .on('touchend', onDragEnd).on('touchendoutside', onDragEnd);
@@ -232,7 +232,6 @@ this.jks = this.jks || {};
 
 
         function isCentered() {
-            //console.log('c', _scope.shapeWidth, jks.View.getScreenWidth())
             return _scope.shapeWidth <= jks.View.getScreenWidth() ? true : false;
         }
 
@@ -319,7 +318,7 @@ this.jks = this.jks || {};
             if (jks.Config.getDeviceType() == 'mobile') {
 
                 if (!device.portrait()) {
-                    TweenLite.delayedCall(1, hideThumbNavigation);
+                    TweenLite.delayedCall(2, hideThumbNavigation);
                 } else {
                     TweenLite.delayedCall(.5, showThumbNavigation);
                 }
@@ -340,8 +339,9 @@ this.jks = this.jks || {};
                         _scope.container.visible = false;
                     }
                 });
-                //_scope.thumbs[i].container.y = 100;
             }
+
+            TweenLite.delayedCall(.5, _scope.s.onThumbNavigationShow.dispatch, [false]);
 
         }
 
@@ -355,10 +355,10 @@ this.jks = this.jks || {};
                     y: 0,
                     alpha: 1,
                     ease: Circ.easeOut
-
                 });
-                //_scope.thumbs[i].container.y = 100;
             }
+
+            _scope.s.onThumbNavigationShow.dispatch(true);
         }
 
 

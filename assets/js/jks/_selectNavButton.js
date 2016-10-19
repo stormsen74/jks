@@ -74,7 +74,6 @@ this.jks = this.jks || {};
 
 
         this.switchMobile = function () {
-            console.log('switchMobile');
             _scale = .37;
             sprite.scale.x = sprite.scale.y = _scale;
 

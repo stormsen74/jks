@@ -284,7 +284,6 @@ this.jks = this.jks || {};
 
             function showSelection() {
 
-
                 if (_scope.isMobile) {
                     hideNav();
                 }
@@ -319,18 +318,15 @@ this.jks = this.jks || {};
                 thumbNavToggleIcon = new PIXI.Container();
                 thumbNavToggleIcon.interactive = true;
                 thumbNavToggleIcon.buttonMode = true;
-                thumbNavToggleIcon.visible = true;
+                thumbNavToggleIcon.visible = false;
                 thumbNavToggleIcon.activated = false;
-                thumbNavToggleIcon.on('mousedown', onToggleThumbNav).on('touchstart', onToggleThumbNav)
+                thumbNavToggleIcon.on('mouseup', onToggleThumbNav).on('touchend', onToggleThumbNav)
 
                 var shape = new PIXI.Graphics();
                 shape.beginFill(0x00cc00);
                 shape.drawRect(0, 0, 50, 50);
                 shape.endFill;
                 shape.alpha = .5;
-
-
-                //console.log('>>', jks.View.getScreenWidth(), _scope.container.getWidth())
 
                 //mobilethumbNavToggleIcon = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID('mobilethumbNavToggleIcon').src);
                 //mobilethumbNavToggleIcon.scale.x = mobilethumbNavToggleIcon.scale.y = .5
@@ -349,27 +345,25 @@ this.jks = this.jks || {};
             function onToggleThumbNav() {
                 if (!thumbNavToggleIcon.activated) {
                     thumbNavToggleIcon.activated = true;
-                    //hideThumbNavToogle();
+                    thumbNavToggleIcon.y = jks.View.getScreenHeight() - thumbNavToggleIcon.height - thumbNavToggleIcon.thumbNavHeight;
                 } else {
                     thumbNavToggleIcon.activated = false;
-                    //showThumbNavToogle();
+                    thumbNavToggleIcon.y = jks.View.getScreenHeight() - thumbNavToggleIcon.height;
                 }
 
                 _scope.s.onToggleThumbNav.dispatch(thumbNavToggleIcon.activated);
             }
 
             function showThumbNavToogle() {
-
-                thumbNavToggleIcon.x = jks.View.getScreenWidth() * .5 - thumbNavToggleIcon.width * .5;
-                thumbNavToggleIcon.y = jks.View.getScreenHeight() - 50;
                 thumbNavToggleIcon.visible = true;
-
+                thumbNavToggleIcon.x = jks.View.getScreenWidth() * .5 - thumbNavToggleIcon.width * .5;
+                thumbNavToggleIcon.y = jks.View.getScreenHeight() - thumbNavToggleIcon.height;
             }
 
 
             function hideThumbNavToogle() {
-                if (thumbNavToggleIcon)
-                    thumbNavToggleIcon.visible = false;
+                thumbNavToggleIcon.visible = false;
+                thumbNavToggleIcon.activated = false
             }
 
 
@@ -442,12 +436,17 @@ this.jks = this.jks || {};
                     hideSelection(true);
                     TweenLite.delayedCall(.1, selectNavigation.onOrientationChange);
 
-                    if (device.landscape()) {
-                        initThumbNavToogle();
-                        showThumbNavToogle();
-                    } else {
+                    if (device.portrait()) {
                         hideThumbNavToogle();
                     }
+                }
+            }
+
+
+            this.thumbNavigationShow = function (show, height) {
+                thumbNavToggleIcon.thumbNavHeight = height;
+                if (!show) {
+                    showThumbNavToogle();
                 }
             }
 
@@ -554,6 +553,9 @@ this.jks = this.jks || {};
             generateTopNavigtion();
             generateSelectNavigation();
             hideSelection();
+            if (jks.Config.getDeviceType() == 'mobile') {
+                initThumbNavToogle();
+            }
 
 
         }

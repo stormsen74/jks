@@ -55,7 +55,8 @@ this.jks = this.jks || {};
             onReady: new signals.Signal(),
             onResize: new signals.Signal(),
             onOrientationChange: new signals.Signal(),
-            switchMode: new signals.Signal()
+            switchMode: new signals.Signal(),
+            onThumbNavigationShow: new signals.Signal()
         };
 
 
@@ -646,6 +647,7 @@ this.jks = this.jks || {};
 
             _thumbNavigation = new jks.ThumbNavigation($imageRatio);
             _thumbNavigation.s.onClickThumb.add(onThumbClick);
+            _thumbNavigation.s.onThumbNavigationShow.add(onThumbNavigationShow);
             _scope.containerSlideNavigation.addChild(_thumbNavigation.container);
             _thumbNavigation.init(_slideObject);
 
@@ -657,9 +659,11 @@ this.jks = this.jks || {};
             }
         }
 
+        function onThumbNavigationShow(show) {
+            _scope.s.onThumbNavigationShow.dispatch(show, _thumbNavigation.container.getHeight());
+        }
 
         this.thumbNavToggle = function (activated) {
-            console.log('***', activated);
             activated ? _thumbNavigation.show() : _thumbNavigation.hide();
         }
 

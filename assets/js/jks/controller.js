@@ -63,6 +63,7 @@ this.jks = this.jks || {};
             view.s.onResize.add(viewOnResize);
             view.s.onOrientationChange.add(onOrientationChange);
             view.s.switchMode.add(switchMode);
+            view.s.onThumbNavigationShow.add(onThumbNavigationShow);
 
             navigation = new jks.Navigation(config);
             navigation.s.onNavSelect.add(onNavSelect);
@@ -106,6 +107,10 @@ this.jks = this.jks || {};
 
         function switchMode(isMobile) {
             navigation.switchMode(isMobile);
+        }
+
+        function onThumbNavigationShow(show, height) {
+            navigation.thumbNavigationShow(show, height);
         }
 
 
