@@ -117,6 +117,10 @@ this.jks = this.jks || {};
             {
                 "src": "assets/img/navigation/navSelectBackground.png",
                 "id": "navSelectBackground"
+            },
+            {
+                "src": "assets/img/navigation/thumb_nav_arrow.png",
+                "id": "thumb_nav_arrow"
             }
         ];
 

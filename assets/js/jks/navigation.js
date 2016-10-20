@@ -71,7 +71,7 @@ this.jks = this.jks || {};
             );
 
             this.wakeUp = function () {
-                TweenLite.set(logo, {display: 'block', opacity: 1})
+                TweenLite.set(logo, {display: 'block', opacity: 1});
                 //TweenLite.to(_logo, 1, { opacity: 1, ease: Sine.easeOut})
             };
 
@@ -125,18 +125,18 @@ this.jks = this.jks || {};
             //navTopContainer.y = jks.View.getScreenHeight() + 30;
             _scope.container.addChild(navTopContainer);
 
-            console.log(navTopContainer.position)
+            console.log(navTopContainer.position);
 
 
             var navTop = {
                 width: 0
-            }
+            };
 
             function generateTopNavigtion() {
                 var compWidth = 0;
 
                 for (var i = 0; i < config.navigationData.menue.length; i++) {
-                    console.log('create Top!', i)
+                    console.log('create Top!', i);
 
                     var topNavButton = new jks.TopNavButton(config.navigationData.menue[i]);
                     topNavButton.container.x = compWidth;
@@ -170,7 +170,7 @@ this.jks = this.jks || {};
                 navToggleIcon.x = navTopContainer.width + 100;
                 navToggleIcon.y = 10;
                 navToggleIcon.visible = true;
-                navToggleIcon.on('mousedown', onToggleNav).on('touchstart', onToggleNav)
+                navToggleIcon.on('mousedown', onToggleNav).on('touchstart', onToggleNav);
 
                 var icon = new PIXI.Graphics();
                 icon.beginFill(0x00cc00);
@@ -182,8 +182,8 @@ this.jks = this.jks || {};
 
                 mobileNavToggleIcon = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID('mobileNavToggleIcon').src);
                 mobileNavCloseIcon = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID('mobileNavCloseIcon').src);
-                mobileNavToggleIcon.scale.x = mobileNavToggleIcon.scale.y = .5
-                mobileNavCloseIcon.scale.x = mobileNavCloseIcon.scale.y = .5
+                mobileNavToggleIcon.scale.x = mobileNavToggleIcon.scale.y = .5;
+                mobileNavCloseIcon.scale.x = mobileNavCloseIcon.scale.y = .5;
                 mobileNavCloseIcon.visible = false;
 
 
@@ -238,7 +238,7 @@ this.jks = this.jks || {};
                 navSelectIcon.x = -50;
                 navSelectIcon.y = 3;
                 navSelectIcon.visible = true;
-                navSelectIcon.on('mousedown', onToggleSelection).on('touchstart', onToggleSelection)
+                navSelectIcon.on('mousedown', onToggleSelection).on('touchstart', onToggleSelection);
 
                 var icon = new PIXI.Graphics();
                 icon.beginFill(0xcc0000);
@@ -301,7 +301,7 @@ this.jks = this.jks || {};
 
 
             function changeSelectionMode() {
-                console.log('changeSelectionMode')
+                console.log('changeSelectionMode');
                 for (var i = 0; i < selectButtons.length; i++) {
                     selectButtons[i].changeSelectionMode('mode');
                 }
@@ -314,29 +314,34 @@ this.jks = this.jks || {};
 
             var thumbNavToggleIcon;
 
+            var iconSize = {
+                width: 103 * .5 + 10,
+                height: 45
+            };
+
             function initThumbNavToogle() {
                 thumbNavToggleIcon = new PIXI.Container();
                 thumbNavToggleIcon.interactive = true;
                 thumbNavToggleIcon.buttonMode = true;
                 thumbNavToggleIcon.visible = false;
                 thumbNavToggleIcon.activated = false;
-                thumbNavToggleIcon.on('mouseup', onToggleThumbNav).on('touchend', onToggleThumbNav)
+                thumbNavToggleIcon.on('mouseup', onToggleThumbNav).on('touchend', onToggleThumbNav);
+
+                var icon = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID('thumb_nav_arrow').src);
+                icon.scale.x = icon.scale.y = .5;
+                icon.y = 10;
+                icon.x = 5;
 
                 var shape = new PIXI.Graphics();
-                shape.beginFill(0x00cc00);
-                shape.drawRect(0, 0, 50, 50);
+                shape.beginFill(jks.Config.getColor('light_blue'));
+                shape.drawRect(0, 0, iconSize.width, iconSize.height);
                 shape.endFill;
-                shape.alpha = .5;
-
-                //mobilethumbNavToggleIcon = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID('mobilethumbNavToggleIcon').src);
-                //mobilethumbNavToggleIcon.scale.x = mobilethumbNavToggleIcon.scale.y = .5
+                shape.alpha = .25;
 
                 thumbNavToggleIcon.x = jks.View.getScreenWidth() * .5 - thumbNavToggleIcon.width * .5;
-                thumbNavToggleIcon.y = 0;
 
                 thumbNavToggleIcon.addChild(shape);
-                //thumbNavToggleIcon.addChild(mobilethumbNavToggleIcon);
-                //thumbNavToggleIcon.addChild(mobileNavCloseIcon);
+                thumbNavToggleIcon.addChild(icon);
                 _scope.container.addChild(thumbNavToggleIcon);
 
             }
@@ -345,10 +350,16 @@ this.jks = this.jks || {};
             function onToggleThumbNav() {
                 if (!thumbNavToggleIcon.activated) {
                     thumbNavToggleIcon.activated = true;
-                    thumbNavToggleIcon.y = jks.View.getScreenHeight() - thumbNavToggleIcon.height - thumbNavToggleIcon.thumbNavHeight;
+                    thumbNavToggleIcon.y = jks.View.getScreenHeight() - thumbNavToggleIcon.thumbNavHeight - 10;
+                    thumbNavToggleIcon.scale.y *= -1;
+                    thumbNavToggleIcon.off('mouseup', onToggleThumbNav).off('touchend', onToggleThumbNav);
+                    thumbNavToggleIcon.on('mousedown', onToggleThumbNav).on('touchstart', onToggleThumbNav);
                 } else {
                     thumbNavToggleIcon.activated = false;
                     thumbNavToggleIcon.y = jks.View.getScreenHeight() - thumbNavToggleIcon.height;
+                    thumbNavToggleIcon.scale.y = 1;
+                    thumbNavToggleIcon.on('mouseup', onToggleThumbNav).on('touchend', onToggleThumbNav);
+                    thumbNavToggleIcon.off('mousedown', onToggleThumbNav).off('touchstart', onToggleThumbNav);
                 }
 
                 _scope.s.onToggleThumbNav.dispatch(thumbNavToggleIcon.activated);
@@ -357,7 +368,7 @@ this.jks = this.jks || {};
             function showThumbNavToogle() {
                 thumbNavToggleIcon.visible = true;
                 thumbNavToggleIcon.x = jks.View.getScreenWidth() * .5 - thumbNavToggleIcon.width * .5;
-                thumbNavToggleIcon.y = jks.View.getScreenHeight() - thumbNavToggleIcon.height;
+                thumbNavToggleIcon.y = jks.View.getScreenHeight() - thumbNavToggleIcon.height - 15;
             }
 
 
@@ -392,7 +403,7 @@ this.jks = this.jks || {};
 
                 isSwitching = false;
                 isMobile = true;
-            }
+            };
 
 
             this.switchDefault = function () {
@@ -418,7 +429,7 @@ this.jks = this.jks || {};
 
                 isSwitching = false;
                 isMobile = false;
-            }
+            };
 
 
             this.switchMode = function (isMobile) {
@@ -429,9 +440,11 @@ this.jks = this.jks || {};
                 isSwitching = true;
 
                 isMobile ? _scope.switchMobile() : _scope.switchDefault();
-            }
+            };
 
             this.onOrientationChange = function () {
+                console.log('navigation - onOrientationChange');
+
                 if (jks.Config.getDeviceType() == 'mobile') {
                     hideSelection(true);
                     TweenLite.delayedCall(.1, selectNavigation.onOrientationChange);
@@ -440,7 +453,7 @@ this.jks = this.jks || {};
                         hideThumbNavToogle();
                     }
                 }
-            }
+            };
 
 
             this.thumbNavigationShow = function (show, height) {
@@ -448,19 +461,19 @@ this.jks = this.jks || {};
                 if (!show) {
                     showThumbNavToogle();
                 }
-            }
+            };
 
 
             this.hide = function () {
                 //navSelectContainer.visible = false;
                 hideSelection();
-            }
+            };
 
             this.show = function () {
                 //navSelectContainer.visible = true;
                 showSelection();
 
-            }
+            };
 
 
             /*--------------------------------------------
@@ -472,7 +485,7 @@ this.jks = this.jks || {};
             var maxOffset = 30;
             this.updateView = function () {
                 //return
-                w = jks.View.getScreenWidth()
+                w = jks.View.getScreenWidth();
                 if (w <= 768) {
                     s = mathUtils.convertToRange(w, [0, 768], [.4, .7]);
                     //_logo.x = _logo.y = minOffset;
@@ -495,7 +508,7 @@ this.jks = this.jks || {};
                 TweenLite.set(logo, {
                         width: s * 360
                     }
-                )
+                );
 
 
                 if (jks.Config.getDeviceType() == 'mobile') {
@@ -515,7 +528,7 @@ this.jks = this.jks || {};
                 }
 
 
-            }
+            };
 
 
             function initKeyMode() {
@@ -565,13 +578,12 @@ this.jks = this.jks || {};
 
         jks.Navigation.getTopNavPosition = function () {
             return navTopContainer.position;
-        }
+        };
 
         jks.Navigation.isMobile = function () {
             return isMobile;
         }
 
     }
-
     ()
 );

@@ -472,7 +472,7 @@ this.jks = this.jks || {};
 
         function onResize(e) {
 
-            if (screenWidth() <= jks.Config.mobileSwitchWidth() && !_scope.isMobile) {
+            if (screenWidth() <= jks.Config.mobileSwitchWidth() && !_scope.isMobile || jks.Config.getDeviceType() == 'mobile') {
                 _scope.isMobile = true;
                 _scope.s.switchMode.dispatch(_scope.isMobile);
             } else if (screenWidth() > jks.Config.mobileSwitchWidth() && _scope.isMobile) {
