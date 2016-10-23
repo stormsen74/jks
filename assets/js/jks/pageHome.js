@@ -33,10 +33,6 @@ this.jks = this.jks || {};
         $imageHeight = config.backgroundImageSize.height;
         $imageRatio = $imageWidth / $imageHeight;
 
-        this.s = {
-            //onKeyDownEvent: new signals.Signal()
-        };
-
 
         this.container = new PIXI.Container();
         //this.container.interactive = true;
@@ -69,8 +65,6 @@ this.jks = this.jks || {};
         TresholdFilter.prototype.constructor = TresholdFilter;
 
         function initTresholdFilter() {
-
-            //console.log(jks.Config.shaders()['treshold'])
 
             _tresholdFilter = new TresholdFilter(shader);
             _tresholdFilter.padding = 0;
@@ -132,6 +126,10 @@ this.jks = this.jks || {};
             }
 
         }
+
+        this.onOrientationChange = function () {
+            console.log('pageHome - onOrientationChange');
+        };
 
 
         this.show = function () {

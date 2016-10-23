@@ -2,12 +2,6 @@
  * Created by STORMSEN on 12.08.2016.
  */
 
-/**
- * Created by STORMSEN on 12.08.2016.
- */
-
-
-
 
 this.jks = this.jks || {};
 
@@ -36,9 +30,11 @@ this.jks = this.jks || {};
 
             this.s = {
                 onKeyDownEvent: new signals.Signal(),
-                onNavSelect: new signals.Signal(),
+                onIconNavSelect: new signals.Signal(),
+                onPageNavSelect: new signals.Signal(),
                 onTapHome: new signals.Signal(),
-                onToggleThumbNav: new signals.Signal()
+                onToggleThumbNav: new signals.Signal(),
+                navEvent: new signals.Signal()
             };
 
             this.isMobile = false;
@@ -98,17 +94,22 @@ this.jks = this.jks || {};
             function generateSelectNavigation() {
 
                 selectNavigation = new jks.SelectNavigation(config, navSelectContainer);
-                selectNavigation.s.onTap.add(onTapSelect);
+                selectNavigation.s.onTap.add(onIconSelect);
                 _scope.container.addChild(selectNavigation.container);
 
             }
 
 
-            function onTapSelect(selectionID) {
-                console.log('onTapSelect', selectionID);
-                currentSelectedPage = 'slides';
+            function onIconSelect(selectionID) {
+                //console.log('onIconSelect', selectionID);
+                if (currentSelectedPage != 'slides') {
+                    currentSelectedPage = 'slides';
+                }
                 if (selectionID != currentSelectedID) {
-                    _scope.s.onNavSelect.dispatch(selectionID);
+                    if (jks.Config.getDeviceType() == 'mobile' && device.landscape()) {
+                        hideThumbNavToogle();
+                    }
+                    _scope.s.onIconNavSelect.dispatch(selectionID);
                     currentSelectedID = selectionID;
                 }
             }
@@ -136,10 +137,11 @@ this.jks = this.jks || {};
                 var compWidth = 0;
 
                 for (var i = 0; i < config.navigationData.menue.length; i++) {
-                    console.log('create Top!', i);
+                    //console.log('create Top!', i);
 
                     var topNavButton = new jks.TopNavButton(config.navigationData.menue[i]);
                     topNavButton.container.x = compWidth;
+                    topNavButton.s.onTap.add(onPageNavSelect)
                     //compWidth += topNavButton.getWidth() + margin;
                     compWidth += topNavButton.container.width;
 
@@ -156,6 +158,22 @@ this.jks = this.jks || {};
                 initSelectionToggleButton();
 
 
+            }
+
+            function onPageNavSelect(id) {
+
+                //currentSelectedPage = id;
+
+                if (currentSelectedPage != id) {
+                    currentSelectedPage = id;
+                    //console.log('>>>', currentSelectedPage)
+                    selectNavigation.reset();
+                    currentSelectedID = null;
+                    if (isMobile) {
+                        hideNav()
+                    }
+                    _scope.s.onPageNavSelect.dispatch(id);
+                }
             }
 
 
@@ -196,6 +214,8 @@ this.jks = this.jks || {};
 
             function onToggleNav() {
                 !navVisible ? showNav() : hideNav();
+                //console.log('dispatch', navVisible)
+                _scope.s.navEvent.dispatch('navVisible', navVisible)
             }
 
             function hideNav() {
@@ -206,6 +226,9 @@ this.jks = this.jks || {};
                 for (var i = 0; i < _scope.topNavButtons.length; i++) {
                     TweenLite.killTweensOf(_scope.topNavButtons[i].container);
                     TweenLite.set(_scope.topNavButtons[i].container, {alpha: 0, visible: false})
+                }
+                if (jks.Config.getDeviceType() == 'mobile' && device.landscape()) {
+                    thumbNavToggleIcon.visible = true;
                 }
             }
 
@@ -221,6 +244,9 @@ this.jks = this.jks || {};
                     TweenLite.killTweensOf(_scope.topNavButtons[i].container);
                     TweenLite.set(_scope.topNavButtons[i].container, {visible: true});
                     TweenLite.to(_scope.topNavButtons[i].container, .5, {alpha: 1, delay: i * .1});
+                }
+                if (jks.Config.getDeviceType() == 'mobile' && device.landscape()) {
+                    thumbNavToggleIcon.visible = false;
                 }
             }
 
@@ -265,14 +291,16 @@ this.jks = this.jks || {};
             }
 
             function onToggleSelection() {
-                console.log('onToggleSelection');
+                //console.log('onToggleSelection');
 
                 !selectionVisible ? showSelection() : hideSelection();
+                _scope.s.navEvent.dispatch('selectionVisible', selectionVisible)
             }
 
             function hideSelection(_fast) {
                 _fast = _fast || false;
                 jks.View.hideOverlay();
+
 
                 selectionVisible = false;
                 selectNavToggleIconOpen.visible = false;
@@ -280,6 +308,9 @@ this.jks = this.jks || {};
 
                 selectNavigation.hide(_fast);
 
+                if (thumbNavToggleIcon && jks.Config.getDeviceType() == 'mobile' && device.landscape()) {
+                    thumbNavToggleIcon.visible = true;
+                }
             }
 
             function showSelection() {
@@ -287,6 +318,8 @@ this.jks = this.jks || {};
                 if (_scope.isMobile) {
                     hideNav();
                 }
+
+
                 if (currentSelectedPage != 'home') {
                     jks.View.showOverlay();
                 }
@@ -297,11 +330,14 @@ this.jks = this.jks || {};
 
                 selectNavigation.show();
 
+                if (jks.Config.getDeviceType() == 'mobile' && device.landscape()) {
+                    thumbNavToggleIcon.visible = false;
+                }
             }
 
 
             function changeSelectionMode() {
-                console.log('changeSelectionMode');
+                //console.log('changeSelectionMode');
                 for (var i = 0; i < selectButtons.length; i++) {
                     selectButtons[i].changeSelectionMode('mode');
                 }
@@ -323,8 +359,12 @@ this.jks = this.jks || {};
                 thumbNavToggleIcon = new PIXI.Container();
                 thumbNavToggleIcon.interactive = true;
                 thumbNavToggleIcon.buttonMode = true;
+                thumbNavToggleIcon.pivot.x = iconSize.width * .5;
+                thumbNavToggleIcon.pivot.y = iconSize.height * .5;
                 thumbNavToggleIcon.visible = false;
                 thumbNavToggleIcon.activated = false;
+                thumbNavToggleIcon.alpha = 0;
+
                 thumbNavToggleIcon.on('mouseup', onToggleThumbNav).on('touchend', onToggleThumbNav);
 
                 var icon = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID('thumb_nav_arrow').src);
@@ -336,9 +376,10 @@ this.jks = this.jks || {};
                 shape.beginFill(jks.Config.getColor('light_blue'));
                 shape.drawRect(0, 0, iconSize.width, iconSize.height);
                 shape.endFill;
-                shape.alpha = .25;
+                shape.alpha = 0;
 
-                thumbNavToggleIcon.x = jks.View.getScreenWidth() * .5 - thumbNavToggleIcon.width * .5;
+                thumbNavToggleIcon.x = jks.View.getScreenWidth() * .5;
+                thumbNavToggleIcon.y = jks.View.getScreenHeight() - thumbNavToggleIcon.height * .5;
 
                 thumbNavToggleIcon.addChild(shape);
                 thumbNavToggleIcon.addChild(icon);
@@ -346,36 +387,63 @@ this.jks = this.jks || {};
 
             }
 
-
             function onToggleThumbNav() {
+                TweenLite.set(thumbNavToggleIcon, {alpha: 0});
+                TweenLite.to(thumbNavToggleIcon, .3, {delay: .3, alpha: 1});
+
                 if (!thumbNavToggleIcon.activated) {
+                    // top
                     thumbNavToggleIcon.activated = true;
-                    thumbNavToggleIcon.y = jks.View.getScreenHeight() - thumbNavToggleIcon.thumbNavHeight - 10;
-                    thumbNavToggleIcon.scale.y *= -1;
-                    thumbNavToggleIcon.off('mouseup', onToggleThumbNav).off('touchend', onToggleThumbNav);
-                    thumbNavToggleIcon.on('mousedown', onToggleThumbNav).on('touchstart', onToggleThumbNav);
+                    thumbNavToggleIcon.rotation = Math.PI;
+                    thumbNavToggleIcon.scale.x = thumbNavToggleIcon.scale.y = .9;
+                    thumbNavToggleIcon.x = jks.View.getScreenWidth() * .5;
+                    thumbNavToggleIcon.y = jks.View.getScreenHeight() - thumbNavToggleIcon.thumbNavHeight - thumbNavToggleIcon.height * .5;
+                    //thumbNavToggleIcon.off('mouseup', onToggleThumbNav).off('touchend', onToggleThumbNav);
+                    //thumbNavToggleIcon.on('mousedown', onToggleThumbNav).on('touchstart', onToggleThumbNav);
                 } else {
+                    // bottom
                     thumbNavToggleIcon.activated = false;
-                    thumbNavToggleIcon.y = jks.View.getScreenHeight() - thumbNavToggleIcon.height;
-                    thumbNavToggleIcon.scale.y = 1;
-                    thumbNavToggleIcon.on('mouseup', onToggleThumbNav).on('touchend', onToggleThumbNav);
-                    thumbNavToggleIcon.off('mousedown', onToggleThumbNav).off('touchstart', onToggleThumbNav);
+                    thumbNavToggleIcon.x = jks.View.getScreenWidth() * .5;
+                    thumbNavToggleIcon.y = jks.View.getScreenHeight() - thumbNavToggleIcon.height * .5;
+                    thumbNavToggleIcon.rotation = 0;
+                    thumbNavToggleIcon.scale.x = thumbNavToggleIcon.scale.y = 1;
+                    //thumbNavToggleIcon.on('mouseup', onToggleThumbNav).on('touchend', onToggleThumbNav);
+                    //thumbNavToggleIcon.off('mousedown', onToggleThumbNav).off('touchstart', onToggleThumbNav);
                 }
 
                 _scope.s.onToggleThumbNav.dispatch(thumbNavToggleIcon.activated);
             }
 
             function showThumbNavToogle() {
+                //console.log('step')
+                thumbNavToggleIcon.activated = false;
                 thumbNavToggleIcon.visible = true;
-                thumbNavToggleIcon.x = jks.View.getScreenWidth() * .5 - thumbNavToggleIcon.width * .5;
-                thumbNavToggleIcon.y = jks.View.getScreenHeight() - thumbNavToggleIcon.height - 15;
-            }
+                thumbNavToggleIcon.x = jks.View.getScreenWidth() * .5;
+                thumbNavToggleIcon.y = jks.View.getScreenHeight() - thumbNavToggleIcon.height * .5;
+                thumbNavToggleIcon.rotation = 0;
+                thumbNavToggleIcon.scale.x = thumbNavToggleIcon.scale.y = 1;
+                thumbNavToggleIcon.alpha = 1;
 
+
+                //thumbNavToggleIcon.on('mouseup', onToggleThumbNav).on('touchend', onToggleThumbNav);
+                //thumbNavToggleIcon.off('mousedown', onToggleThumbNav).off('touchstart', onToggleThumbNav);
+
+                //TweenLite.to(thumbNavToggleIcon, .5, {
+                //    x: jks.View.getScreenWidth() * .5,
+                //    y: jks.View.getScreenHeight() - thumbNavToggleIcon.height * .5,
+                //    alpha: 1
+                //})
+
+                //thumbNavToggleIcon.x = jks.View.getScreenWidth() * .5;
+                //thumbNavToggleIcon.y = jks.View.getScreenHeight() - thumbNavToggleIcon.height * .5;
+            }
 
             function hideThumbNavToogle() {
                 thumbNavToggleIcon.visible = false;
+                thumbNavToggleIcon.alpha = 0;
                 thumbNavToggleIcon.activated = false
             }
+
 
 
             /*--------------------------------------------
@@ -446,7 +514,7 @@ this.jks = this.jks || {};
                 console.log('navigation - onOrientationChange');
 
                 if (jks.Config.getDeviceType() == 'mobile') {
-                    hideSelection(true);
+                    if (currentSelectedPage != 'home') hideSelection(true);
                     TweenLite.delayedCall(.1, selectNavigation.onOrientationChange);
 
                     if (device.portrait()) {
@@ -467,6 +535,12 @@ this.jks = this.jks || {};
             this.hide = function () {
                 //navSelectContainer.visible = false;
                 hideSelection();
+
+                if (thumbNavToggleIcon && jks.Config.getDeviceType() == 'mobile') {
+                    thumbNavToggleIcon.visible = false;
+                }
+
+                //hideNav()
             };
 
             this.show = function () {
@@ -533,7 +607,7 @@ this.jks = this.jks || {};
 
             function initKeyMode() {
 
-                console.log('::initKeyMode');
+                //console.log('::initKeyMode');
 
                 document.onkeydown = function (e) {
                     switch (e.keyCode) {
@@ -579,6 +653,10 @@ this.jks = this.jks || {};
         jks.Navigation.getTopNavPosition = function () {
             return navTopContainer.position;
         };
+
+        jks.Navigation.getCurrentSelectedPage = function () {
+            return currentSelectedPage;
+        }
 
         jks.Navigation.isMobile = function () {
             return isMobile;

@@ -30,10 +30,10 @@ this.jks = this.jks || {};
 
         this.navigationData = {
             menue: [
-                {title: 'vita'},
-                {title: 'kontakt'},
-                {title: 'impressum'},
-                {title: 'aktuelles'}
+                {title: 'vita', selectionID: 'vita'},
+                {title: 'kontakt', selectionID: 'kontakt'},
+                {title: 'impressum', selectionID: 'impressum'},
+                {title: 'aktuelles', selectionID: 'aktuelles'}
             ]
         }
 
@@ -73,6 +73,10 @@ this.jks = this.jks || {};
             {
                 "src": "assets/img/bg_home.jpg",
                 "id": "bg_home"
+            },
+            {
+                "src": "assets/img/bg_vita.jpg",
+                "id": "bg_vita"
             },
             {
                 "src": "assets/img/navigation/side_nav_arrow.png",

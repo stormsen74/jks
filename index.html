@@ -54,6 +54,7 @@
     <script src="assets/js/jks/sideNavigation.js"></script>
     <script src="assets/js/jks/textField.js"></script>
     <script src="assets/js/jks/pageHome.js"></script>
+    <script src="assets/js/jks/pageVita.js"></script>
     <script src="assets/js/utils/mathUtils.js"></script>
 
 
@@ -62,6 +63,9 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
+
+            /*overflow: scroll;*/
+            /*overflow-x: hidden;*/
 
             -webkit-font-smoothing: antialiased;
 
@@ -107,6 +111,7 @@
         #screen {
             position: absolute;
             background-color: #408080;
+            /*top: 0px !important;*/
         }
 
         #preload {
@@ -142,6 +147,39 @@
             display: none;
         }
 
+        #content_vita {
+            display: none;
+        }
+
+        .content {
+            position: absolute;
+            color: #408080;
+            width: 315px;
+            /*height: 200px;*/
+            padding: 10px 10px 10px 10px;
+            /*background-color: rgba(202, 240, 240, 0.6);*/
+            background-color: rgba(255, 255, 255, 0.6);
+            right: 0px;
+            top:50px;
+
+            /*overflow: scroll;*/
+            /*overflow-x: hidden;*/
+        }
+
+        .title {
+            font-family: "Linotype Feltpen W01 Medium" !important;
+            font-size: 30px;
+        }
+
+        .text {
+            font-family: 'Ubuntu', sans-serif;
+            font-style: italic;
+            font-weight: 100;
+            font-size: 14px;
+            padding-top: 5px;
+            line-height: 16px;
+        }
+
     </style>
 
 </head>
@@ -150,6 +188,18 @@
 
 <div id="preload"></div>
 <div id="screen"></div>
+<div class="content" id="content_vita">
+    <div class="title">vita</div>
+    <div class="text" style="font-weight: bold">Julia Kintrup</div>
+    <div class="text">1971<span style="width:40px;display:inline-block"></span>geboren in Greven (NRW)</div>
+    <div class="text">1991-1994 &nbsp;Lehre zur Goldschmiedin Abschluss: Gesellin</div>
+    <div class="text">1994-1999 &nbsp;Studium a. d. FH Wismar, Aussenstelle Heiligendamm, FHS für angewandte Kunst Abschluss: Diplom-Designerin</div>
+    <div class="text">ab 1999<span style="width:5px;display:inline-block"></span>freischaffend</div>
+    <div class="text">1999-2000 &nbsp;Ateliergemeinschaft "Schmuck unter den Kolonnaden“ in Heiligendamm</div>
+    <div class="text">2000-2008 &nbsp;Ateliergemeinschaft "Feinmetall“ in Rostock</div>
+    <div class="text">seit 2008<span style="width:5px;display:inline-block"></span>Atelier "Goldfrische“ in Rostock</div>
+
+</div>
 <svg id="jk-logo" class="disableSelect"  version="1.1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px"
 	 viewBox="0 0 359.4 57.3" style="enable-background:new 0 0 359.4 57.3;" xml:space="preserve">
 		<g id="svg_logo_text">

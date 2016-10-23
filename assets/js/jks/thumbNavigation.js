@@ -172,7 +172,7 @@ this.jks = this.jks || {};
             _scope.container.addChild(_scope.dragShape)
 
             _scope.dragShape
-            //.on('mousedown', onDragStart).on('touchstart', onDragStart)
+                //.on('mousedown', onDragStart).on('touchstart', onDragStart)
                 .on('mousemove', onDragMove).on('touchmove', onDragMove)
                 .on('mouseup', onDragEnd).on('mouseupoutside', onDragEnd)
                 .on('touchend', onDragEnd).on('touchendoutside', onDragEnd);
@@ -317,9 +317,12 @@ this.jks = this.jks || {};
 
             if (jks.Config.getDeviceType() == 'mobile') {
 
+
                 if (!device.portrait()) {
+                    TweenLite.killDelayedCallsTo(showThumbNavigation);
                     TweenLite.delayedCall(2, hideThumbNavigation);
                 } else {
+                    TweenLite.killDelayedCallsTo(hideThumbNavigation);
                     TweenLite.delayedCall(.5, showThumbNavigation);
                 }
 
@@ -329,9 +332,10 @@ this.jks = this.jks || {};
         function hideThumbNavigation() {
             console.log('hideThumbNavigation');
 
+
             for (var i = 0; i < _scope.thumbs.length; i++) {
                 TweenLite.to(_scope.thumbs[i].container, .3, {
-                    delay: i * .04,
+                    delay: _scope.thumbs.length < 5 ? i * .04 : 0,
                     y: 100,
                     alpha: 0,
                     ease: Cubic.easeIn,

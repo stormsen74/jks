@@ -18,6 +18,9 @@ this.jks = this.jks || {};
 
     var view, navigation, router;
     var pageHome;
+    var pageVita;
+
+    var currentActivePage;
 
     var isSlideLoader = false;
 
@@ -56,8 +59,6 @@ this.jks = this.jks || {};
             router = new jks.Router();
 
 
-            pageHome = new jks.PageHome(config, shader);
-
             view = new jks.View(config, shader);
             view.s.onReady.addOnce(onViewReady);
             view.s.onResize.add(viewOnResize);
@@ -66,9 +67,14 @@ this.jks = this.jks || {};
             view.s.onThumbNavigationShow.add(onThumbNavigationShow);
 
             navigation = new jks.Navigation(config);
-            navigation.s.onNavSelect.add(onNavSelect);
+            navigation.s.onPageNavSelect.add(onPageNavSelect);
+            navigation.s.onIconNavSelect.add(onIconNavSelect);
             navigation.s.onTapHome.add(onTapHome);
             navigation.s.onToggleThumbNav.add(onToggleThumbNav);
+            navigation.s.navEvent.add(onNavEvent);
+
+            pageHome = new jks.PageHome(config, shader);
+            pageVita = new jks.PageVita(config, shader);
 
             addToDisplay();
 
@@ -76,6 +82,7 @@ this.jks = this.jks || {};
 
         function addToDisplay() {
             view.containerPages.addChild(pageHome.container);
+            view.containerPages.addChild(pageVita.container);
             view.containerNavigation.addChild(navigation.container)
             TweenLite.delayedCall(.1, view.resizeScreen);
         }
@@ -87,6 +94,7 @@ this.jks = this.jks || {};
         function onViewReady() {
 
             pageHome.show();
+            currentActivePage = pageHome;
             navigation.wakeUp();
             TweenLite.delayedCall(1.5, function () {
                 navigation.show();
@@ -98,19 +106,56 @@ this.jks = this.jks || {};
 
             navigation.updateView();
             pageHome.updateView();
+            pageVita.updateView();
 
         }
 
         function onOrientationChange(orientation) {
+            console.log('onOrientationChange', currentActivePage)
             navigation.onOrientationChange(orientation);
+            currentActivePage.onOrientationChange();
         }
 
         function switchMode(isMobile) {
             navigation.switchMode(isMobile);
+
+            if (jks.Navigation.getCurrentSelectedPage() == 'vita') {
+                pageVita.switchMode(isMobile);
+            }
+
         }
 
         function onThumbNavigationShow(show, height) {
             navigation.thumbNavigationShow(show, height);
+        }
+
+        /*--------------------------------------------
+         ~ VIEW PAGE
+         --------------------------------------------*/
+
+
+        function viewPage(id) {
+            console.log('viewPage', id)
+
+            switch (id) {
+                case 'slides':
+                    currentActivePage.hide();
+                    pageHome.hide();
+                    //pageVita.hide();
+                    break;
+                case 'home':
+                    currentActivePage.hide();
+                    currentActivePage = pageHome;
+                    pageHome.show();
+                    TweenLite.delayedCall(1.5, navigation.show);
+                    navigation.s.onKeyDownEvent.remove(onKeyDown);
+                    break;
+                case 'vita':
+                    currentActivePage = pageVita;
+                    navigation.hide();
+                    pageVita.show();
+                    break;
+            }
         }
 
 
@@ -122,20 +167,38 @@ this.jks = this.jks || {};
             e == 'next' ? view.slideNext() : view.slidePrev();
         }
 
-        function onNavSelect(id) {
-            console.log(id = id || 0, 'onNavSelect');
+        function onIconNavSelect(id) {
+            console.log(id = id || 0, 'navigation: onIconNavSelect');
             slideSwitch(id);
         }
 
+        function onPageNavSelect(id) {
+            console.log(id = id || 0, 'navigation: onPageNavSelect');
+            viewPage(id)
+        }
+
         function onTapHome() {
-            pageHome.show();
-            TweenLite.delayedCall(1.5, navigation.show);
-            navigation.s.onKeyDownEvent.remove(onKeyDown);
+            viewPage('home');
         }
 
         function onToggleThumbNav(activated) {
             view.thumbNavToggle(activated);
         }
+
+        function onNavEvent(type, bool) {
+            //console.log('onNavEvent', type, bool, jks.Navigation.getCurrentSelectedPage())
+            if (jks.Navigation.getCurrentSelectedPage() != 'home' && jks.Navigation.getCurrentSelectedPage() != 'slides') {
+                switch (type) {
+                    case 'selectionVisible':
+                        bool ? pageVita.hideContent() : pageVita.showContent();
+                        break;
+                    case 'navVisible':
+                        bool ? pageVita.hideContent() : pageVita.showContent();
+                        break;
+                }
+            }
+        }
+
 
         /*--------------------------------------------
          ~ SLIDE SWITCH
@@ -171,6 +234,7 @@ this.jks = this.jks || {};
                     view.hideSlideLoadingProgress();
                     isSlideLoader = false;
                     switchSlide(pageID);
+
                 })
             }
 
@@ -178,7 +242,7 @@ this.jks = this.jks || {};
 
         function switchSlide(pageID) {
 
-            pageHome.hide();
+            viewPage('slides')
 
             view.initSlide(config, pageID);
             view.initThumbNavigation();

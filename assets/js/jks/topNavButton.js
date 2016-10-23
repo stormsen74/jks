@@ -18,15 +18,21 @@ this.jks = this.jks || {};
         _scope = this;
 
         this.s = {
-            onNavSelect: new signals.Signal()
+            onTap: new signals.Signal()
         };
 
-        this.id = navPoint;
-
+        //this.id = navPoint.selectionID;
 
         this.container = new PIXI.Container();
         this.container.interactive = true;
         this.container.buttonMode = true;
+
+
+        this.container.on('mousedown', onTap).on('touchstart', onTap);
+
+        function onTap() {
+            _scope.s.onTap.dispatch(navPoint.selectionID);
+        }
 
         this.textField = new PIXI.Text(navPoint.title, {
             fontFamily: 'Linotype Feltpen W01 Medium',

@@ -93,7 +93,7 @@ this.jks = this.jks || {};
             window.addEventListener("orientationchange", function () {
                 var orientation;
                 device.portrait() ? orientation = 'portrait' : orientation = 'landscape';
-                console.log('view :: orientationchange:', orientation)
+                //console.log('view :: orientationchange:', orientation)
                 _scope.s.onOrientationChange.dispatch(orientation);
                 onOrientationChange(orientation);
             }, false);
@@ -362,7 +362,7 @@ this.jks = this.jks || {};
         }
 
         function onTransitionStart() {
-            console.log('onTransitionStart');
+            //console.log('onTransitionStart');
 
             if (!dragData.isDragging) {
                 _thumbNavigation.showProgress(_slideObject.currentImage, $transitionTime);
@@ -370,7 +370,7 @@ this.jks = this.jks || {};
         }
 
         function onTransitionEnd() {
-            console.log('onTransitionEnd');
+            //console.log('onTransitionEnd');
 
             _o.saturation = -1;
             _tresholdFilter.uniforms.offset.x = 1;
@@ -469,6 +469,7 @@ this.jks = this.jks || {};
         var _screenWidth, _screenHeight;
         var _scalePoint = new PIXI.Point(0, 0);
 
+        this.isMobile = false;
 
         function onResize(e) {
 
@@ -584,7 +585,7 @@ this.jks = this.jks || {};
 
         this.initSlide = function (_config, _pageID) {
 
-            console.log('initSlide:', _slideObject);
+            //console.log('initSlide:', _slideObject);
 
             if (_slideObject.isCreated) {
                 _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_slideObject.pageID].images[_slideObject.currentImage].src, $imageCrossOrigin, $imageScaleMode);
@@ -652,7 +653,7 @@ this.jks = this.jks || {};
             _thumbNavigation.init(_slideObject);
 
             function onThumbClick(id) {
-                console.log('onThumbClick', id)
+                //console.log('onThumbClick', id)
                 if (id != _slideObject.currentImage) {
                     _scope.slideTo(id);
                 }
@@ -675,11 +676,11 @@ this.jks = this.jks || {};
         _sideNavigation.container = null;
 
         this.initSideNavigation = function () {
-            console.log('jks.SideNavigation')
+            //console.log('jks.SideNavigation')
 
 
             if (_sideNavigation.container) {
-                console.log('destroy side')
+                //console.log('destroy side')
 
                 _sideNavigation.s.onTapNext.remove(onTapNext);
                 _sideNavigation.s.onTapPrev.remove(onTapPrev);
@@ -732,6 +733,10 @@ this.jks = this.jks || {};
 
     jks.View = View;
 
+    jks.View.isMobile = function () {
+        return _scope.isMobile;
+    }
+
     jks.View.getScreenWidth = function () {
         return screenWidth();
     }
@@ -745,7 +750,8 @@ this.jks = this.jks || {};
     }
 
     jks.View.showOverlay = function () {
-        _overlay.alpha = 0;
+        TweenLite.killTweensOf(_overlay);
+        //_overlay.alpha = 0;
         _overlay.visible = true;
         _overlay.width = screenWidth();
         _overlay.height = screenHeight();
@@ -753,7 +759,15 @@ this.jks = this.jks || {};
         TweenLite.to(_overlay, .3, {alpha: .6, ease: Sine.easeOut})
     }
 
+    jks.View.isOverlay = function () {
+        return _overlay.visible;
+    }
+
     jks.View.hideOverlay = function () {
+        if (jks.Navigation.getCurrentSelectedPage() == 'vita' && jks.Config.getDeviceType() == 'nobile') {
+            return;
+        }
+        //console.log('hide overlay')
         TweenLite.to(_overlay, .3, {
             alpha: 0, ease: Sine.easeIn, onComplete: function () {
                 _overlay.visible = false;
