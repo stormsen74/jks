@@ -764,10 +764,10 @@ this.jks = this.jks || {};
     }
 
     jks.View.hideOverlay = function () {
-        if (jks.Navigation.getCurrentSelectedPage() == 'vita' && jks.Config.getDeviceType() == 'nobile') {
+        if (jks.Navigation.getCurrentSelectedPage() == 'vita' && jks.Config.getDeviceType() == 'mobile') {
             return;
         }
-        //console.log('hide overlay')
+        console.log('hide overlay')
         TweenLite.to(_overlay, .3, {
             alpha: 0, ease: Sine.easeIn, onComplete: function () {
                 _overlay.visible = false;

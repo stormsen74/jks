@@ -177,8 +177,8 @@ this.jks = this.jks || {};
             this.switchMobile = function () {
                 TweenLite.set('.content', {
                     backgroundColor: 'rgba(255,255,255,0)',
-                    left: 5,
-                    width: '90%'
+                    left: 5
+                    //width: jks.View.getScreenWidth() - 50 + 'px'
                 })
 
                 jks.View.showOverlay();
