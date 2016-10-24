@@ -39,16 +39,16 @@ this.jks = this.jks || {};
             select_btn.container.alpha = 1;
             select_btn.s.onTapSelect.add(onTap);
 
-            // select_btn.container.x -= select_btn.getRealImgWidth();
-            // select_btn.container.y = i * (select_btn.getRealImgWidth() + 10);
-
-             select_btn.container.x -= select_btn.getRealImgWidth();
-             select_btn.container.y = i * (select_btn.getRealImgWidth() + 10);
+            select_btn.container.x -= select_btn.getRealImgWidth();
+            select_btn.container.y = i * (select_btn.getRealImgWidth() + 10);
 
             _scope.container.addChild(select_btn.container);
             _scope.buttons.push(select_btn);
 
         }
+
+
+        setButtonColors();
 
 
         function onTap(selectionID) {
@@ -60,7 +60,14 @@ this.jks = this.jks || {};
         }
 
 
-        this.reset = function() {
+        function setButtonColors() {
+            for (var i = 0; i < _scope.buttons.length; i++) {
+                _scope.buttons[i].setTextColor();
+            }
+        }
+
+
+        this.reset = function () {
             for (var i = 0; i < _scope.buttons.length; i++) {
                 _scope.buttons[i].unselect();
             }
@@ -209,7 +216,12 @@ this.jks = this.jks || {};
             _scope.switchDefault();
         }
 
-        //init();
+
+        function init() {
+
+        }
+
+        init();
 
 
     }

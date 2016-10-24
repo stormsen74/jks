@@ -48,9 +48,26 @@ this.jks = this.jks || {};
         this.textField = new PIXI.Text(category, {
             fontFamily: 'Linotype Feltpen W01 Medium',
             fontSize: _textSizeDefault,
-            fill: jks.Config.getColor('blue'),
+            fill: jks.Config.getColor('light_blue'),
             align: 'left'
         });
+
+
+        this.textField.style.fill = 0xffcc33
+
+        var light_blue = jks.Config.getColor('light_blue');
+        var blue = jks.Config.getColor('blue');
+        var white =  0x75dada
+
+        var colors = {
+            'mobile_portrait': [blue, blue, light_blue, white, white]
+        }
+
+
+        this.setTextColor = function () {
+            this.textField.style.fill = colors.mobile_portrait[selectionID];
+            console.log(selectionID);
+        }
 
         var sprite = new PIXI.Container();
         var selectImage = new PIXI.Sprite.fromImage(imgSrc);
@@ -102,7 +119,6 @@ this.jks = this.jks || {};
             this.shape.x = 0;
         }
 
-
         this.portraitMode = function () {
 
             if (jks.Config.getDeviceType() == 'mobile') {
@@ -143,6 +159,11 @@ this.jks = this.jks || {};
         this.unselect = function () {
             selectShape.visible = false;
             selectImage.alpha = 1;
+        }
+
+        this.setColor = function (clr) {
+            console.log('set', clr)
+            _scope.textField.style.fill = clr;
         }
 
 
