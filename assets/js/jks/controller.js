@@ -158,8 +158,8 @@ this.jks = this.jks || {};
             }
         }
 
-
         /*--------------------------------------------
+
          ~ NAVIGATION HANDLING
          --------------------------------------------*/
 
@@ -224,7 +224,6 @@ this.jks = this.jks || {};
         }
 
         function onSlideLoaded(pageID) {
-            // console.log('onSlideLoaded', config.pageData[pageID].contentLoaded);
             dataHandler.s.onSlideLoadingProgress.remove(onSlideLoadingProgress);
             dataHandler.s.onSlideLoaded.remove(onSlideLoaded);
 
@@ -242,7 +241,7 @@ this.jks = this.jks || {};
 
         function switchSlide(pageID) {
 
-            viewPage('slides')
+            viewPage('slides');
 
             view.initSlide(config, pageID);
             view.initThumbNavigation();
