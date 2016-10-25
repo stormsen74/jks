@@ -23,6 +23,8 @@ this.jks = this.jks || {};
         var $imageHeight;
         var $imageRatio;
 
+        var $content;
+
 
         function PageVita(config, shader) {
             _scope = this;
@@ -132,11 +134,24 @@ this.jks = this.jks || {};
                     _background.x = (_screenWidth - _background.width) * .5;
                 }
 
+                console.log($content.style.height)
 
-                TweenLite.set('.content', {
-                    //width: jks.View.getScreenWidth() - 50
-                    //height: jks.View.getScreenHeight() - 100
-                })
+                if (jks.Config.getDeviceType() == 'desktop') {
+                    if (device.portrait()) {
+                        $content.style.width = jks.View.getScreenWidth() - 30 + 'px';
+                    } else {
+                        $content.style.width = jks.View.getScreenWidth() * .4 + 'px';
+                        //$content.style.height = jks.View.getScreenHeight() * .7 + 'px';
+                    }
+                } else if (jks.Config.getDeviceType() == 'tablet') {
+                    if (device.portrait()) {
+                        $content.style.width = jks.View.getScreenWidth() * .5 + 'px';
+                        //$content.style.height = jks.View.getScreenHeight() * .7 + 'px';
+                    } else {
+                        $content.style.width = jks.View.getScreenWidth() * .4 + 'px';
+                        //$content.style.height = jks.View.getScreenHeight() * .7 + 'px';
+                    }
+                }
 
 
             }
@@ -159,15 +174,26 @@ this.jks = this.jks || {};
             this.showContent = function () {
                 console.log('showContent')
                 _scope.switchMode(jks.View.isMobile());
-                TweenLite.set('.content', {
+                TweenLite.set($content, {
+                    opacity: 0,
                     display: 'block',
-                    opacity: 1
+                })
+
+                contentFadeIn();
+
+            }
+
+            function contentFadeIn() {
+                TweenLite.to($content, 1, {
+                    delay: 1.3,
+                    opacity: 1,
+                    ease: Sine.easeOut
                 })
             }
 
             this.hideContent = function () {
                 console.log('hideContent')
-                TweenLite.set('.content', {
+                TweenLite.set($content, {
                     display: 'none',
                     opacity: 0
                 })
@@ -175,7 +201,7 @@ this.jks = this.jks || {};
 
 
             this.switchMobile = function () {
-                TweenLite.set('.content', {
+                TweenLite.set($content, {
                     backgroundColor: 'rgba(255,255,255,0)',
                     left: 5
                     //width: jks.View.getScreenWidth() - 50 + 'px'
@@ -184,8 +210,9 @@ this.jks = this.jks || {};
                 jks.View.showOverlay();
             }
 
+
             this.switchDefault = function () {
-                TweenLite.set('.content', {
+                TweenLite.set($content, {
                     backgroundColor: 'rgba(255,255,255,.6)',
                     left: 'auto',
                     right: 0,
@@ -207,18 +234,37 @@ this.jks = this.jks || {};
             this.onOrientationChange = function () {
                 console.log('pageVita - onOrientationChange');
 
-                if (device.landscape()) {
-                    //TODO Mirror Shader ...
-                    //_background.scale.x = -1;
-                } else {
-                    //_background.scale.x = 1;
+                if (jks.Config.getDeviceType() == 'mobile') {
+                    if (device.landscape()) {
+                        //TODO Mirror Shader ... || Text align right
+                        //_background.scale.x = -1;
+
+                        $content.style.width = '615px';
+                        $content.style.paddingBottom = '20px'
+
+                        TweenLite.delayedCall(.2, function () {
+                            $content.style.width = '615px';
+                        })
+
+                    } else {
+
+                        console.log('setStyle')
+                        $content.style.width = 'auto';
+                        $content.style.width = jks.View.getScreenWidth() - 30 + 'px';
+
+                        TweenLite.delayedCall(.2, function () {
+                            $content.style.width = jks.View.getScreenWidth() - 30 + 'px';
+                        })
+
+                    }
+
                 }
 
             };
 
 
             function init() {
-
+                $content = document.getElementById('content_vita');
             }
 
             init();

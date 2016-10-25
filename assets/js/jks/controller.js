@@ -135,13 +135,16 @@ this.jks = this.jks || {};
 
 
         function viewPage(id) {
-            console.log('viewPage', id)
+            console.log('viewPage', id);
+
+            view.s.onThumbNavigationShow.remove(onThumbNavigationShow);
 
             switch (id) {
                 case 'slides':
                     currentActivePage.hide();
                     pageHome.hide();
-                    //pageVita.hide();
+
+                    view.s.onThumbNavigationShow.add(onThumbNavigationShow);
                     break;
                 case 'home':
                     currentActivePage.hide();
@@ -152,8 +155,8 @@ this.jks = this.jks || {};
                     break;
                 case 'vita':
                     currentActivePage = pageVita;
+                    currentActivePage.show();
                     navigation.hide();
-                    pageVita.show();
                     break;
             }
         }
