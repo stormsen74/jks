@@ -52,7 +52,7 @@ this.jks = this.jks || {};
             height: 800
         }
 
-        this.mobileSwitchWidth = 600;
+        this.mobileSwitchWidth = 620;
 
 
         for (var i = 0; i < this.numPages; i++) {

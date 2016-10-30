@@ -47,6 +47,8 @@ this.jks = this.jks || {};
             this.container.interactive = true;
             this.container.buttonMode = true;
 
+            this.selectedPageText = null;
+
 
             if (jks.Config.getDeviceType() == 'desktop') {
                 initKeyMode();
@@ -79,6 +81,7 @@ this.jks = this.jks || {};
                         hideNav();
                     }
                     hideSelection();
+                    unselectTopNavButtons();
                     selectNavigation.reset();
                     currentSelectedPage = 'home';
                     currentSelectedID = null;
@@ -104,6 +107,7 @@ this.jks = this.jks || {};
                 //console.log('onIconSelect', selectionID);
                 if (currentSelectedPage != 'slides') {
                     currentSelectedPage = 'slides';
+                    unselectTopNavButtons();
                 }
                 if (selectionID != currentSelectedID) {
                     if (jks.Config.getDeviceType() == 'mobile' && device.landscape()) {
@@ -120,10 +124,6 @@ this.jks = this.jks || {};
             var navVisible = false;
 
             navTopContainer = new PIXI.Container();
-            //navTopContainer.pivot.x = 0;
-            //navTopContainer.pivot.y = 0;
-            //navTopContainer.x = jks.View.getScreenWidth();
-            //navTopContainer.y = jks.View.getScreenHeight() + 30;
             _scope.container.addChild(navTopContainer);
 
             console.log(navTopContainer.position);
@@ -139,8 +139,9 @@ this.jks = this.jks || {};
                 for (var i = 0; i < config.navigationData.menue.length; i++) {
                     //console.log('create Top!', i);
 
-                    var topNavButton = new jks.TopNavButton(config.navigationData.menue[i]);
+                    var topNavButton = new jks.TopNavButton(config.navigationData.menue[i], i);
                     topNavButton.container.x = compWidth;
+                    topNavButton.container.id = i;
                     topNavButton.s.onTap.add(onPageNavSelect)
                     //compWidth += topNavButton.getWidth() + margin;
                     compWidth += topNavButton.container.width;
@@ -156,23 +157,51 @@ this.jks = this.jks || {};
 
                 initMobileNavToogle();
                 initSelectionToggleButton();
-
+                //generateSelectedPageText();
 
             }
 
-            function onPageNavSelect(id) {
+            // TODO? ... delete
+            function generateSelectedPageText() {
+                _scope.selectedPageText = new PIXI.Text('impressum', {
+                    fontFamily: 'Linotype Feltpen W01 Medium',
+                    fontSize: 20,
+                    fill: jks.Config.getColor('blue'),
+                    align: 'right'
+                });
 
-                //currentSelectedPage = id;
+                _scope.selectedPageText.y = 15;
+                _scope.selectedPageText.x = 150 -_scope.selectedPageText.width;
 
-                if (currentSelectedPage != id) {
-                    currentSelectedPage = id;
-                    //console.log('>>>', currentSelectedPage)
+                //navTopContainer.addChild( _scope.selectedPageText);
+            }
+
+            function onPageNavSelect(selectionID, id) {
+
+
+                if (currentSelectedPage != selectionID) {
+                    console.log('onPageNavSelect', id)
+
+                    currentSelectedPage = selectionID;
+
+                    unselectTopNavButtons();
+                    _scope.topNavButtons[id].container.getChildAt(1).style.fontWeight = 'bolder';
+                    _scope.topNavButtons[id].container.getChildAt(2).alpha = 1;
+
                     selectNavigation.reset();
                     currentSelectedID = null;
                     if (isMobile) {
                         hideNav()
                     }
-                    _scope.s.onPageNavSelect.dispatch(id);
+                    _scope.s.onPageNavSelect.dispatch(selectionID);
+                }
+            }
+
+
+            function unselectTopNavButtons() {
+                for (var i = 0; i < _scope.topNavButtons.length; i++) {
+                    _scope.topNavButtons[i].container.getChildAt(1).style.fontWeight = 'normal';
+                    _scope.topNavButtons[i].container.getChildAt(2).alpha = 0;
                 }
             }
 
@@ -336,13 +365,6 @@ this.jks = this.jks || {};
             }
 
 
-            function changeSelectionMode() {
-                //console.log('changeSelectionMode');
-                for (var i = 0; i < selectButtons.length; i++) {
-                    selectButtons[i].changeSelectionMode('mode');
-                }
-            }
-
             /*--------------------------------------------
              ~ THUMB NAV TOGGLE
              --------------------------------------------*/
@@ -445,7 +467,6 @@ this.jks = this.jks || {};
             }
 
 
-
             /*--------------------------------------------
              ~ PUBLIC
              --------------------------------------------*/
@@ -465,9 +486,9 @@ this.jks = this.jks || {};
 
                 selectNavigation.switchMobile();
 
-                navSelectIcon.x = 180;
+                navSelectIcon.x = 200;
                 navSelectIcon.y = 10;
-                navToggleIcon.x = 235;
+                navToggleIcon.x = 255;
 
                 isSwitching = false;
                 isMobile = true;
@@ -514,7 +535,9 @@ this.jks = this.jks || {};
                 console.log('navigation - onOrientationChange');
 
                 if (jks.Config.getDeviceType() == 'mobile') {
-                    if (currentSelectedPage != 'home') hideSelection(true);
+                    if (currentSelectedPage != 'home') {
+                        hideSelection(true);
+                    }
                     TweenLite.delayedCall(.1, selectNavigation.onOrientationChange);
 
                     if (device.portrait()) {
@@ -587,13 +610,13 @@ this.jks = this.jks || {};
 
                 if (jks.Config.getDeviceType() == 'mobile') {
 
-                    navTopContainer.x = jks.View.getScreenWidth() - navTop.width - 10;
+                    navTopContainer.x = jks.View.getScreenWidth() - navTop.width;
                     navTopContainer.y = 5;
 
                 } else {
 
-                    navTopContainer.x = jks.View.getScreenWidth() - navTop.width - 10;
-                    navTopContainer.y = 5;
+                    navTopContainer.x = jks.View.getScreenWidth() - navTop.width - 15;
+                    navTopContainer.y = 10;
 
                 }
 

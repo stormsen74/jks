@@ -18,9 +18,9 @@ this.jks = this.jks || {};
 
     var view, navigation, router;
     var pageHome;
-    var pageVita;
+    var pageManager;
 
-    var currentActivePage;
+    var currentActivePageID = 'home';
 
     var isSlideLoader = false;
 
@@ -74,7 +74,9 @@ this.jks = this.jks || {};
             navigation.s.navEvent.add(onNavEvent);
 
             pageHome = new jks.PageHome(config, shader);
-            pageVita = new jks.PageVita(config, shader);
+            pageManager = new jks.PageManager(config, shader);
+
+            TweenLite.set('.content', {borderRadius: '5px 0 0 0'})
 
             addToDisplay();
 
@@ -82,7 +84,7 @@ this.jks = this.jks || {};
 
         function addToDisplay() {
             view.containerPages.addChild(pageHome.container);
-            view.containerPages.addChild(pageVita.container);
+            view.containerPages.addChild(pageManager.container);
             view.containerNavigation.addChild(navigation.container)
             TweenLite.delayedCall(.1, view.resizeScreen);
         }
@@ -94,7 +96,7 @@ this.jks = this.jks || {};
         function onViewReady() {
 
             pageHome.show();
-            currentActivePage = pageHome;
+            currentActivePageID = 'home';
             navigation.wakeUp();
             TweenLite.delayedCall(1.5, function () {
                 navigation.show();
@@ -106,22 +108,24 @@ this.jks = this.jks || {};
 
             navigation.updateView();
             pageHome.updateView();
-            pageVita.updateView();
+            pageManager.updateView();
 
         }
 
         function onOrientationChange(orientation) {
-            console.log('onOrientationChange', currentActivePage)
+            console.log('onOrientationChange', currentActivePageID)
             navigation.onOrientationChange(orientation);
-            currentActivePage.onOrientationChange();
+            if (currentActivePageID == 'home') {
+                pageHome.onOrientationChange();
+            }
         }
 
         function switchMode(isMobile) {
             navigation.switchMode(isMobile);
 
-            if (jks.Navigation.getCurrentSelectedPage() == 'vita') {
-                pageVita.switchMode(isMobile);
-            }
+            //if (jks.Navigation.getCurrentSelectedPage() == 'vita') {
+            pageManager.switchMode(isMobile);
+            //}
 
         }
 
@@ -138,27 +142,85 @@ this.jks = this.jks || {};
             console.log('viewPage', id);
 
             view.s.onThumbNavigationShow.remove(onThumbNavigationShow);
+            jks.SelectNavigation.setButtonColors('default');
 
             switch (id) {
                 case 'slides':
-                    currentActivePage.hide();
+                    currentActivePageID = 'slides';
+
+                    pageManager.hide();
+                    pageManager.blendOut();
                     pageHome.hide();
 
                     view.s.onThumbNavigationShow.add(onThumbNavigationShow);
                     break;
                 case 'home':
-                    currentActivePage.hide();
-                    currentActivePage = pageHome;
+                    currentActivePageID = 'home';
+
+                    pageManager.hide();
+                    pageManager.blendOut();
+                    //currentActivePage = pageHome;
                     pageHome.show();
                     TweenLite.delayedCall(1.5, navigation.show);
                     navigation.s.onKeyDownEvent.remove(onKeyDown);
                     break;
                 case 'vita':
-                    currentActivePage = pageVita;
-                    currentActivePage.show();
+                    hideContent()
+                    currentActivePageID = 'vita';
+                    showCurrentContent()
+
                     navigation.hide();
+
+                    pageManager.show();
+                    pageManager.blendIn();
+                    break;
+                case 'kontakt':
+                    hideContent()
+                    currentActivePageID = 'kontakt';
+                    showCurrentContent()
+
+                    navigation.hide();
+
+                    pageManager.show();
+                    pageManager.blendIn();
+                    break;
+                case 'impressum':
+                    hideContent()
+                    currentActivePageID = 'impressum';
+                    showCurrentContent()
+
+                    navigation.hide();
+
+                    pageManager.show();
+                    pageManager.blendIn();
+                    break;
+                case 'aktuelles':
+                    hideContent()
+                    currentActivePageID = 'aktuelles';
+                    showCurrentContent()
+
+                    navigation.hide();
+
+                    pageManager.show();
+                    pageManager.blendOut();
+                    pageHome.show();
                     break;
             }
+        }
+
+        var content_blocks = ['#content_vita', '#content_kontakt', '#content_impressum', '#content_aktuelles']
+
+        function hideContent() {
+
+            content_blocks.forEach(function (selector) {
+                TweenLite.set(selector, {display: 'none', opacity: 0})
+            });
+
+        }
+
+        function showCurrentContent() {
+            var selector = '#content_' + currentActivePageID
+            TweenLite.set(selector, {display: 'block', opacity: 1})
         }
 
         /*--------------------------------------------
@@ -193,10 +255,10 @@ this.jks = this.jks || {};
             if (jks.Navigation.getCurrentSelectedPage() != 'home' && jks.Navigation.getCurrentSelectedPage() != 'slides') {
                 switch (type) {
                     case 'selectionVisible':
-                        bool ? pageVita.hideContent() : pageVita.showContent();
+                        bool ? pageManager.hideContent() : pageManager.showContent();
                         break;
                     case 'navVisible':
-                        bool ? pageVita.hideContent() : pageVita.showContent();
+                        bool ? pageManager.hideContent() : pageManager.showContent();
                         break;
                 }
             }
@@ -261,5 +323,9 @@ this.jks = this.jks || {};
     }
 
     jks.Controller = Controller;
+
+    jks.Controller.getCurrentActivePageID = function () {
+        return currentActivePageID;
+    }
 
 }());

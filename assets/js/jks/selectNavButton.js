@@ -57,16 +57,17 @@ this.jks = this.jks || {};
 
         var light_blue = jks.Config.getColor('light_blue');
         var blue = jks.Config.getColor('blue');
-        var white =  0x75dada
+        var white = 0x75dada
 
         var colors = {
-            'mobile_portrait': [blue, blue, light_blue, white, white]
+            'home_portrait': [blue, light_blue, light_blue, white, white],
+            'home_landscape': [white, white, white, white, white],
+            'default': [blue, blue, blue, blue, blue]
         }
 
 
-        this.setTextColor = function () {
-            this.textField.style.fill = colors.mobile_portrait[selectionID];
-            console.log(selectionID);
+        this.setTextColor = function (type) {
+            this.textField.style.fill = colors[type][selectionID];
         }
 
         var sprite = new PIXI.Container();
@@ -106,7 +107,7 @@ this.jks = this.jks || {};
 
 
         this.switchDefault = function () {
-            console.log('switchDefault')
+            //console.log('switchDefault')
             jks.Config.getDeviceType() == 'mobile' ? _scale = .37 : _scale = .45;
             sprite.scale.x = sprite.scale.y = _scale;
 

@@ -34,9 +34,9 @@ this.jks = this.jks || {};
         for (var i = 0; i < config.numPages; i++) {
 
             var select_btn = new jks.SelectNavButton(jks.DataHandler.getAssetByID(config.pages[i].category).src, config.pages[i].categoryText, i)
-            console.log('create Button!-', i, config.pages[i].categoryText)
+            //console.log('create Button!-', i, config.pages[i].categoryText)
 
-            select_btn.container.alpha = 1;
+            select_btn.container.alpha = 0;
             select_btn.s.onTapSelect.add(onTap);
 
             select_btn.container.x -= select_btn.getRealImgWidth();
@@ -48,9 +48,6 @@ this.jks = this.jks || {};
         }
 
 
-        setButtonColors();
-
-
         function onTap(selectionID) {
             _scope.s.onTap.dispatch(selectionID);
             for (var i = 0; i < _scope.buttons.length; i++) {
@@ -60,11 +57,19 @@ this.jks = this.jks || {};
         }
 
 
-        function setButtonColors() {
+        this.setButtonColors = function (type) {
             for (var i = 0; i < _scope.buttons.length; i++) {
-                _scope.buttons[i].setTextColor();
+                _scope.buttons[i].setTextColor(type);
             }
         }
+
+        if (jks.Config.getDeviceType() == 'mobile') {
+            device.portrait() ? _scope.setButtonColors('home_portrait') : _scope.setButtonColors('home_landscape')
+        } else {
+            _scope.setButtonColors('home_portrait');
+        }
+
+        //_scope.setButtonColors('mobile_portrait');
 
 
         this.reset = function () {
@@ -227,5 +232,9 @@ this.jks = this.jks || {};
     }
 
     jks.SelectNavigation = SelectNavigation;
+
+    jks.SelectNavigation.setButtonColors = function (type) {
+        _scope.setButtonColors(type);
+    }
 
 }());
