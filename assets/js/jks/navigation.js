@@ -251,22 +251,23 @@ this.jks = this.jks || {};
                 navVisible = false;
                 mobileNavCloseIcon.visible = false;
                 mobileNavToggleIcon.visible = true;
+
+                /*--------------------------------------------
+                 ~ TOP NAV BUTTONS
+                 --------------------------------------------*/
                 for (var i = 0; i < _scope.topNavButtons.length; i++) {
                     TweenLite.killTweensOf(_scope.topNavButtons[i].container);
-                    TweenLite.set(_scope.topNavButtons[i].container, {alpha: .3})
-
-                    // _scope.topNavButtons[i].s.onTap.remove(onPageNavSelect)
-                    _scope.topNavButtons[i].container.interactive = false;
-                    _scope.topNavButtons[i].container.buttonMode = false;
-                    // _scope.topNavButtons[i].container.visible = false;
-
+                    TweenLite.set(_scope.topNavButtons[i].container, {alpha: 0})
+                    _scope.topNavButtons[i].container.visible = false;
                 }
+
                 if (jks.Config.getDeviceType() == 'mobile' && device.landscape()) {
                     thumbNavToggleIcon.visible = true;
                 }
             }
 
             function showNav() {
+                console.log('show NAv!')
                 hideSelection();
                 if (!isSwitching) {
                     jks.View.showOverlay();
@@ -274,16 +275,23 @@ this.jks = this.jks || {};
                 navVisible = true;
                 mobileNavToggleIcon.visible = false;
                 mobileNavCloseIcon.visible = true;
+
+                /*--------------------------------------------
+                 ~ TOP NAV BUTTONS
+                 --------------------------------------------*/
+                var compHeight = 0;
                 for (var i = 0; i < _scope.topNavButtons.length; i++) {
                     TweenLite.killTweensOf(_scope.topNavButtons[i].container);
+                    _scope.topNavButtons[i].container.visible = true;
+                    // set Positions again!
+                    _scope.topNavButtons[i].switchMobile();
+                    _scope.topNavButtons[i].container.x = 140;
+                    _scope.topNavButtons[i].container.y = 50 + compHeight;
+                    compHeight += _scope.topNavButtons[i].container.height;
+
                     TweenLite.to(_scope.topNavButtons[i].container, .5, {alpha: 1, delay: i * .1});
-
-                    // _scope.topNavButtons[i].s.onTap.add(onPageNavSelect)
-                    _scope.topNavButtons[i].container.interactive = true;
-                    _scope.topNavButtons[i].container.buttonMode = true;
-                    // _scope.topNavButtons[i].container.visible = true;
-
                 }
+
                 if (jks.Config.getDeviceType() == 'mobile' && device.landscape()) {
                     thumbNavToggleIcon.visible = false;
                 }
