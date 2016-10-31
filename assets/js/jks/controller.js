@@ -96,6 +96,7 @@ this.jks = this.jks || {};
         function onViewReady() {
 
             pageHome.show();
+            checkColors();
             currentActivePageID = 'home';
             navigation.wakeUp();
             TweenLite.delayedCall(1.5, function () {
@@ -116,7 +117,18 @@ this.jks = this.jks || {};
             console.log('onOrientationChange', currentActivePageID)
             navigation.onOrientationChange(orientation);
             if (currentActivePageID == 'home') {
-                pageHome.onOrientationChange();
+                //pageHome.onOrientationChange();
+                TweenLite.delayedCall(.1333, checkColors);
+            }
+        }
+
+        function checkColors() {
+            console.log('clrs', jks.Controller.getCurrentActivePageID())
+
+            if (jks.Config.getDeviceType() == 'mobile') {
+                device.portrait() ? jks.SelectNavigation.setButtonColors('home_portrait') : jks.SelectNavigation.setButtonColors('home_landscape')
+            } else {
+                jks.SelectNavigation.setButtonColors('home_portrait');
             }
         }
 
@@ -159,7 +171,7 @@ this.jks = this.jks || {};
 
                     pageManager.hide();
                     pageManager.blendOut();
-                    //currentActivePage = pageHome;
+                    checkColors();
                     pageHome.show();
                     TweenLite.delayedCall(1.5, navigation.show);
                     navigation.s.onKeyDownEvent.remove(onKeyDown);

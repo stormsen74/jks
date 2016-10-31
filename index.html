@@ -211,7 +211,7 @@
         }
 
         .weight400 {
-            font-weight: 400;;
+            font-weight: 400;
         }
 
         .no-phone {
@@ -278,7 +278,8 @@
 
     <div class="page" id="content_impressum">
 
-        <div class="text"><span class="bold italic">Inhaber: &nbsp;&nbsp;</span><span class="italic">Julia Kintrup</span></div>
+        <div class="text"><span class="bold italic">Inhaber: &nbsp;&nbsp;</span><span
+                class="italic">Julia Kintrup</span></div>
         <div class="text"><span class="bold italic">Adresse: &nbsp;&nbsp;</span></div>
         <div class="text italic" style="padding-top: 5px">
             Atelier Goldfrische<br/>
@@ -297,7 +298,8 @@
         <div style="height: 10px"></div>
         <div class="text"><span class="bold italic">Grafik: &nbsp;&nbsp;</span><span class="italic">a.hollmann@grafik-design-illustration.de</span>
         </div>
-        <div class="text"><span class="bold italic">Texte: &nbsp;&nbsp;</span><span class="italic">Julia Kintrup</span></div>
+        <div class="text"><span class="bold italic">Texte: &nbsp;&nbsp;</span><span class="italic">Julia Kintrup</span>
+        </div>
         <div class="text"><span class="bold italic">Fotos: &nbsp;&nbsp;</span><span
                 class="italic">Julia Kintrup, Klaus Teumer</span></div>
         <div class="text"><span class="bold italic">Entwicklung: &nbsp;&nbsp;</span><span class="italic">M. Sturm, micha@edit23.de</span>
@@ -336,9 +338,7 @@
 
         <div class="text"><span class="bold">Aktuelles: &nbsp;&nbsp;</span></div>
         <div class="text"><span class="weight400">31. 10. 2016: &nbsp;&nbsp;</span></div>
-        <div class="text italic" style="padding-top: 5px">
-            ... on progress<br/>
-        </div>
+        <div class="text italic" style="padding-top: 5px">... on progress<br/></div>
 
     </div>
 
@@ -432,6 +432,10 @@
             window['console']['log'] = function (v) {
                 document.getElementById('version').innerHTML += '<br/>' + v
             };
+        }
+
+        if (device.android()) {
+            TweenLite.set('.text', {fontWeight: 400})
         }
 
 
