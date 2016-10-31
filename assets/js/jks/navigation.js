@@ -178,7 +178,6 @@ this.jks = this.jks || {};
 
             function onPageNavSelect(selectionID, id) {
 
-
                 if (currentSelectedPage != selectionID) {
                     console.log('onPageNavSelect', id)
 
@@ -254,7 +253,13 @@ this.jks = this.jks || {};
                 mobileNavToggleIcon.visible = true;
                 for (var i = 0; i < _scope.topNavButtons.length; i++) {
                     TweenLite.killTweensOf(_scope.topNavButtons[i].container);
-                    TweenLite.set(_scope.topNavButtons[i].container, {alpha: 0, visible: false})
+                    TweenLite.set(_scope.topNavButtons[i].container, {alpha: .3})
+
+                    // _scope.topNavButtons[i].s.onTap.remove(onPageNavSelect)
+                    _scope.topNavButtons[i].container.interactive = false;
+                    _scope.topNavButtons[i].container.buttonMode = false;
+                    // _scope.topNavButtons[i].container.visible = false;
+
                 }
                 if (jks.Config.getDeviceType() == 'mobile' && device.landscape()) {
                     thumbNavToggleIcon.visible = true;
@@ -271,8 +276,13 @@ this.jks = this.jks || {};
                 mobileNavCloseIcon.visible = true;
                 for (var i = 0; i < _scope.topNavButtons.length; i++) {
                     TweenLite.killTweensOf(_scope.topNavButtons[i].container);
-                    TweenLite.set(_scope.topNavButtons[i].container, {visible: true});
                     TweenLite.to(_scope.topNavButtons[i].container, .5, {alpha: 1, delay: i * .1});
+
+                    // _scope.topNavButtons[i].s.onTap.add(onPageNavSelect)
+                    _scope.topNavButtons[i].container.interactive = true;
+                    _scope.topNavButtons[i].container.buttonMode = true;
+                    // _scope.topNavButtons[i].container.visible = true;
+
                 }
                 if (jks.Config.getDeviceType() == 'mobile' && device.landscape()) {
                     thumbNavToggleIcon.visible = false;
