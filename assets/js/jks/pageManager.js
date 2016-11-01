@@ -147,14 +147,14 @@ this.jks = this.jks || {};
                 }
 
                 if (jks.Config.getDeviceType() == 'desktop') {
-                    if( _scope.mobileSwitch) {
+                    if (_scope.mobileSwitch) {
                         TweenLite.set($content, {top: jks.View.getScreenHeight() * .15});
                         $content.style.width = jks.View.getScreenWidth() * .65 + 'px';
-                        //$content.style.height = jks.View.getScreenHeight() - 100 + 'px';
+                        $content.style.height = jks.View.getScreenHeight() - jks.View.getScreenHeight() * .15 + 'px';
                     } else {
                         TweenLite.set($content, {top: jks.View.getScreenHeight() * .15});
                         $content.style.width = jks.View.getScreenWidth() * .45 + 'px';
-                        //$content.style.height = jks.View.getScreenHeight() - 100 + 'px';
+                        $content.style.height = jks.View.getScreenHeight() - jks.View.getScreenHeight() * .15 + 'px';
                     }
                 }
 

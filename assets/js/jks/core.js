@@ -23,7 +23,8 @@ this.jks = this.jks || {};
 
             console.log('init => core');
 
-            var _jsonLoader = new createjs.JSONLoader("assets/js/jks/content.json");
+            var _jsonLoader = new createjs.JSONLoader("assets/js/bin/content.json");
+            //var _jsonLoader = new createjs.JSONLoader("assets/js/jks/content.json");
             _jsonLoader.addEventListener("complete", onJSONLoaded);
             _jsonLoader.load();
 

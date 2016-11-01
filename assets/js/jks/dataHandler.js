@@ -18,7 +18,6 @@ this.jks = this.jks || {};
 
     var _loader;
     var _assetLoader;
-    var _loadingAssets = []
     var _loadingContent = []
 
     function DataHandler(config) {
@@ -53,7 +52,7 @@ this.jks = this.jks || {};
             }
 
 
-            TweenLite.delayedCall(.05, function () {
+            TweenLite.delayedCall(.0333, function () {
                 _scope.s.onDataHandlerReady.dispatch();
             });
         }
@@ -83,7 +82,8 @@ this.jks = this.jks || {};
             }
         }
 
-        PIXI.loader.add('shader', 'assets/js/jks/filters/treshold.frag');
+        PIXI.loader.add('shader', 'assets/js/bin/filters/treshold.frag');
+        //PIXI.loader.add('shader', 'assets/js/jks/filters/treshold.frag');
         PIXI.loader.once('complete', onLoaded);
         function loadShaderData() {
             PIXI.loader.load();

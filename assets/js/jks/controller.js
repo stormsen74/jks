@@ -56,7 +56,7 @@ this.jks = this.jks || {};
 
             //return
 
-            router = new jks.Router();
+            //router = new jks.Router();
 
 
             view = new jks.View(config, shader);
