@@ -2,10 +2,6 @@
  * Created by STORMSEN on 12.08.2016.
  */
 
-/**
- * Created by STORMSEN on 12.08.2016.
- */
-
 
 
 
@@ -82,8 +78,13 @@ this.jks = this.jks || {};
             }
         }
 
-        PIXI.loader.add('shader', 'assets/js/bin/filters/treshold.frag');
-        //PIXI.loader.add('shader', 'assets/js/jks/filters/treshold.frag');
+
+        if (jks.Core.releaseMode()) {
+            PIXI.loader.add('shader', 'assets/js/bin/filters/treshold.frag');
+        } else {
+            PIXI.loader.add('shader', 'assets/js/jks/filters/treshold.frag');
+        }
+
         PIXI.loader.once('complete', onLoaded);
         function loadShaderData() {
             PIXI.loader.load();
@@ -124,7 +125,7 @@ this.jks = this.jks || {};
 
                 // delayed dispatch / maybe bugfix?
                 //TweenLite.delayedCall(.1, _scope.s.onSlideLoaded.dispatch, [pageID])
-                 _scope.s.onSlideLoaded.dispatch(pageID);
+                _scope.s.onSlideLoaded.dispatch(pageID);
 
             }
 

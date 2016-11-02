@@ -128,8 +128,12 @@ this.jks = this.jks || {};
             if (jks.Config.getDeviceType() == 'mobile') {
                 device.portrait() ? jks.SelectNavigation.setButtonColors('home_portrait') : jks.SelectNavigation.setButtonColors('home_landscape')
             } else {
-                jks.SelectNavigation.setButtonColors('home_portrait');
+                jks.SelectNavigation.setButtonColors('desk_landscape');
             }
+
+            //if (jks.Config.getDeviceType() != 'mobile') {
+            //    !isMobile ? jks.SelectNavigation.setButtonColors('desk_landscape') : jks.SelectNavigation.setButtonColors('home_portrait');
+            //}
         }
 
         function switchMode(isMobile) {
@@ -139,10 +143,16 @@ this.jks = this.jks || {};
             pageManager.switchMode(isMobile);
             //}
 
+            if (jks.Config.getDeviceType() != 'mobile') {
+                !isMobile ? jks.SelectNavigation.setButtonColors('desk_landscape') : jks.SelectNavigation.setButtonColors('home_portrait');
+            }
+
         }
 
         function onThumbNavigationShow(show, height) {
-            navigation.thumbNavigationShow(show, height);
+            navigation.thumbNavigationShow(show, height) ?
+                jks.SelectNavigation.setButtonColors('home_landscape') :
+                jks.SelectNavigation.setButtonColors('home_portrait')
         }
 
         /*--------------------------------------------

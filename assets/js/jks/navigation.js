@@ -680,7 +680,7 @@ this.jks = this.jks || {};
 
             generateTopNavigtion();
             generateSelectNavigation();
-            hideSelection();
+            //hideSelection();
             if (jks.Config.getDeviceType() == 'mobile') {
                 initThumbNavToogle();
             }

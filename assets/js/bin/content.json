@@ -1,0 +1,370 @@
+[
+  {
+    "pages": [
+      {
+        "category": "meeresrauschen",
+        "categoryText": "Meeresrauschen",
+        "itemsLoaded": false,
+        "items": [
+          {
+            "img": {
+              "src": "assets/img/01_meeresrauschen/01.jpg",
+              "id": "img_meeresrauschen_01"
+            },
+            "type": "Ketten",
+			"description": "925er Silber, Feingold,\nZuchtperlen, Türkis,\nSodalith, Amazonith"
+          },
+          {
+            "img": {
+              "src": "assets/img/01_meeresrauschen/02.jpg",
+              "id": "img_meeresrauschen_02"
+            },
+            "type": "Ring Seeigel",
+            "description": "585er Gold\nTurmalin"
+          },
+          {
+            "img": {
+              "src": "assets/img/01_meeresrauschen/03.jpg",
+              "id": "img_meeresrauschen_03"
+            },
+            "type": "Ringe Seeigel",
+            "description": "925er Silber\n585er Goldfassung\nGranat/Topas"
+          },
+          {
+            "img": {
+              "src": "assets/img/01_meeresrauschen/04.jpg",
+              "id": "img_meeresrauschen_04"
+            },
+            "type": "Ring",
+            "description": "925er Silber\nZuchtperle\nNapfmuschel"
+          },
+          {
+            "img": {
+              "src": "assets/img/01_meeresrauschen/05.jpg",
+              "id": "img_meeresrauschen_05"
+            },
+            "type": "Ohrhänger",
+            "description": "Seeglas\n925er Silber\nFeingold"
+          },
+          {
+            "img": {
+              "src": "assets/img/01_meeresrauschen/06.jpg",
+              "id": "img_meeresrauschen_06"
+            },
+            "type": "Anhänger",
+            "description": "Seeglas\n925er Silber\n585er Gold"
+          },
+          {
+            "img": {
+              "src": "assets/img/01_meeresrauschen/07.jpg",
+              "id": "img_meeresrauschen_07"
+            },
+            "type": "Ringe",
+            "description": "Strandkiesel\n925er Silber"
+          },
+          {
+            "img": {
+              "src": "assets/img/01_meeresrauschen/08.jpg",
+              "id": "img_meeresrauschen_08"
+            },
+            "type": "Seeigelfragment",
+            "description": "925er Silber\nStahlseide"
+          },
+          {
+            "img": {
+              "src": "assets/img/01_meeresrauschen/09.jpg",
+              "id": "img_meeresrauschen_09"
+            },
+            "type": "Ring",
+            "description": "Strandkiesel\n925er Silber"
+          }
+        ]
+      },
+      {
+        "category": "fragmente",
+        "categoryText": "Fragmente",
+        "itemsLoaded": false,
+        "items": [
+          {
+            "img": {
+              "src": "assets/img/02_fragmente/01.jpg",
+              "id": "img_fragmente_01"
+            },
+            "type": "Ringe",
+            "description": "Ringe\n925er Silber\nPorzellan alt\nZuchtperlen"
+          },
+          {
+            "img": {
+              "src": "assets/img/02_fragmente/02.jpg",
+              "id": "img_fragmente_02"
+            },
+            "type": "offener Ring",
+            "description": "925er Silber\nFeingold\nPorzellan alt"
+          },
+          {
+            "img": {
+              "src": "assets/img/02_fragmente/03.jpg",
+              "id": "img_fragmente_03"
+            },
+            "type": "Armreif",
+            "description": "925er Silber\nPorzellan alt\nZuchtperlen"
+          },
+          {
+            "img": {
+              "src": "assets/img/02_fragmente/04.jpg",
+              "id": "img_fragmente_04"
+            },
+            "type": "...",
+            "description": "..."
+          }
+        ]
+      },
+      {
+        "category": "entschaerft",
+        "categoryText": "Entschärft",
+        "itemsLoaded": false,
+        "items": [
+          {
+            "img": {
+              "src": "assets/img/03_entschaerft/01.jpg",
+              "id": "img_entschaerft_01"
+            },
+            "type": "Anhänger",
+            "description": "585er Gold\nPatronenkappe\nZuchtperle"
+          },
+          {
+            "img": {
+              "src": "assets/img/03_entschaerft/02.jpg",
+              "id": "img_entschaerft_02"
+            },
+            "type": "Ring",
+            "description": "585er Gold\nchwarzer Diamant\nPatronenkappe"
+          },
+          {
+            "img": {
+              "src": "assets/img/03_entschaerft/03.jpg",
+              "id": "img_entschaerft_03"
+            },
+            "type": "Ringe",
+            "description": "925er Silber\n585er Goldfassung\nDiamant weiß/schwarz\nPatronenkappe"
+          },
+          {
+            "img": {
+              "src": "assets/img/03_entschaerft/04.jpg",
+              "id": "img_entschaerft_04"
+            },
+            "type": "Anhänger",
+            "description": "925er Silber\nPatronenkappe\nZuchtperle"
+          },
+          {
+            "img": {
+              "src": "assets/img/03_entschaerft/05.jpg",
+              "id": "img_entschaerft_05"
+            },
+            "type": "Orhänger",
+            "description": "925er Silber\nPatronenkappe\nZuchtperlen"
+          }
+        ]
+      },
+      {
+        "category": "trauringe",
+        "categoryText": "Trauringe",
+        "itemsLoaded": false,
+        "items": [
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/01.jpg",
+              "id": "img_trauringe_01"
+            },
+            "type": "Trau-/Partnerringe",
+            "description": "585er Gelb-/Weißgold\nDiamantbaguette"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/02.jpg",
+              "id": "img_trauringe_02"
+            },
+            "type": "Sandband",
+            "description": "585er Gold\nSeesandstruktur\nDiamant (Princess)"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/03.jpg",
+              "id": "img_trauringe_03"
+            },
+            "type": "Geschwungen",
+            "description": "585er Gold\nBrillant"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/04.jpg",
+              "id": "img_trauringe_04"
+            },
+            "type": "Sandkorn",
+            "description": "585er Gold\nSeesandstruktur\ngefaßtes Sandkorn"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/05.jpg",
+              "id": "img_trauringe_05"
+            },
+            "type": "",
+            "description": "585er Gold\nBrillant (champagnerfarben)"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/06.jpg",
+              "id": "img_trauringe_06"
+            },
+            "type": "",
+            "description": "590er Weißgold\norganische Struktur\nRubin"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/07.jpg",
+              "id": "img_trauringe_07"
+            },
+            "type": "",
+            "description": "590er Weißgold\nSeesandstruktur\nBrillant "
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/08.jpg",
+              "id": "img_trauringe_08"
+            },
+            "type": "",
+            "description": "590er Weißgold\nSeeglas"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/09.jpg",
+              "id": "img_trauringe_09"
+            },
+            "type": "",
+            "description": "590er Weißgold\ngereihte Brillanten"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/10.jpg",
+              "id": "img_trauringe_10"
+            },
+            "type": "Ying & Yang",
+            "description": "585er Rotgold\n590er Weißgold"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/11.jpg",
+              "id": "img_trauringe_11"
+            },
+            "type": "gestreift",
+            "description": "590er Weißgold\n585er Rotgold\nDiamant"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/12.jpg",
+              "id": "img_trauringe_12"
+            },
+            "type": "Verlobungs-/Partnerringe",
+            "description": "585er Gelbgold\n925er Silber\nBrillant"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/13.jpg",
+              "id": "img_trauringe_13"
+            },
+            "type": "Partnerringe",
+            "description": "925er Silber\n585er Gelb-/Weißgold\nTurmaline"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/14.jpg",
+              "id": "img_trauringe_14"
+            },
+            "type": "die Krönung",
+            "description": "925er Silber\n585er Gold\nRubin"
+          },
+          {
+            "img": {
+              "src": "assets/img/04_trauringe/15.jpg",
+              "id": "img_trauringe_15"
+            },
+            "type": "gekrönt",
+            "description": "925er Silber\n590er Weißgold"
+          }
+
+        ]
+      },
+      {
+        "category": "zeitlos",
+        "categoryText": "Zeitlos",
+        "itemsLoaded": false,
+        "items": [
+          {
+            "img": {
+              "src": "assets/img/05_zeitlos/01.jpg",
+              "id": "img_zeitlos_01"
+            },
+            "type": "Ring",
+            "description": "925er Silber\n585er Gold\nPrasiolith"
+          },
+          {
+            "img": {
+              "src": "assets/img/05_zeitlos/02.jpg",
+              "id": "img_zeitlos_02"
+            },
+            "type": "Ring",
+            "description": "585er Gold\nTurmalin"
+          },
+          {
+            "img": {
+              "src": "assets/img/05_zeitlos/03.jpg",
+              "id": "img_zeitlos_03"
+            },
+            "type": "Ring",
+            "description": "925er Silber\n590er Weißgold\nGranat"
+          },
+          {
+            "img": {
+              "src": "assets/img/05_zeitlos/04.jpg",
+              "id": "img_zeitlos_04"
+            },
+            "type": "Ringe",
+            "description": "925er Silber\n585er Gold\nRosenquarz/Amethyst"
+          },
+          {
+            "img": {
+              "src": "assets/img/05_zeitlos/05.jpg",
+              "id": "img_zeitlos_05"
+            },
+            "type": "kleiner Drache",
+            "description": "925er Silber\nFeingold\nRubin"
+          },
+          {
+            "img": {
+              "src": "assets/img/05_zeitlos/06.jpg",
+              "id": "img_zeitlos_06"
+            },
+            "type": "Ring",
+            "description": "925er Silber\n585er Gold\nAquamarin"
+          },
+          {
+            "img": {
+              "src": "assets/img/05_zeitlos/07.jpg",
+              "id": "img_zeitlos_07"
+            },
+            "type": "offener Ring",
+            "description": "925er Silber\nFeingold\nLapislazuli"
+          },
+          {
+            "img": {
+              "src": "assets/img/05_zeitlos/08.jpg",
+              "id": "img_zeitlos_08"
+            },
+            "type": "Ring",
+            "description": "925er Silber\n585er Gold\nDiamant"
+          }
+        ]
+      }
+    ]
+  }
+]

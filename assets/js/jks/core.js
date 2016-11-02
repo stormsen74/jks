@@ -14,6 +14,8 @@ this.jks = this.jks || {};
     var _dataHandler;
     var _controller;
 
+    var isRelease = false;
+
 
     function Core() {
         _scope = this;
@@ -23,8 +25,13 @@ this.jks = this.jks || {};
 
             console.log('init => core');
 
-            var _jsonLoader = new createjs.JSONLoader("assets/js/bin/content.json");
-            //var _jsonLoader = new createjs.JSONLoader("assets/js/jks/content.json");
+            var _jsonLoader;
+
+            if (isRelease) {
+                _jsonLoader = new createjs.JSONLoader("assets/js/bin/content.json");
+            } else {
+                _jsonLoader = new createjs.JSONLoader("assets/js/jks/content.json");
+            }
             _jsonLoader.addEventListener("complete", onJSONLoaded);
             _jsonLoader.load();
 
@@ -51,8 +58,12 @@ this.jks = this.jks || {};
     jks.Core = Core;
 
     // jks.Core.isMobile = function () {
-        //http://matthewhudson.me/projects/device.js/
-        // return device.mobile();
+    //http://matthewhudson.me/projects/device.js/
+    // return device.mobile();
     // }
+
+    jks.Core.releaseMode = function () {
+        return isRelease;
+    }
 
 }());
