@@ -135,11 +135,16 @@ this.jks = this.jks || {};
                     device.portrait() ? jks.SelectNavigation.setButtonColors('home_portrait') : jks.SelectNavigation.setButtonColors('home_landscape')
                 }
             } else {
-                if (!mobileMode) {
-                    jks.SelectNavigation.setButtonColors('desk_landscape');
+                if (currentActivePageID == 'home') {
+                    if (!mobileMode) {
+                        jks.SelectNavigation.setButtonColors('desk_landscape');
+                    } else {
+                        jks.SelectNavigation.setButtonColors('home_portrait');
+                    }
                 } else {
-                    jks.SelectNavigation.setButtonColors('home_portrait');
+                    jks.SelectNavigation.setButtonColors('default');
                 }
+
             }
 
         }

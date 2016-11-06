@@ -132,21 +132,6 @@ this.jks = this.jks || {};
 
         }
 
-        //this.onOrientationChange = function () {
-        //    console.log('pageHome - onOrientationChange');
-        //    TweenLite.delayedCall(.1, checkColors);
-        //};
-        //
-        //function checkColors() {
-        //    console.log(jks.Controller.getCurrentActivePageID())
-        //    if (jks.Config.getDeviceType() == 'mobile' && jks.Controller.getCurrentActivePageID() == 'home') {
-        //        device.portrait() ? jks.SelectNavigation.setButtonColors('home_portrait') : jks.SelectNavigation.setButtonColors('home_landscape')
-        //    } else {
-        //        jks.SelectNavigation.setButtonColors('home_portrait');
-        //    }
-        //}
-
-
         this.show = function () {
             blendIn();
             //checkColors();
