@@ -45,6 +45,7 @@ this.jks = this.jks || {};
 
 
         TweenLite.delayedCall(.3, initTresholdFilter);
+        //initTresholdFilter
 
         /*--------------------------------------------
          ~ TRANSITION / FILTERS
@@ -71,11 +72,15 @@ this.jks = this.jks || {};
             _tresholdFilter.uniforms.offset.x = 1;
             _background.filters = [_tresholdFilter];
 
+            _scope.updateView();
         }
 
         function blendIn() {
             if (!_background.visible) _background.visible = true;
             _scope.container.visible = true;
+
+            _scope.updateView();
+
             // smart delay to get correct resize!
             TweenLite.delayedCall(.1, function () {
                 _scope.updateView();

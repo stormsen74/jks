@@ -79,6 +79,7 @@ this.jks = this.jks || {};
         }
 
 
+
         if (jks.Core.releaseMode()) {
             PIXI.loader.add('shader', 'assets/js/bin/filters/treshold.frag');
         } else {
@@ -91,6 +92,7 @@ this.jks = this.jks || {};
         }
 
         function onLoaded(loader, res) {
+            console.log('shader laoded')
             _scope.s.onAssetsLoaded.dispatch(res.shader.data);
         }
 

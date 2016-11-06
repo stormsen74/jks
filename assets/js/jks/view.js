@@ -72,17 +72,17 @@ this.jks = this.jks || {};
         /*--------------------------------------------
          ~ DEV-STUFF
          --------------------------------------------*/
-        if (config.debug) {
-            _stats = new Stats();
-            _stats.setMode(0); // 0: fps, 1: ms
-
-            document.body.appendChild(_stats.domElement);
-
-            _stats.domElement.style.position = 'absolute';
-
-            _stats.domElement.style.left = '0px';
-            _stats.domElement.style.top = '60px';
-        }
+        //if (config.debug) {
+        //    _stats = new Stats();
+        //    _stats.setMode(0); // 0: fps, 1: ms
+        //
+        //    document.body.appendChild(_stats.domElement);
+        //
+        //    _stats.domElement.style.position = 'absolute';
+        //
+        //    _stats.domElement.style.left = '0px';
+        //    _stats.domElement.style.top = '60px';
+        //}
 
         /*--------------------------------------------
          ~ LISTENER
@@ -596,7 +596,6 @@ this.jks = this.jks || {};
             _slideObject.slideNumImages = _config.pageData[_pageID].images.length;
             _slideObject.pageID = _pageID;
             _slideObject.configData = _config;
-            _slideObject.isActive = true;
 
 
             if (_slideObject.isCreated) {
@@ -605,8 +604,14 @@ this.jks = this.jks || {};
             } else {
                 _imgSpriteBack.texture = PIXI.Texture.fromImage(_slideObject.configData.pageData[_pageID].images[_slideObject.currentImage].src);
             }
-            _slideObject.isCreated = true;
 
+
+            _scope.resizeScreen();
+            TweenLite.delayedCall(.5, _scope.resizeScreen);
+            TweenLite.delayedCall(1, _scope.resizeScreen);
+
+            _slideObject.isActive = true;
+            _slideObject.isCreated = true;
 
             _textField.setCategory(_slideObject.configData.pageData[_pageID].categoryText);
             _textField.show();
@@ -615,6 +620,8 @@ this.jks = this.jks || {};
         }
 
         function transitionSwitch() {
+
+            console.log('transitionSwitch')
 
             _thumbNavigation.isLocked = true;
             if (_sideNavigation)_sideNavigation.isLocked = true;

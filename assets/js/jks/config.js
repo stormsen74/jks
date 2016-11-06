@@ -16,10 +16,11 @@ this.jks = this.jks || {};
     function Config(json) {
         _scope = this;
 
-        this.version = '0.7.3';
+        this.version = '0.7.4';
         this.device = '';
         this.debug = false;
         this.log = false;
+        console.log('v - ', _scope.version);
 
 
         _json = json;
@@ -53,6 +54,7 @@ this.jks = this.jks || {};
         }
 
         this.mobileSwitchWidth = 620;
+        this.navWidthStop = 1440;
 
 
         for (var i = 0; i < this.numPages; i++) {
@@ -77,6 +79,14 @@ this.jks = this.jks || {};
             {
                 "src": "assets/img/bg_vita.jpg",
                 "id": "bg_vita"
+            },
+            {
+                "src": "assets/img/navigation/logo_jk.png",
+                "id": "logo_jk"
+            },
+            {
+                "src": "assets/img/navigation/logo_text.png",
+                "id": "logo_text"
             },
             {
                 "src": "assets/img/navigation/side_nav_arrow.png",
@@ -125,6 +135,10 @@ this.jks = this.jks || {};
             {
                 "src": "assets/img/navigation/thumb_nav_arrow.png",
                 "id": "thumb_nav_arrow"
+            },
+            {
+                "src": "assets/img/fx/gradient_mask.jpg",
+                "id": "gradient_mask"
             }
         ];
 
@@ -155,6 +169,11 @@ this.jks = this.jks || {};
                 window.debugLog();
             }
         } else {
+
+        }
+
+
+        if (jks.Core.releaseMode()) {
             window.hideLog();
         }
 
@@ -194,6 +213,11 @@ this.jks = this.jks || {};
     jks.Config.mobileSwitchWidth = function () {
         return _scope.mobileSwitchWidth;
     }
+
+    jks.Config.getNavWidthStop = function () {
+        return _scope.navWidthStop;
+    }
+
 
     jks.Config.shaders = function () {
         return _scope.shaders;

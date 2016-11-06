@@ -18,6 +18,9 @@ this.jks = this.jks || {};
 
     var _logo;
 
+    var textMaskWidth = 700;
+    var currentDescription = '';
+
 
     function TextField() {
         _scope = this;
@@ -41,6 +44,7 @@ this.jks = this.jks || {};
             align: 'left'
         });
 
+
         //this.fieldCategory.x = 100;
 
         this.fieldType = new PIXI.Text('', {
@@ -50,6 +54,8 @@ this.jks = this.jks || {};
             fill: jks.Config.getColor('blue'),
             align: 'left'
         });
+
+
         this.fieldType.y = 30;
 
         this.fieldDescription = new PIXI.Text('', {
@@ -58,14 +64,16 @@ this.jks = this.jks || {};
             fill: jks.Config.getColor('blue'),
             align: 'left'
         });
+
+
         this.fieldDescription.y = 50;
 
         this.text = new PIXI.Container();
 
-
         this.text.addChild(this.fieldCategory)
         this.text.addChild(this.fieldType)
         this.text.addChild(this.fieldDescription)
+
 
         var tfLocked = true;
         TweenLite.delayedCall(1, function () {
@@ -78,6 +86,34 @@ this.jks = this.jks || {};
                 ease: Cubic.easeOut
             })
         }
+
+
+        var shadowDistance = 1.5;
+        //var shadowColor = 0x75dada;
+        var shadowColor = 0xffffff;
+        var shadowBlur = 0;
+
+        this.setShadow = function () {
+
+            this.fieldCategory.style.dropShadow = true;
+            this.fieldCategory.style.dropShadowDistance = shadowDistance;
+            this.fieldCategory.style.dropShadowColor = shadowColor;
+            this.fieldCategory.style.dropShadowBlur = shadowBlur;
+
+            this.fieldType.style.dropShadow = true;
+            this.fieldType.style.dropShadowDistance = shadowDistance;
+            this.fieldType.style.dropShadowColor = shadowColor;
+            this.fieldType.style.dropShadowBlur = shadowBlur;
+
+            this.fieldDescription.style.dropShadow = true;
+            this.fieldDescription.style.dropShadowDistance = shadowDistance;
+            this.fieldDescription.style.dropShadowColor = shadowColor;
+            this.fieldDescription.style.dropShadowBlur = shadowBlur;
+        }
+
+
+        //this.setShadow();
+
 
         this.updateView = function () {
 
@@ -97,7 +133,18 @@ this.jks = this.jks || {};
 
         }
 
-        _scope.container.addChild(this.text);
+
+        textMaskWidth = 700;
+        this.textMask = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID('gradient_mask').src);
+        this.textMask.x = 0;
+        this.container.addChild(this.text);
+        this.text.addChild(this.textMask)
+
+
+        //this.text.mask = this.textMask;
+        this.fieldType.mask = this.textMask;
+        this.fieldDescription.mask = this.textMask;
+
         _scope.updateView();
 
 
@@ -113,15 +160,40 @@ this.jks = this.jks || {};
 
         this.setText = function (item) {
 
-            //console.log(item.description)
+            console.log(':: setText')
 
-            _scope.fieldType.setText(item.type)
-            _scope.fieldDescription.setText(item.description);
+            if (item.type == '') {
+                _scope.fieldDescription.y = 30;
+            } else {
+                _scope.fieldDescription.y = 50;
+            }
 
-            // align right
-            //this.fieldDescription.style.align = 'right'
-            //this.fieldType.x = this.fieldCategory.width - this.fieldType.width;
-            //this.fieldDescription.x = this.fieldCategory.width - this.fieldDescription.width;
+            if(item.description!=currentDescription) {
+                TweenLite.to(_scope.textMask, .4, {
+                    alpha: 1,
+                    x: -textMaskWidth,
+                    ease: Cubic.easeIn,
+                    onComplete: setText
+                })
+            }
+
+
+
+
+            function setText() {
+                _scope.fieldType.setText(item.type)
+                _scope.fieldDescription.setText(item.description);
+                currentDescription = item.description;
+
+                TweenLite.to(_scope.textMask, 1.5, {
+                    delay: .3,
+                    alpha: 1,
+                    x: 0,
+                    ease: Sine.easeOut,
+                })
+
+                //TweenLite.to(_scope.text, .5, {delay: .3, alpha: 1, ease: Cubic.easeOut})
+            }
 
             _scope.updateView();
 

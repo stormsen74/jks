@@ -10,7 +10,7 @@ this.jks = this.jks || {};
 
         var _scope;
 
-        var logo, logo_text;
+        var logoSprite, logo_jk, logo_txt;
         var navTopContainer;
         var navToggleIcon, mobileNavToggleIcon, mobileNavCloseIcon;
         var navSelectIcon, selectNavToggleIconClosed, selectNavToggleIconOpen;
@@ -58,19 +58,27 @@ this.jks = this.jks || {};
             /*--------------------------------------------
              ~ LOGO / HOME BUTTON
              --------------------------------------------*/
+            logoSprite = new PIXI.Container();
+            logoSprite.interactive = true;
+            logoSprite.buttonMode = true;
+            logoSprite.visible = false;
+            logoSprite.alpha = 0;
 
-            logo = document.getElementById('jk-logo');
-            logo_text = document.getElementById('svg_logo_text');
-            logo.addEventListener('mousedown', onTapHome);
-            TweenLite.set(logo, {
-                    left: 15,
-                    top: 15
-                }
-            );
+            logo_jk = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID('logo_jk').src);
+            logo_txt = new PIXI.Sprite.fromImage(jks.DataHandler.getAssetByID('logo_text').src);
+            logo_txt.x = 120;
+
+            logoSprite.addChild(logo_jk);
+            logoSprite.addChild(logo_txt);
+
+            logoSprite.on('mousedown', onTapHome).on('touchstart', onTapHome);
+
+            this.container.addChild(logoSprite);
+
 
             this.wakeUp = function () {
-                TweenLite.set(logo, {display: 'block', opacity: 1});
-                //TweenLite.to(_logo, 1, { opacity: 1, ease: Sine.easeOut})
+                logoSprite.visible = true;
+                TweenLite.to(logoSprite, 2, {alpha: 1, ease: Sine.easeOut})
             };
 
 
@@ -171,7 +179,7 @@ this.jks = this.jks || {};
                 });
 
                 _scope.selectedPageText.y = 15;
-                _scope.selectedPageText.x = 150 -_scope.selectedPageText.width;
+                _scope.selectedPageText.x = 150 - _scope.selectedPageText.width;
 
                 //navTopContainer.addChild( _scope.selectedPageText);
             }
@@ -215,7 +223,7 @@ this.jks = this.jks || {};
                 navToggleIcon.buttonMode = true;
                 navToggleIcon.x = navTopContainer.width + 100;
                 navToggleIcon.y = 10;
-                navToggleIcon.visible = true;
+                navToggleIcon.visible = false;
                 navToggleIcon.on('mousedown', onToggleNav).on('touchstart', onToggleNav);
 
                 var icon = new PIXI.Graphics();
@@ -492,7 +500,7 @@ this.jks = this.jks || {};
             this.switchMobile = function () {
 
                 hideNav();
-                TweenLite.set(logo_text, {display: 'none'});
+                logo_txt.visible = false;
 
                 var compHeight = 0;
                 for (var i = 0; i < this.topNavButtons.length; i++) {
@@ -506,6 +514,8 @@ this.jks = this.jks || {};
 
                 navSelectIcon.x = 200;
                 navSelectIcon.y = 10;
+
+                navToggleIcon.visible = true;
                 navToggleIcon.x = 255;
 
                 isSwitching = false;
@@ -514,10 +524,11 @@ this.jks = this.jks || {};
 
 
             this.switchDefault = function () {
+                console.log('n::switchDefault')
 
                 showNav();
                 if (jks.Config.getDeviceType() != 'mobile') {
-                    TweenLite.set(logo_text, {display: 'block'});
+                    logo_txt.visible = true;
                 }
 
                 var compWidth = 0;
@@ -532,6 +543,8 @@ this.jks = this.jks || {};
 
                 navSelectIcon.x = -50;
                 navSelectIcon.y = 3;
+
+                navToggleIcon.visible = false;
                 navToggleIcon.x = navTopContainer.width + 100;
 
                 isSwitching = false;
@@ -597,31 +610,32 @@ this.jks = this.jks || {};
 
             var w, s, o;
             var minOffset = 15;
-            var maxOffset = 30;
+            var maxOffsetX = 60;
+            var maxOffsetY = 30;
             this.updateView = function () {
                 //return
                 w = jks.View.getScreenWidth();
                 if (w <= 768) {
-                    s = mathUtils.convertToRange(w, [0, 768], [.4, .7]);
-                    //_logo.x = _logo.y = minOffset;
-                    TweenLite.set(logo, {
-                            left: minOffset,
-                            top: minOffset
+                    s = mathUtils.convertToRange(w, [0, 768], [.35, .4]);
+                    TweenLite.set(logoSprite, {
+                            x: minOffset,
+                            y: minOffset
                         }
                     )
                 } else {
-                    s = .7;
-                    o = mathUtils.convertToRange(w, [728, 1200], [0, 1]);
-                    //_logo.x = _logo.y = minOffset + o * maxOffset;
-                    TweenLite.set(logo, {
-                            left: minOffset + o * maxOffset,
-                            top: minOffset + o * maxOffset
+                    //s = .6;
+                    s = Math.min(mathUtils.convertToRange(w, [768, 1440], [.4, .7]), .7);
+                    o = mathUtils.convertToRange(w, [768, 1440], [0, 1]);
+                    TweenLite.set(logoSprite, {
+                            x: minOffset + o * maxOffsetX,
+                            y: minOffset + o * maxOffsetY
                         }
                     )
                 }
 
-                TweenLite.set(logo, {
-                        width: s * 360
+                TweenLite.set(logoSprite.scale, {
+                        x: s,
+                        y: s
                     }
                 );
 
@@ -633,8 +647,12 @@ this.jks = this.jks || {};
 
                 } else {
 
-                    navTopContainer.x = jks.View.getScreenWidth() - navTop.width - 15;
                     navTopContainer.y = 10;
+                    if (jks.View.getScreenWidth() <= jks.Config.getNavWidthStop()) {
+                        navTopContainer.x = jks.View.getScreenWidth() - navTop.width - 15;
+                    } else {
+                        navTopContainer.x = jks.Config.getNavWidthStop() - navTop.width - 15;
+                    }
 
                 }
 

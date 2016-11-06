@@ -136,7 +136,7 @@ this.jks = this.jks || {};
                         $content.style.width = jks.View.getScreenWidth() - 100 + 'px';
                         $content.style.height = jks.View.getScreenHeight() - 100 + 'px';
                     } else if (jks.Config.getDeviceType() == 'tablet') {
-                        TweenLite.set($content, {top: jks.View.getScreenHeight() * .15});
+                        TweenLite.set($content, {top: jks.View.getScreenHeight() * .3});
                         $content.style.width = jks.View.getScreenWidth() * .7 + 'px';
                         $content.style.height = jks.View.getScreenHeight() - 100 + 'px';
                     }
@@ -148,11 +148,23 @@ this.jks = this.jks || {};
 
                 if (jks.Config.getDeviceType() == 'desktop') {
                     if (_scope.mobileSwitch) {
-                        TweenLite.set($content, {top: jks.View.getScreenHeight() * .15});
+                        TweenLite.set($content, {top: jks.View.getScreenHeight() * .2});
                         $content.style.width = jks.View.getScreenWidth() * .65 + 'px';
-                        $content.style.height = jks.View.getScreenHeight() - jks.View.getScreenHeight() * .15 + 'px';
+                        $content.style.height = jks.View.getScreenHeight() - jks.View.getScreenHeight() * .25 + 'px';
                     } else {
-                        TweenLite.set($content, {top: jks.View.getScreenHeight() * .15});
+                        if (jks.Controller.getCurrentActivePageID() == 'vita') {
+                            TweenLite.set($content, {top: jks.View.getScreenHeight() * .45});
+                            $content.style.maxWidth = 400 + 'px';
+                        } else if (jks.Controller.getCurrentActivePageID() == 'kontakt') {
+                            TweenLite.set($content, {top: jks.View.getScreenHeight() * .35});
+                            $content.style.maxWidth = 300 + 'px';
+                        } else if (jks.Controller.getCurrentActivePageID() == 'aktuelles') {
+                            TweenLite.set($content, {top: jks.View.getScreenHeight() * .35});
+                            $content.style.maxWidth = 300 + 'px';
+                        } else {
+                            TweenLite.set($content, {top: jks.View.getScreenHeight() * .25});
+                            $content.style.maxWidth = 450 + 'px';
+                        }
                         $content.style.width = jks.View.getScreenWidth() * .45 + 'px';
                         $content.style.height = jks.View.getScreenHeight() - jks.View.getScreenHeight() * .15 + 'px';
                     }
@@ -184,7 +196,7 @@ this.jks = this.jks || {};
                 _scope.switchMode(jks.View.isMobile());
                 _scope.updateView();
 
-                TweenLite.to($content, .2, {
+                TweenLite.to($content, 0, {
                     opacity: 0,
                     display: 'block',
                 })
