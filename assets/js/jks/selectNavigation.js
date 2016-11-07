@@ -201,13 +201,19 @@ this.jks = this.jks || {};
 
         }
 
+        var pos = [];
         this.show = function () {
             //_scope.container.visible = true;
             for (var i = 0; i < _scope.buttons.length; i++) {
+                //pos.push(_scope.buttons[i].container.position)
+                //_scope.buttons[i].container.x = 100;
                 //selectButtons[i].reactivate();
                 TweenLite.set(_scope.buttons[i].container, {visible: true, alpha: 0})
-                TweenLite.to(_scope.buttons[i].container, .2, {delay: i * .07, alpha: 1, ease: Expo.easeOut})
+                TweenLite.to(_scope.buttons[i].container, .3, {delay: i * .1, alpha: 1, ease: Sine.easeOut})
+                //TweenLite.to(_scope.buttons[i].container.position, .2, {delay: i * .1, x: 0, ease: Circ.easeOut})
             }
+
+            console.log(pos);
 
             TweenLite.killDelayedCallsTo(_scope.lock);
             _scope.unlock();

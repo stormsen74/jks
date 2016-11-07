@@ -1,0 +1,168 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+
+    -webkit-font-smoothing: antialiased;
+
+    font-family: "Linotype Feltpen W01 Medium" !important;
+
+    -webkit-text-size-adjust: 100%;
+}
+
+.disableSelect {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent; /* For some Androids */
+    outline: 0;
+}
+
+/*https://www.onlinewebfonts.com/*/
+@font-face {
+    font-family: "Linotype Feltpen W01 Medium";
+    src: url("../../assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.eot"); /* IE9*/
+    src: url("../../assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.eot?#iefix") format("embedded-opentype"),
+        /* IE6-IE8 */ url("../../assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.woff2") format("woff2"),
+        /* chrome、firefox */ url("../../assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.woff") format("woff"),
+        /* chrome、firefox */ url("../../assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.ttf") format("truetype"),
+        /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/ url("../../assets/fonts/7e1ab87ac403849d49bb8a60bf578ee7.svg#Linotype Feltpen W01 Medium") format("svg"); /* iOS 4.1- */
+}
+
+#version {
+    /*font-family: 'Ubuntu', sans-serif;*/
+    font-family: 'Consolas', sans-serif;
+    letter-spacing: 1.5px;
+
+    position: absolute;
+    width: 200px;
+    color: #5fdfdf;
+    font-size: 11px;
+    margin-left: 0px;
+    padding: 3px;
+    background-color: rgba(34, 46, 68, 0.65);
+    left: 0px;
+    top: 0px;
+    display: none;
+}
+
+#screen {
+    position: absolute;
+    background-color: #408080;
+}
+
+#preload {
+    position: absolute;
+    width: 0%;
+    background-color: #408080;
+}
+
+#progressBar {
+    position: absolute;
+    overflow: hidden;
+    width: 120px;
+    height: 60px;
+    left: 0px;
+    top: 0px;
+    display: none;
+}
+
+#jk {
+    position: absolute;
+    width: 120px;
+}
+
+.page {
+    position: relative;
+    display: none;
+    opacity: 0;
+}
+
+.content {
+    position: absolute;
+    color: #408080;
+    padding: 15px 15px 100px 15px;
+    background-color: rgba(255, 255, 255, 0.6);
+    right: 0px;
+    top: 70px;
+    max-width: 450px;
+    display: none;
+    opacity: 0;
+    /*border: 1px solid red;*/
+}
+
+a {
+    color: #408080;
+}
+
+.title {
+    position: absolute;
+    left: 100px;
+    top: 10px;
+    color: #408080;
+    font-family: "Linotype Feltpen W01 Medium" !important;
+    font-size: 30px;
+    opacity: 0;
+    display: none;
+}
+
+.text {
+    position: relative;
+    padding-top: 9px;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 17px;
+    width: auto;
+    height: auto;
+    letter-spacing: .6px;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.weight400 {
+    font-weight: 400;
+}
+
+.no-phone {
+    pointer-events: none;
+}
+
+.no-phone > a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* -------------------
+=> WEBKIT SCROLLBAR
+---------------------- */
+
+::-webkit-scrollbar {
+    width: 5px;
+    background-color: #ffffff;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #408080;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #5fa1a1;
+    /*border: 1px solid #333333;*/
+}
+
+::-webkit-scrollbar-thumb:active {
+    background-color: #5fa1a1;
+    /*border: 1px solid #333333;*/
+}

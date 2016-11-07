@@ -2,10 +2,6 @@
  * Created by STORMSEN on 12.08.2016.
  */
 
-/**
- * Created by STORMSEN on 12.08.2016.
- */
-
 
 
 
@@ -18,7 +14,6 @@ this.jks = this.jks || {};
 
     var _loader;
     var _assetLoader;
-    var _loadingAssets = []
     var _loadingContent = []
 
     function DataHandler(config) {
@@ -53,7 +48,7 @@ this.jks = this.jks || {};
             }
 
 
-            TweenLite.delayedCall(.05, function () {
+            TweenLite.delayedCall(.0333, function () {
                 _scope.s.onDataHandlerReady.dispatch();
             });
         }
@@ -83,13 +78,21 @@ this.jks = this.jks || {};
             }
         }
 
-        PIXI.loader.add('shader', 'assets/js/jks/filters/treshold.frag');
+
+
+        if (jks.Core.releaseMode()) {
+            PIXI.loader.add('shader', 'assets/js/bin/filters/treshold.frag');
+        } else {
+            PIXI.loader.add('shader', 'assets/js/jks/filters/treshold.frag');
+        }
+
         PIXI.loader.once('complete', onLoaded);
         function loadShaderData() {
             PIXI.loader.load();
         }
 
         function onLoaded(loader, res) {
+            console.log('shader laoded')
             _scope.s.onAssetsLoaded.dispatch(res.shader.data);
         }
 
@@ -124,7 +127,7 @@ this.jks = this.jks || {};
 
                 // delayed dispatch / maybe bugfix?
                 //TweenLite.delayedCall(.1, _scope.s.onSlideLoaded.dispatch, [pageID])
-                 _scope.s.onSlideLoaded.dispatch(pageID);
+                _scope.s.onSlideLoaded.dispatch(pageID);
 
             }
 

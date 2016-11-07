@@ -21,6 +21,7 @@ this.jks = this.jks || {};
     var pageManager;
 
     var currentActivePageID = 'home';
+    var mobileMode = false;
 
     var isSlideLoader = false;
 
@@ -56,7 +57,7 @@ this.jks = this.jks || {};
 
             //return
 
-            router = new jks.Router();
+            //router = new jks.Router();
 
 
             view = new jks.View(config, shader);
@@ -103,6 +104,9 @@ this.jks = this.jks || {};
                 navigation.show();
             })
 
+            viewOnResize();
+            TweenLite.delayedCall(1, viewOnResize)
+
         }
 
         function viewOnResize() {
@@ -114,7 +118,8 @@ this.jks = this.jks || {};
         }
 
         function onOrientationChange(orientation) {
-            console.log('onOrientationChange', currentActivePageID)
+            console.log('c::onOrientationChange', currentActivePageID, mobileMode)
+
             navigation.onOrientationChange(orientation);
             if (currentActivePageID == 'home') {
                 //pageHome.onOrientationChange();
@@ -123,26 +128,46 @@ this.jks = this.jks || {};
         }
 
         function checkColors() {
-            console.log('clrs', jks.Controller.getCurrentActivePageID())
+            console.log('clrs', jks.Controller.getCurrentActivePageID(), mobileMode)
 
             if (jks.Config.getDeviceType() == 'mobile') {
-                device.portrait() ? jks.SelectNavigation.setButtonColors('home_portrait') : jks.SelectNavigation.setButtonColors('home_landscape')
+                if (currentActivePageID == 'home') {
+                    device.portrait() ? jks.SelectNavigation.setButtonColors('home_portrait') : jks.SelectNavigation.setButtonColors('home_landscape')
+                }
             } else {
-                jks.SelectNavigation.setButtonColors('home_portrait');
+                if (currentActivePageID == 'home') {
+                    if (!mobileMode) {
+                        jks.SelectNavigation.setButtonColors('desk_landscape');
+                    } else {
+                        jks.SelectNavigation.setButtonColors('home_portrait');
+                    }
+                } else {
+                    jks.SelectNavigation.setButtonColors('default');
+                }
+
             }
+
         }
 
         function switchMode(isMobile) {
+
+            mobileMode = isMobile;
+
             navigation.switchMode(isMobile);
 
-            //if (jks.Navigation.getCurrentSelectedPage() == 'vita') {
             pageManager.switchMode(isMobile);
+
+
+            checkColors();
+
+            //if (jks.Config.getDeviceType() != 'mobile') {
+            //    !isMobile ? jks.SelectNavigation.setButtonColors('desk_landscape') : jks.SelectNavigation.setButtonColors('home_portrait');
             //}
 
         }
 
         function onThumbNavigationShow(show, height) {
-            navigation.thumbNavigationShow(show, height);
+            navigation.thumbNavigationShow(show, height)
         }
 
         /*--------------------------------------------
@@ -328,7 +353,9 @@ this.jks = this.jks || {};
                 navigation.s.onKeyDownEvent.add(onKeyDown);
             }
 
-            TweenLite.delayedCall(.1, view.resizeScreen);
+
+            jks.View.forceResize();
+
         }
 
 

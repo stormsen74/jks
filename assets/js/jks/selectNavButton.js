@@ -61,7 +61,8 @@ this.jks = this.jks || {};
 
         var colors = {
             'home_portrait': [blue, light_blue, light_blue, white, white],
-            'home_landscape': [white, white, white, white, white],
+            "home_landscape": [white, white, white, white, white],
+            "desk_landscape": [blue, light_blue, white, white, white],
             'default': [blue, blue, blue, blue, blue]
         }
 
