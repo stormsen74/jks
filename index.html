@@ -192,7 +192,7 @@
 
 <script>
 
-    var release = true;
+    var release = false;
 
     var scripts = [];
 
@@ -260,7 +260,7 @@
 
     function onScriptsLoaded() {
 
-        init();
+        TweenLite.delayedCall(.1, init);
 
     }
 

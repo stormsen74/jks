@@ -54,11 +54,7 @@ this.jks = this.jks || {};
             dataHandler.s.onAssetsLoaded.remove(onAssetsLoaded);
             window.removeEventListener('resize', onResizePreloader);
 
-
-            //return
-
             //router = new jks.Router();
-
 
             view = new jks.View(config, shader);
             view.s.onReady.addOnce(onViewReady);
