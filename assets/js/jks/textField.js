@@ -152,7 +152,7 @@ this.jks = this.jks || {};
 
             //console.log('setCategory', text)
 
-            _scope.fieldCategory.setText(text)
+            _scope.fieldCategory.text = text
 
             _scope.updateView();
 
@@ -181,8 +181,8 @@ this.jks = this.jks || {};
 
 
             function setText() {
-                _scope.fieldType.setText(item.type)
-                _scope.fieldDescription.setText(item.description);
+                _scope.fieldType.text = item.type
+                _scope.fieldDescription.text = item.description;
                 currentDescription = item.description;
 
                 TweenLite.to(_scope.textMask, 1.5, {

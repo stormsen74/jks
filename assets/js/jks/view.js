@@ -121,7 +121,14 @@ this.jks = this.jks || {};
             _stage = new PIXI.Container();
             _stage.interactive = true;
 
+
+            if (jks.Core.releaseMode()) {
+                window.hideLog();
+            }
+
         }
+
+
 
         /*--------------------------------------------
          ~ DRAG / TRANSITION

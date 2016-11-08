@@ -173,9 +173,6 @@ this.jks = this.jks || {};
         }
 
 
-        if (jks.Core.releaseMode()) {
-            window.hideLog();
-        }
 
 
         console.log('Config :: pageData created!');
