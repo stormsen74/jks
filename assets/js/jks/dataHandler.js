@@ -70,10 +70,7 @@ this.jks = this.jks || {};
             }
 
             function onAssetsLoaded() {
-                console.log('assets loaded!')
-
-                //_scope.s.onAssetsLoaded.dispatch();
-
+                console.log('assets loaded!');
                 loadShaderData();
             }
         }
@@ -92,7 +89,7 @@ this.jks = this.jks || {};
         }
 
         function onLoaded(loader, res) {
-            console.log('shader laoded')
+            console.log('shader loaded');
             _scope.s.onAssetsLoaded.dispatch(res.shader.data);
         }
 
