@@ -9,6 +9,7 @@ this.jks = this.jks || {};
 ( function () {
 
     var _scope;
+    var _screen = document.getElementById('screen')
     var _renderer;
     var _stage;
     var _stats;
@@ -35,10 +36,19 @@ this.jks = this.jks || {};
     var $imageCrossOrigin = false;
 
     var screenWidth = function () {
-        return window.innerWidth
+        if (jks.Config.getDeviceType() == 'desktop') {
+            return window.innerWidth < jks.Config.maxDeskSize().width ? window.innerWidth : jks.Config.maxDeskSize().width;
+        } else {
+            return window.innerWidth
+        }
     };
+
     var screenHeight = function () {
-        return window.innerHeight
+        if (jks.Config.getDeviceType() == 'desktop') {
+            return window.innerHeight < jks.Config.maxDeskSize().height ? window.innerHeight : jks.Config.maxDeskSize().height;
+        } else {
+            return window.innerHeight
+        }
     };
 
 
@@ -120,6 +130,8 @@ this.jks = this.jks || {};
 
             _stage = new PIXI.Container();
             _stage.interactive = true;
+            //_stage.position.x = 50;
+            console.log('stage::', _stage.position)
 
 
             if (jks.Core.releaseMode()) {
@@ -127,7 +139,6 @@ this.jks = this.jks || {};
             }
 
         }
-
 
 
         /*--------------------------------------------
@@ -490,6 +501,7 @@ this.jks = this.jks || {};
 
             _scope.resizeScreen();
             _scope.s.onResize.dispatch();
+
         }
 
 
@@ -497,7 +509,7 @@ this.jks = this.jks || {};
             _overlay.width = screenWidth();
             _overlay.height = screenHeight();
 
-            _progressBar.style.left = screenWidth() * .5 - 60 + 'px';
+            _progressBar.style.left = window.innerWidth * .5 - 60 + 'px';
             _progressBar.style.top = screenHeight() * .5 - 30 + 'px';
         }
 
@@ -560,10 +572,27 @@ this.jks = this.jks || {};
 
         this.resizeScreen = function () {
 
+
             updateContent();
 
             _screenWidth = screenWidth();
             _screenHeight = screenHeight();
+
+            if (jks.Config.getDeviceType() == 'desktop') {
+                if (window.innerWidth > jks.Config.maxDeskSize().width) {
+                    _screen.style.left = (window.innerWidth - jks.Config.maxDeskSize().width) * .5 + 'px';
+                } else {
+                    _screen.style.left = 0;
+                }
+
+                if (window.innerHeight > jks.Config.maxDeskSize().height) {
+                    _screen.style.top = (window.innerHeight - jks.Config.maxDeskSize().height) * .5 + 'px';
+                } else {
+                    _screen.style.top = 0;
+                }
+
+                _screen.style.height = _screenHeight + 'px';
+            }
 
             _renderer.view.style.width = _screenWidth + "px";
             _renderer.view.style.height = _screenHeight + "px";

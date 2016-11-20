@@ -1,4 +1,4 @@
-uglifyjs --compress --mangle --output assets/js/bin/jks743.min.js --
+uglifyjs --compress --mangle --output assets/js/bin/jks075.min.js --
     assets/js/jks/core.js
     assets/js/jks/config.js
     assets/js/jks/dataHandler.js

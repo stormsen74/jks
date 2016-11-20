@@ -19,8 +19,6 @@ this.jks = this.jks || {};
 
     function Core(_release) {
 
-
-
         _scope = this;
 
         isRelease = _release;

@@ -16,7 +16,7 @@ this.jks = this.jks || {};
     function Config(json) {
         _scope = this;
 
-        this.version = '0.7.4';
+        this.version = '0.7.5';
         this.device = '';
         this.debug = false;
         this.log = false;
@@ -51,6 +51,12 @@ this.jks = this.jks || {};
         this.backgroundImageSize = {
             width: 1200,
             height: 800
+        }
+
+        this.maxDeskSize = {
+            width: 1200,
+            height: 800,
+            ratio: 1200 / 800
         }
 
         this.mobileSwitchWidth = 620;
@@ -173,8 +179,6 @@ this.jks = this.jks || {};
         }
 
 
-
-
         console.log('Config :: pageData created!');
 
         // console.log('config',this.pageData);
@@ -218,6 +222,10 @@ this.jks = this.jks || {};
 
     jks.Config.shaders = function () {
         return _scope.shaders;
+    }
+
+    jks.Config.maxDeskSize = function() {
+        return _scope.maxDeskSize;
     }
 
 }())

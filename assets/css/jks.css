@@ -2,6 +2,7 @@ html, body {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    background-color: #ffffff;
 
     -webkit-font-smoothing: antialiased;
 
@@ -52,6 +53,7 @@ html, body {
 #screen {
     position: absolute;
     background-color: #408080;
+    overflow: hidden;
 }
 
 #preload {
@@ -89,6 +91,7 @@ html, body {
     right: 0px;
     top: 70px;
     max-width: 450px;
+    /*height: inherit;*/
     display: none;
     opacity: 0;
     /*border: 1px solid red;*/

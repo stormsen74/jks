@@ -130,27 +130,26 @@ this.jks = this.jks || {};
                     _background.x = (_screenWidth - _background.width) * .5;
                 }
 
-                if (device.portrait()) {
-                    if (jks.Config.getDeviceType() == 'mobile') {
-                        TweenLite.set($content, {top: jks.View.getScreenHeight() * .15});
-                        $content.style.width = jks.View.getScreenWidth() - 100 + 'px';
-                        $content.style.height = jks.View.getScreenHeight() - 100 + 'px';
-                    } else if (jks.Config.getDeviceType() == 'tablet') {
-                        TweenLite.set($content, {top: jks.View.getScreenHeight() * .3});
-                        $content.style.width = jks.View.getScreenWidth() * .7 + 'px';
-                        $content.style.height = jks.View.getScreenHeight() - 100 + 'px';
+                if (jks.Config.getDeviceType() != 'desktop') {
+                    if (device.portrait()) {
+                        if (jks.Config.getDeviceType() == 'mobile') {
+                            TweenLite.set($content, {top: jks.View.getScreenHeight() * .15});
+                            $content.style.width = _screenWidth - 100 + 'px';
+                        } else if (jks.Config.getDeviceType() == 'tablet') {
+                            TweenLite.set($content, {top: jks.View.getScreenHeight() * .3});
+                            $content.style.width = _screenWidth * .7 + 'px';
+                        }
+                    } else {
+                        TweenLite.set($content, {top: jks.View.getScreenHeight() * .2});
+                        $content.style.width = _screenWidth * .5 + 'px';
                     }
-                } else {
-                    TweenLite.set($content, {top: jks.View.getScreenHeight() * .2});
-                    $content.style.width = jks.View.getScreenWidth() * .5 + 'px';
-                    $content.style.height = jks.View.getScreenHeight() - 70 + 'px';
-                }
 
-                if (jks.Config.getDeviceType() == 'desktop') {
+                    $content.style.height = _screenHeight - parseInt($content.style.top) - 45 + 'px'
+                } else {
                     if (_scope.mobileSwitch) {
                         TweenLite.set($content, {top: jks.View.getScreenHeight() * .2});
-                        $content.style.width = jks.View.getScreenWidth() * .65 + 'px';
-                        $content.style.height = jks.View.getScreenHeight() - jks.View.getScreenHeight() * .25 + 'px';
+                        $content.style.width = _screenWidth * .65 + 'px';
+                        //$content.style.height = parseInt($content.style.height) - parseInt($content.style.top) - 45 + 'px'
                     } else {
                         if (jks.Controller.getCurrentActivePageID() == 'vita') {
                             TweenLite.set($content, {top: jks.View.getScreenHeight() * .45});
@@ -165,10 +164,16 @@ this.jks = this.jks || {};
                             TweenLite.set($content, {top: jks.View.getScreenHeight() * .25});
                             $content.style.maxWidth = 450 + 'px';
                         }
-                        $content.style.width = jks.View.getScreenWidth() * .45 + 'px';
-                        $content.style.height = jks.View.getScreenHeight() - jks.View.getScreenHeight() * .15 + 'px';
+
+                        $content.style.width = _screenWidth * .45 + 'px';
+                        //$content.style.height = parseInt($content.style.height) - parseInt($content.style.top) - 45 + 'px'
                     }
+
+                    $content.style.height = _screenHeight - parseInt($content.style.top) - 45 + 'px'
+                    console.log('>', _screenHeight, $content.style.top, $content.style.height)
                 }
+
+                //console.log(_screenHeight, $content.style.height, $content.style.top)
 
             }
 

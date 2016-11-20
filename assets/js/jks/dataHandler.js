@@ -71,6 +71,7 @@ this.jks = this.jks || {};
 
             function onAssetsLoaded() {
                 console.log('assets loaded!');
+                TweenLite.set('body', {backgroundColor: "#408080"})
                 loadShaderData();
             }
         }
